@@ -10,14 +10,11 @@ app.use(expressLayouts);
 
 app.use(express.static("public"));
 
-// app.get('/', (req, res) => {
-//   res.render('index.ejs');
-// });
 
 
 app.get('/', function(req, res) {
     var locals = {
-      title: 'Page Title',
+      title: 'Gardens by the Bay',
       description: 'Page Description',
       header: 'Page Header',
       layout:'mainlayout.ejs'
@@ -28,7 +25,7 @@ app.get('/', function(req, res) {
 
 app.get('/about', function(req, res) {
     var locals = {
-        title: 'Page Title',
+        title: 'About',
         description: 'Page Description',
         header: 'Page Header',
         layout:'mainlayout.ejs'
@@ -38,7 +35,7 @@ app.get('/about', function(req, res) {
 
 app.get('/buytickets', function(req, res) {
     var locals = {
-        title: 'Page Title',
+        title: 'Buy Tickets',
         description: 'Page Description',
         header: 'Page Header',
         layout:'mainlayout.ejs'
@@ -48,7 +45,7 @@ app.get('/buytickets', function(req, res) {
 
 app.get('/cloudforest', function(req, res) {
     var locals = {
-        title: 'Page Title',
+        title: 'Cloud Forest',
         description: 'Page Description',
         header: 'Page Header',
         layout:'mainlayout.ejs'
@@ -58,7 +55,7 @@ app.get('/cloudforest', function(req, res) {
 
 app.get('/contact', function(req, res) {
     var locals = {
-        title: 'Page Title',
+        title: 'Contact',
         description: 'Page Description',
         header: 'Page Header',
         layout:'mainlayout.ejs'
@@ -68,7 +65,7 @@ app.get('/contact', function(req, res) {
 
 app.get('/dragonfly', function(req, res) {
     var locals = {
-        title: 'Page Title',
+        title: 'Dragonfly',
         description: 'Page Description',
         header: 'Page Header',
         layout:'mainlayout.ejs'
@@ -78,7 +75,7 @@ app.get('/dragonfly', function(req, res) {
 
 app.get('/floralfantasy', function(req, res) {
     var locals = {
-        title: 'Page Title',
+        title: 'Floral Fantasy',
         description: 'Page Description',
         header: 'Page Header',
         layout:'mainlayout.ejs'
@@ -88,7 +85,7 @@ app.get('/floralfantasy', function(req, res) {
 
 app.get('/flowerdome', function(req, res) {
     var locals = {
-        title: 'Page Title',
+        title: 'Flower Dome',
         description: 'Page Description',
         header: 'Page Header',
         layout:'mainlayout.ejs'
@@ -98,7 +95,7 @@ app.get('/flowerdome', function(req, res) {
 
 app.get('/ourhistory', function(req, res) {
     var locals = {
-        title: 'Page Title',
+        title: 'Our History',
         description: 'Page Description',
         header: 'Page Header',
         layout:'mainlayout.ejs'
@@ -108,7 +105,7 @@ app.get('/ourhistory', function(req, res) {
 
 app.get('/ourstory', function(req, res) {
     var locals = {
-        title: 'Page Title',
+        title: 'Our Story',
         description: 'Page Description',
         header: 'Page Header',
         layout:'mainlayout.ejs'
@@ -118,7 +115,7 @@ app.get('/ourstory', function(req, res) {
 
 app.get('/serenegarden', function(req, res) {
     var locals = {
-        title: 'Page Title',
+        title: 'Serene Garden',
         description: 'Page Description',
         header: 'Page Header',
         layout:'mainlayout.ejs'
@@ -128,7 +125,7 @@ app.get('/serenegarden', function(req, res) {
 
 app.get('/supertreeobservatory', function(req, res) {
     var locals = {
-        title: 'Page Title',
+        title: 'Supertree Observatory',
         description: 'Page Description',
         header: 'Page Header',
         layout:'mainlayout.ejs'
@@ -138,7 +135,7 @@ app.get('/supertreeobservatory', function(req, res) {
 
 app.get('/sustainabilityefforts', function(req, res) {
     var locals = {
-        title: 'Page Title',
+        title: 'Sustainability Efforts',
         description: 'Page Description',
         header: 'Page Header',
         layout:'mainlayout.ejs'
