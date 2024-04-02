@@ -1,16 +1,26 @@
-var express = require('express');
-var expressLayouts = require('express-ejs-layouts');
-var port = 3000;
+const express = require('express');
+const expressLayouts = require('express-ejs-layouts');
+const dotenv = require('dotenv')
+const mongoose = require('mongoose');
 
-var app = express();
+const app = express();
 
 app.set('view engine', 'ejs');
-
 app.use(expressLayouts);
-
 app.use(express.static("public"));
 
+dotenv.config();
 
+mongoose.connect(process.env.MONGO_URL).then(() => {
+  console.log(`MongoDB connected at ${process.env.MONGO_URL}`);
+}).catch((err) => {
+  console.log(err.message);
+});
+
+const port = process.env.PORT || 5000;
+
+app.use(express.json());
+app.use("/api/booking", require("./routes/api/booking"));
 
 app.get('/', function(req, res) {
     var locals = {
