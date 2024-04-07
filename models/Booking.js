@@ -1,17 +1,35 @@
+const { Int32 } = require('bson');
 const {Schema, model} = require('mongoose');
+const { long, double } = require('webidl-conversions');
 
 const BookingSchema = new Schema({
-    title: {
+    name: {
         type: String,
         required: true
     },
-    completed: {
-        type: Boolean,
-        default: false
+    attractionName: {
+        type: String,
+        required: true
+    },
+    ticket: {
+        type: Number,
+        required: true
     },
     date: {
-        type: Date,
-        default: Date.now
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    bookingID: {
+        type: String,
+        required: true
     }
 });
 

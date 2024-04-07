@@ -1,4 +1,4 @@
-angular.module('myApp', []).controller('AppController', function ($scope) {
+angular.module('myApp', []).controller('AppController', function ($scope, $http) {
   $scope.formData = {}; // Inisialisasi objek buat simpan data
 
   $scope.submitForm = function () {
@@ -11,7 +11,18 @@ angular.module('myApp', []).controller('AppController', function ($scope) {
     $scope.formData.email = $scope.email;
     $scope.formData.bookingID = generateBookingID($scope.selectedAttraction, $scope.ticket);
     // Menampilkan data dengan pop up
+
     showPopup($scope.formData);
+
+    $http.post('/api/booking', $scope.formData)
+      .then(function (response) {
+        console.log('Form data submitted successfully:', response.data);
+        alert('Form submitted successfully!');
+      })
+      .catch(function (error) {
+        console.error('Error submitting form data:', error);
+        alert('Error submitting form data. Please try again.');
+      });
   };
 
   function generateBookingID(selectedAttraction, ticket) {

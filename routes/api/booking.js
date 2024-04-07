@@ -16,9 +16,17 @@ router.get('/', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
+    const formData = req.body; // Access the form data sent from AngularJS
+    console.log('Form Data:', formData); // Log the form data to check if it's received correctly
+
     const booking = new Booking({
-        title: req.body.title,
-       
+        name: formData.name,
+        attractionName: formData.attractionName,
+        ticket: formData.ticket,
+        date: formData.date,
+        phone: formData.phone,
+        email: formData.email,
+        bookingID: formData.bookingID,
     });
     try
     {
@@ -27,6 +35,7 @@ router.post('/', async (req, res) => {
     }
     catch (err)
     {
+        console.error('Error saving booking:', err);
         res.status(400).json({message: err.message});
     }
 
