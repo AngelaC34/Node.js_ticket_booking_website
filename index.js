@@ -154,6 +154,16 @@ app.get('/sustainabilityefforts', function(req, res) {
     res.render('sustainabilityefforts.ejs', locals);
 });
 
+app.get('/login', function(req, res) {
+  var locals = {
+      title: 'Login',
+      description: 'Page Description',
+      header: 'Page Header',
+      layout:'login.ejs'
+    };
+  res.render('login.ejs', locals);
+});
+
 app.listen(port, () => {
     console.log(`Webserver app listening on port ${port}`);
 });
