@@ -159,7 +159,7 @@ app.get('/login', function(req, res) {
       title: 'Login',
       description: 'Page Description',
       header: 'Page Header',
-      layout:'login.ejs'
+      layout:'mainlayout.ejs'
     };
   res.render('login.ejs', locals);
 });
