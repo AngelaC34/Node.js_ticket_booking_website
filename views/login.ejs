@@ -1,62 +1,71 @@
-
-    
-    <!-- Page Header Start -->
-    <div class="container-fluid wow fadeIn" data-wow-delay="0.1s">
-        <div style="background: #000000;">
-            <img class="img-fluid w-30" src="img/login.jpg">
-        </div>
-        <div class="container">
-            <h1 class="display-3 mb-3 animated slideInDown"><br>Sign In</h1>
-            <nav aria-label="breadcrumb animated slideInDown">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a class="text-body" href="#">Sign In</a></li><br><br>
-                </ol>
-            </nav>
-        </div>
+<!-- Page Header Start -->
+<div class="container-fluid wow fadeIn" data-wow-delay="0.1s">
+    <div style="background: #000000;">
+        <img class="img-fluid w-30" src="img/login.jpg">
     </div>
-    <!-- Page Header End -->
+    <div class="container">
+        <h1 class="display-3 mb-3 animated slideInDown"><br>Log In</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-body" href="#">Log In</a></li><br><br>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
 
 
-    <!-- Blog Start -->
-    <div id="login">
-        <div class="container">
-            <div class="row g-5 justify-content-center">
-                <div class="col-lg-5 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
-                    <!-- <div class="bg-primary text-white d-flex flex-column justify-content-center h-100 p-5"> -->
-                        <div class="section-header"><br><br>
-                            <h2>Sign Up / Login</h2>
-                            <p>
-                                Sign up now to secure your spot and embark your unforgettable journey with us!
-                            </p>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="login-form">
-                                    <form>
-                                        <div class="form-row">
-                                            <div class="control-group col-sm-6">
-                                                <label>Your Name</label>
-                                                <input type="text" class="form-control" required="required" />
-                                            </div>
-                                            <div class="control-group col-sm-6">
-                                                <label>Email</label>
-                                                <input type="email" class="form-control" required="required" />
-                                            </div>
+<!-- Blog Start -->
+<div id="login">
+    <div class="container">
+        <div class="row g-5 justify-content-center">
+            <div class="col-lg-5 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
+                <!-- <div class="bg-primary text-white d-flex flex-column justify-content-center h-100 p-5"> -->
+                    <div class="section-header"><br><br>
+                        <h2>Log In</h2>
+                        <p>
+                            Sign up now to secure your spot and embark your unforgettable journey with us!
+                        </p>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="login-form">
+                                <form action="/login" method="POST">
+                                    <div class="form-row">
+                                        <!-- <div class="control-group col-sm-6">
+                                            <label>Your Name</label>
+                                            <input type="name" class="form-control" id="name" required name="name" />
+                                        </div> -->
+                                        <div class="control-group col-sm-6">
+                                            <label>Email</label>
+                                            <input type="email" class="form-control" id="email" required name="email" />
                                         </div>
-                                        <div class="form-row">
-                                            <div class="control-group col-sm-6">
-                                                <label>Your Password</label>
-                                                <input type="password" class="form-control" required="required" />
-                                            </div>
-                                            <div class="control-group col-sm-6">
-                                                <label>Repeat Your Password</label>
-                                                <input type="password" class="form-control" required="required" />
-                                            </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="control-group col-sm-6">
+                                            <label>Your Password</label>
+                                            <input type="password" class="form-control" id="password" required name="password" />
                                         </div>
-                                        <br>
-                                        <button class="btn btn-primary rounded-pill py-3 px-5 mt-3" type="submit">Sign Up</button><br><br><br>
-                                    </form>
+                                        <!-- <div class="control-group col-sm-6">
+                                            <label>Repeat Your Password</label>
+                                            <input type="password" class="form-control" id="password" required name="password" />
+                                        </div> -->
+                                    </div>
+                                    <br>
+                                    <button class="btn btn-primary rounded-pill py-3 px-5 mt-3" type="submit">Log In</button><br><br><br>
+                                </form>
+                                <a href="/signup">Sign Up</a>
+                            </div>
+                            <!-- alert -->
+                            <% if (messages.error) { %>
+                                <div class="alert alert-danger" role="alert">
+                                  <%= messages.error %>
+                                </div>
+                              <% } %>
+                              <% if (messages.success) { %>
+                                <div class="alert alert-success" role="alert">
+                                  <%= messages.success %>
                                 </div>
                             </div>
                             

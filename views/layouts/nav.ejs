@@ -9,16 +9,16 @@ class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-5
 <!-- Navbar Start -->
 <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
 <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
-    <div class="col-lg-6 px-5 text-start">
+    <div class="col-lg-6 px-5 text-start" style="color:white">
         <small><i class="fa fa-map-marker-alt me-2"></i>18 Marina Gardens Drive, Singapore 018953</small>
         <small class="ms-4"><i class="fa fa-envelope me-2"></i>feedback@gardensbythebay.com.sg</small>
     </div>
-    <div class="col-lg-6 px-5 text-end">
+    <div class="col-lg-6 px-5 text-end" style="color:white">
         <small>Follow us:</small>
-        <a class="text-body ms-3" href=""><i class="fab fa-facebook-f"></i></a>
-        <a class="text-body ms-3" href=""><i class="fab fa-twitter"></i></a>
-        <a class="text-body ms-3" href=""><i class="fab fa-linkedin-in"></i></a>
-        <a class="text-body ms-3" href=""><i class="fab fa-instagram"></i></a>
+        <a class="text-body ms-3" href=""><i style="color:white" class="fab fa-facebook-f"></i></a>
+        <a class="text-body ms-3" href=""><i style="color:white" class="fab fa-twitter"></i></a>
+        <a class="text-body ms-3" href=""><i style="color:white" class="fab fa-linkedin-in"></i></a>
+        <a class="text-body ms-3" href=""><i style="color:white" class="fab fa-instagram"></i></a>
     </div>
 </div>
 
@@ -50,9 +50,15 @@ class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-5
             <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
                 <small class="fa fa-search text-body"></small>
             </a>
-            <a class="btn-sm-square bg-white rounded-circle ms-3" href="/login">
-                <small class="fa fa-user text-body"></small>
+        </div>
+        <div class="d-none d-lg-flex ms-2 nav-item dropdown">
+            <a href="#" class="fa fa-user btn-sm-square bg-white rounded-circle ms-3" data-bs-toggle="dropdown"></a>
+                <div class="dropdown-menu m-0">
+                    <a href="/login" class="dropdown-item active">Log In</a>
+                    <a href="/signup" class="dropdown-item">Sign In</a>
+                </div>
             </a>
+        </div>
         </div>
     </div>
 </nav>
