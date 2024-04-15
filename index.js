@@ -134,6 +134,16 @@ app.get('/serenegarden', function(req, res) {
     res.render('serenegarden.ejs', locals);
 });
 
+app.get('/signup', function(req, res) {
+  var locals = {
+      title: 'Sign Up',
+      description: 'Page Description',
+      header: 'Page Header',
+      layout:'mainlayout.ejs'
+    };
+  res.render('signup.ejs', locals);
+});
+
 app.get('/supertreeobservatory', function(req, res) {
     var locals = {
         title: 'Supertree Observatory',
@@ -167,4 +177,3 @@ app.get('/login', function(req, res) {
 app.listen(port, () => {
     console.log(`Webserver app listening on port ${port}`);
 });
-
