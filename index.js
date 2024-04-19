@@ -23,13 +23,12 @@ const session = require('express-session');
 // authentication
 
 const passport = require('passport');
-
 const initializePassport = require('./passport-config');
 initializePassport(
     passport,
     email => users.find(user => user.email === email),
     id => users.find(user => user.id === id)
-   
+  
 );
 
 const users = [];
@@ -45,7 +44,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-
 // ejs
 
 app.set('view engine', 'ejs');
@@ -57,6 +55,7 @@ app.use(bodyParser.json());
 
 dotenv.config();
 
+// Connect MongoDB
 mongoose.connect(process.env.MONGO_URL).then(() => {
   console.log(`MongoDB connected at ${process.env.MONGO_URL}`);
 }).catch((err) => {
@@ -65,228 +64,17 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
 
 const port = process.env.PORT || 5000;
 
+// Routes
 app.use(express.json());
 app.use("/api/booking", require("./routes/api/booking"));
+app.use('/', require("./routes/indexRoutes"));
+app.use('/', require("./routes/authRoutes"));
+app.use('/', require("./routes/emailRoutes"));
 
 
-
-app.get('/', function(req, res) {
-  var locals = {
-      title: 'Gardens by the Bay',
-      description: 'Page Description',
-      header: 'Page Header',
-      layout: 'mainlayout.ejs',
-      name: req.user ? req.user.name : 'Guest' // Check if req.user exists
-  };
-  res.render('index', locals);
-});
-
-
-app.get('/login', checkNotAuthenticated, function(req, res) {
-  var locals = {
-      title: 'Log In',
-      description: 'Page Description',
-      header: 'Page Header',
-      layout:'mainlayout.ejs'
-    };
-  res.render('login.ejs', locals);
-});
-
-app.get('/signup', checkNotAuthenticated, function(req, res) {
-  var locals = {
-      title: 'Sign Up',
-      description: 'Page Description',
-      header: 'Page Header',
-      layout:'mainlayout.ejs'
-    };
-  res.render('signup.ejs', locals);
-});
-
-app.get('/about', function(req, res) {
-    var locals = {
-        title: 'About',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-      };
-    res.render('about.ejs', locals);
-});
-
-app.get('/buytickets', function(req, res) {
-    var locals = {
-        title: 'Buy Tickets',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-      };
-    res.render('buytickets.ejs', locals);
-});
-
-app.get('/cloudforest', function(req, res) {
-    var locals = {
-        title: 'Cloud Forest',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-      };
-    res.render('cloudforest.ejs', locals);
-});
-
-app.get('/contact', function(req, res) {
-    var locals = {
-        title: 'Contact',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-      };
-    res.render('contact.ejs', locals);
-});
-
-app.get('/dragonfly', function(req, res) {
-    var locals = {
-        title: 'Dragonfly',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-      };
-    res.render('dragonfly.ejs', locals);
-});
-
-app.get('/floralfantasy', function(req, res) {
-    var locals = {
-        title: 'Floral Fantasy',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-      };
-    res.render('floralfantasy.ejs', locals);
-});
-
-app.get('/flowerdome', function(req, res) {
-    var locals = {
-        title: 'Flower Dome',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-      };
-    res.render('flowerdome.ejs', locals);
-});
-
-app.get('/ourhistory', function(req, res) {
-    var locals = {
-        title: 'Our History',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-      };
-    res.render('ourhistory.ejs', locals);
-});
-
-app.get('/ourstory', function(req, res) {
-    var locals = {
-        title: 'Our Story',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-      };
-    res.render('ourstory.ejs', locals);
-});
-
-app.get('/serenegarden', function(req, res) {
-    var locals = {
-        title: 'Serene Garden',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-      };
-    res.render('serenegarden.ejs', locals);
-});
-
-app.get('/supertreeobservatory', function(req, res) {
-    var locals = {
-        title: 'Supertree Observatory',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-      };
-    res.render('supertreeobservatory.ejs', locals);
-});
-
-app.get('/sustainabilityefforts', function(req, res) {
-    var locals = {
-        title: 'Sustainability Efforts',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-      };
-    res.render('sustainabilityefforts.ejs', locals);
-});
-
-// TEST
-// app.get('/',checkAuthenticated, (req, res) => {
-//   res.render('index', { nama: req.user.name });
-// });
-
-//login
-// app.get('/login', checkNotAuthenticated, (req, res) => {
-//   res.render('login.ejs')
-// })
-
-// //signup
-// app.get('/signup', checkNotAuthenticated,(req, res) => {
-//   res.render('signup');
-// });
-
-//post login
-app.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/login',
-  failureFlash: true
-}))
-
-//post signup
-app.post('/signup', async (req, res) => {
- try   {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  const users = new User({
-      id: Date.now().toString(),
-      name: req.body.name,
-      email: req.body.email,
-      password: hashedPassword
-  });
-  await users.save()
-  res.redirect('/login');
- }    catch(err)    {
-  console.log(err)
-  res.redirect('/signup');
- }
- console.log(users);
-});
-
-function checkAuthenticated(req,res,next){
-  if(req.isAuthenticated()){
-      return next();
-  }
-  res.redirect('/login');
-}
-
-function checkNotAuthenticated(req,res,next){
-  if(req.isAuthenticated()){
-      return res.redirect('/');
-  }
-  next();
-}
-
-app.delete('/logout', (req, res, next) => {
-  req.logOut(function
-  (err) {
-      if (err) {
-          return next(err);
-      }
-      res.redirect('/login');
-  });
-});
-// test end
+// Body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 
 app.listen(port, () => {
