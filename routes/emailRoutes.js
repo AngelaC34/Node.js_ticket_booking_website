@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
+const User = require('../models/User');
 
 // Nodemailer transporter setup
 const transporter = nodemailer.createTransport({
@@ -12,14 +13,20 @@ const transporter = nodemailer.createTransport({
 });
 
 // Express route handling the form submission
-router.post('/send-email', (req, res) => {
+router.post('/send-email', async (req, res) => {
+    // Fetch all emails from the database
+    const userEmail = await User.find({}, { email: 1, _id: 0 });
+        
+    // Extract emails from subscribers and format them as a string
+    const emailList = userEmail.map(userEmail => userEmail.email).join(', ');
+
     // Extract email details from the form submission
-    const { toEmail, subject, text } = req.body;
+    const { subject, text } = req.body;
 
     // Create the mail options
     const mailOptions = {
         from: process.env.USER,
-        to: toEmail,
+        to: emailList,
         subject: subject,
         text: text
     };
