@@ -45,6 +45,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+// Middleware to check if the user is an admin
+function ensureAdmin(req, res, next) {
+  if (req.isAuthenticated() && req.user.isAdmin) {
+      return next();
+  }
+  res.redirect('/'); // Redirect unauthorized users
+}
+
+
 
 // ejs
 
@@ -221,6 +230,27 @@ app.get('/sustainabilityefforts', function(req, res) {
       };
     res.render('sustainabilityefforts.ejs', locals);
 });
+
+app.get('/adminDashboard', function(req, res) {
+  var locals = {
+      title: 'Admin Dashboard',
+      description: 'Page Description',
+      header: 'Page Header',
+      layout:'adminlayout.ejs'
+    };
+  res.render('adminDashboard.ejs', locals);
+});
+
+app.get('/useracc', function(req, res) {
+  var locals = {
+      title: 'User Acc',
+      description: 'Page Description',
+      header: 'Page Header',
+      layout:'adminlayout.ejs'
+    };
+  res.render('useracc.ejs', locals);
+});
+
 
 // TEST
 // app.get('/',checkAuthenticated, (req, res) => {
