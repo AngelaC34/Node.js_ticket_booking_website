@@ -17,7 +17,7 @@ router.post('/send-email', async (req, res) => {
     // Fetch all emails from the database
     const userEmail = await User.find({}, { email: 1, _id: 0 });
         
-    // Extract emails from subscribers and format them as a string
+    // Extract emails from userEmail and format them as a string
     const emailList = userEmail.map(userEmail => userEmail.email).join(', ');
 
     // Extract email details from the form submission
