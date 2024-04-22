@@ -112,8 +112,6 @@ app.post('/signup', async (req, res) => {
  console.log(users);
 });
 
-
-
 app.delete('/logout', (req, res, next) => {
   req.logOut(function
   (err) {
