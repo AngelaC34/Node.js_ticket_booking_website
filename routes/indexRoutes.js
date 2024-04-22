@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Post = require('../models/Post');
 
 function checkAuthenticated(req,res,next){
     if(req.isAuthenticated()){
@@ -15,16 +16,62 @@ function checkNotAuthenticated(req,res,next){
     next();
 }
 
-router.get('/', function(req, res) {
-    var locals = {
-        title: 'Gardens by the Bay',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout: 'mainlayout.ejs',
-        name: req.user ? req.user.name : 'Guest' // Check if req.user exists
-    };
-    res.render('index', locals);
+// router.get('/', async (req, res) => {
+//     var locals = {
+//         title: 'Gardens by the Bay',
+//         description: 'Page Description',
+//         header: 'Page Header',
+//         layout: 'mainlayout.ejs',
+//         name: req.user ? req.user.name : 'Guest' // Check if req.user exists
+//     };
+
+//     try {
+//         const data = await Post.find();
+//         res.render('index', locals, data);
+//     }
+//     catch (error) {
+//         console.log(error);
+//     }
+// });
+
+router.get('/', async (req, res) => {
+    try {
+        const data = await Post.find();
+        const locals = {
+            title: 'Gardens by the Bay',
+            description: 'Page Description',
+            header: 'Page Header',
+            layout: 'mainlayout.ejs',
+            name: req.user ? req.user.name : 'Guest', // Check if req.user exists
+            posts: data // Pass the fetched data to the view
+        };
+        res.render('index', locals);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error');
+    }
 });
+
+
+//testing
+// function insertPostData () {
+//     Post.insertMany([
+//         {
+//             title: "Building a blog",
+//             body: "This is the body text"
+//         },
+//         {
+//             title: "Building a blog",
+//             body: "This is the body text"
+//         },
+//         {
+//             title: "Building a blog",
+//             body: "This is the body text"
+//         },
+//     ])
+// };
+
+// insertPostData();
 
 router.get('/login', checkNotAuthenticated, function(req, res) {
 var locals = {
