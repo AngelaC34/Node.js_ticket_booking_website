@@ -1,0 +1,21 @@
+<form action="/send-email" method="POST">
+    <label for="subject">Subject:</label>
+    <input type="text" id="subject" name="subject" required><br><br>
+    <label for="text">Message:</label>
+    <textarea id="text" name="text" rows="4" cols="50" required></textarea><br><br>
+    <button type="submit">Send Email</button>
+</form>
+
+<!-- alert -->
+<% if (typeof messages !== 'undefined') { %>
+    <% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= messages.error %>
+        </div>
+    <% } %>
+    <% if (messages.success) { %>
+        <div class="alert alert-success" role="alert">
+            <%= messages.success %>
+        </div>
+    <% } %>
+<% } %>
