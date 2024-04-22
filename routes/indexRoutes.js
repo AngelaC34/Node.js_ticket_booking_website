@@ -186,4 +186,14 @@ router.get('/useracc', function(req, res) {
     res.render('useracc.ejs', locals);
 });
 
+router.get('/newsletter', function(req, res) {
+    var locals = {
+        title: 'Newsletter',
+        description: 'Page Description',
+        header: 'Page Header',
+        layout:'adminlayout.ejs'
+    };
+    res.render('newsletter.ejs', locals);
+});
+
 module.exports = router;

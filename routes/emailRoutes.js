@@ -35,11 +35,12 @@ router.post('/send-email', async (req, res) => {
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
             console.log(error);
-            res.send('Error sending email');
+            req.flash('error', 'Error sending email');
         } else {
             console.log('Email sent: ' + info.response);
-            res.send('Email sent successfully');
+            req.flash('success', 'Email sent successfully');
         }
+        res.redirect('/newsletter');
     });
 });
 
