@@ -1,59 +1,36 @@
+const express = require('express'); // express framework
+const expressLayouts = require('express-ejs-layouts'); // ejs layout templating language
+const bodyParser = require('body-parser'); // parse incoming req body for data sent in http req
+const mongoose = require('mongoose'); // odm for nodejs mongodb, schema
+const path = require('path'); // for manipulating file path cross platform
+const methodOverride = require('method-override'); // override HTTP req to support Put and DELETE req
+const flash = require('express-flash'); // display flash messages to provide feedback for user after action
+const session = require('express-session'); // managing user sessions on server side
+const passport = require('passport'); // authentication middleware
+
+
+// Initialize express app
+const app = express();
+
+
+// Middlewares
 if(process.env.NODE_ENV !== 'production'){
   require('dotenv').config();
 }
-
-const express = require('express');
-const app = express();
-
-const expressLayouts = require('express-ejs-layouts');
-const dotenv = require('dotenv');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-
-const path = require('path');
-const bcrypt = require('bcrypt');
-const User = require('./models/User');
-
-const methodOverride = require('method-override');
-app.use (methodOverride('_method'));
-
-const flash = require('express-flash');
-const session = require('express-session');
-
-// authentication
-
-const passport = require('passport');
-const initializePassport = require('./passport-config');
-initializePassport(
-    passport,
-    email => users.find(user => user.email === email),
-    id => users.find(user => user.id === id)
-  
-);
-
-const users = [];
-
-app.use(express.urlencoded({ extended: false }));
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-
-// ejs
-
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
 app.use(expressLayouts);
 app.use(express.static("public"));
-app.use(bodyParser.json());
+app.use (methodOverride('_method'));
 
-dotenv.config();
 
 // Connect MongoDB
 mongoose.connect(process.env.MONGO_URL).then(() => {
@@ -62,9 +39,21 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
   console.log(err.message);
 });
 
-const port = process.env.PORT || 5000;
+
+// Passport config
+const initializePassport = require('./passport-config');
+initializePassport(
+    passport,
+    email => users.find(user => user.email === email),
+    id => users.find(user => user.id === id)
+  
+);
+
 
 // Routes
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use("/api/booking", require("./routes/api/booking"));
 app.use('/', require("./routes/indexRoutes"));
@@ -72,12 +61,9 @@ app.use('/', require("./routes/authRoutes"));
 app.use('/', require("./routes/emailRoutes"));
 
 
-// Body parser middleware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+const port = process.env.PORT || 5000;
 
-
+// Start server
 app.listen(port, () => {
     console.log(`Webserver app listening on port ${port}`);
 });
-

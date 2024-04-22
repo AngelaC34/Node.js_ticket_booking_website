@@ -6,8 +6,8 @@ function checkAuthenticated(req,res,next){
         return next();
     }
     res.redirect('/login');
-  }
-  
+}
+
 function checkNotAuthenticated(req,res,next){
     if(req.isAuthenticated()){
         return res.redirect('/');
@@ -166,4 +166,24 @@ router.get('/sustainabilityefforts', function(req, res) {
     res.render('sustainabilityefforts.ejs', locals);
 });
 
-  module.exports = router;
+router.get('/adminDashboard', function(req, res) {
+    var locals = {
+        title: 'Admin Dashboard',
+        description: 'Page Description',
+        header: 'Page Header',
+        layout:'adminlayout.ejs'
+    };
+    res.render('adminDashboard.ejs', locals);
+});
+
+router.get('/useracc', function(req, res) {
+    var locals = {
+        title: 'User Account',
+        description: 'Page Description',
+        header: 'Page Header',
+        layout:'adminlayout.ejs'
+    };
+    res.render('useracc.ejs', locals);
+});
+
+module.exports = router;
