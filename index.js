@@ -57,7 +57,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use("/api/booking", require("./routes/api/booking"));
 app.use('/', require("./routes/indexRoutes"));
-app.use('/', require("./routes/authRoutes"));
+app.use('/authRoutes', require("./routes/authRoutes"));
 app.use('/', require("./routes/emailRoutes"));
 
 
