@@ -4,12 +4,27 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
+// get all user
+router.get('/', async (req, res) => {
+    try
+    {
+        const user = await User.find();
+        res.status(200).json(user);
+    }
+    catch (err)
+    {
+        res.status(500).json({message: err.message});
+    }
+});
+
+// user login
 router.post('/login', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
 }))
 
+// user signup
 router.post('/signup', async (req, res) => {
     try   {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -25,9 +40,8 @@ router.post('/signup', async (req, res) => {
         console.log(err)
         res.redirect('/signup');
     }
-    console.log(users);
 });
-   
+
 router.delete('/logout', (req, res, next) => {
     req.logOut(function
     (err) {
@@ -36,6 +50,37 @@ router.delete('/logout', (req, res, next) => {
         }
         res.redirect('/login');
     });
+});
+
+// Delete user
+router.delete('/delete-user/:id', async (req, res) => {
+    const userId = req.params.id;
+    try {
+        const deletedUser = await User.findByIdAndDelete(userId);
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
+    }
+    res.redirect('/useracc');
+});
+
+// user update
+router.put('/:id', async (req, res) => {
+    const userId = req.params.id;
+    const { name, email } = req.body; // Assuming you want to update name and email
+
+    try {
+        // Use your User model to find and update the user
+        const updatedUser = await User.findByIdAndUpdate(userId, { name, email }, { new: true });
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.redirect('/useracc');
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 });
 
 module.exports = router;
