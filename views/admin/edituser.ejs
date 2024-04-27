@@ -1,0 +1,21 @@
+<form action="/authRoutes/delete-user/<%= user._id %>?_method=DELETE" method="POST">
+    <input type="submit" value="Delete" class="btn-delete btn">
+</form>
+
+<form action="/authRoutes/<%= user._id %>?_method=PUT" method="POST" id="editUserForm">
+    <label for="name">Name</label>
+    <input type="text" placeholder="User Name" name="name" value="<%= user.name %>">
+
+    <label for="email">Email</label>
+    <input type="email" placeholder="User Email" name="email" value="<%= user.email %>">
+
+    <label for="admin">Admin</label>
+    <input type="radio" name="admin" value="true" <%= user.admin ? 'checked' : '' %>> Admin
+    <input type="radio" name="admin" value="false" <%= !user.admin ? 'checked' : '' %>> Not Admin
+   
+    <!-- <label for="password">Password</label>
+    <input type="password" placeholder="User Password" name="password" value="<%= user.password %>"> -->
+
+    <button type="submit">Edit User</button>
+
+</form>

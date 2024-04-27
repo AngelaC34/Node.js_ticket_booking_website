@@ -1,15 +1,20 @@
 const express = require('express');
 const router = express.Router();
+const User = require('../models/User');
 
-function checkAuthenticated(req,res,next){
-    if(req.isAuthenticated()){
+function checkAuthenticatedAdmin(req,res,next){
+    if(req.isAuthenticated() && req.user.admin === true){
         return next();
     }
     res.redirect('/login');
 }
 
-function checkNotAuthenticated(req,res,next){
-    if(req.isAuthenticated()){
+function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        if (req.user.admin === true) { // Check req.user.admin instead of req.admin
+            console.log("admin: " + req.user.admin);
+            return res.redirect('/adminDashboard');
+        }
         return res.redirect('/');
     }
     next();
@@ -26,7 +31,7 @@ router.get('/', function(req, res) {
     res.render('index', locals);
 });
 
-router.get('/login', checkNotAuthenticated, function(req, res) {
+router.get('/login', function(req, res) {
 var locals = {
     title: 'Log In',
     description: 'Page Description',
@@ -36,7 +41,7 @@ var locals = {
 res.render('login.ejs', locals);
 });
 
-router.get('/signup', checkNotAuthenticated, function(req, res) {
+router.get('/signup', function(req, res) {
 var locals = {
     title: 'Sign Up',
     description: 'Page Description',
@@ -173,18 +178,35 @@ router.get('/adminDashboard', function(req, res) {
         header: 'Page Header',
         layout:'adminlayout.ejs'
     };
-    res.render('adminDashboard.ejs', locals);
+    res.render('admin/adminDashboard.ejs', locals);
 });
 
-router.get('/useracc', function(req, res) {
+
+router.get('/useracc', async function(req, res) {
+    const users = await User.find();
     var locals = {
         title: 'User Account',
         description: 'Page Description',
         header: 'Page Header',
-        layout:'adminlayout.ejs'
+        layout:'adminlayout.ejs',
+        users: users
     };
-    res.render('useracc.ejs', locals);
+    res.render('admin/useracc.ejs', locals);
 });
+
+// edit user
+router.get('/:id', async function(req, res) {
+    const user = await User.findById(req.params.id);
+    var locals = {
+        title: 'Edit User',
+        description: 'Page Description',
+        header: 'Page Header',
+        layout:'adminlayout.ejs',
+        user: user
+    };
+    res.render('admin/edituser.ejs', locals);
+});
+  
 
 router.get('/newsletter', function(req, res) {
     var locals = {
@@ -193,7 +215,7 @@ router.get('/newsletter', function(req, res) {
         header: 'Page Header',
         layout:'adminlayout.ejs'
     };
-    res.render('newsletter.ejs', locals);
+    res.render('admin/newsletter.ejs', locals);
 });
 
 module.exports = router;
