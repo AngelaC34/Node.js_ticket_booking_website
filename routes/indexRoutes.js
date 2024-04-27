@@ -2,15 +2,19 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
-function checkAuthenticated(req,res,next){
-    if(req.isAuthenticated()){
+function checkAuthenticatedAdmin(req,res,next){
+    if(req.isAuthenticated() && req.user.admin === true){
         return next();
     }
     res.redirect('/login');
 }
 
-function checkNotAuthenticated(req,res,next){
-    if(req.isAuthenticated()){
+function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        if (req.user.admin === true) { // Check req.user.admin instead of req.admin
+            console.log("admin: " + req.user.admin);
+            return res.redirect('/adminDashboard');
+        }
         return res.redirect('/');
     }
     next();
@@ -27,7 +31,7 @@ router.get('/', function(req, res) {
     res.render('index', locals);
 });
 
-router.get('/login', checkNotAuthenticated, function(req, res) {
+router.get('/login', function(req, res) {
 var locals = {
     title: 'Log In',
     description: 'Page Description',
@@ -37,7 +41,7 @@ var locals = {
 res.render('login.ejs', locals);
 });
 
-router.get('/signup', checkNotAuthenticated, function(req, res) {
+router.get('/signup', function(req, res) {
 var locals = {
     title: 'Sign Up',
     description: 'Page Description',

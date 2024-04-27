@@ -19,10 +19,14 @@ router.get('/', async (req, res) => {
 
 // user login
 router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
-}))
+}), (req, res) => {
+    if (req.user && req.user.admin === true) {
+        return res.redirect('/adminDashboard');
+    }
+    res.redirect('/');
+});
 
 // user signup
 router.post('/signup', async (req, res) => {
@@ -32,7 +36,8 @@ router.post('/signup', async (req, res) => {
             id: Date.now().toString(),
             name: req.body.name,
             email: req.body.email,
-            password: hashedPassword
+            password: hashedPassword,
+            admin: false
     });
     await users.save()
     res.redirect('/login');
@@ -69,11 +74,12 @@ router.delete('/delete-user/:id', async (req, res) => {
 // user update
 router.put('/:id', async (req, res) => {
     const userId = req.params.id;
-    const { name, email } = req.body; // Assuming you want to update name and email
+    const { name, email, admin } = req.body; // Assuming you want to update name and email
 
     try {
         // Use your User model to find and update the user
-        const updatedUser = await User.findByIdAndUpdate(userId, { name, email }, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(userId, { name, email, admin }, { new: true });
+        console.log(updatedUser);
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
