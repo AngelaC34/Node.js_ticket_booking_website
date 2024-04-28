@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
+// if not admin, redirect to login
 function checkAuthenticatedAdmin(req,res,next){
     if(req.isAuthenticated() && req.user.admin === true){
         return next();
@@ -9,17 +10,23 @@ function checkAuthenticatedAdmin(req,res,next){
     res.redirect('/login');
 }
 
-function checkNotAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        if (req.user.admin === true) { // Check req.user.admin instead of req.admin
-            console.log("admin: " + req.user.admin);
-            return res.redirect('/adminDashboard');
-        }
+// if not authenticated user, redirect to login (buy ticket page)
+function checkAuthenticated(req,res,next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect('/login');
+}
+
+// if authenticated, redirect to home
+function checkNotAuthenticated(req,res,next){
+    if(req.isAuthenticated()){
         return res.redirect('/');
     }
     next();
 }
 
+// home
 router.get('/', function(req, res) {
     var locals = {
         title: 'Gardens by the Bay',
@@ -31,6 +38,7 @@ router.get('/', function(req, res) {
     res.render('index', locals);
 });
 
+// login page
 router.get('/login', function(req, res) {
 var locals = {
     title: 'Log In',
@@ -41,6 +49,7 @@ var locals = {
 res.render('login.ejs', locals);
 });
 
+// signup page
 router.get('/signup', function(req, res) {
 var locals = {
     title: 'Sign Up',
@@ -51,6 +60,7 @@ var locals = {
 res.render('signup.ejs', locals);
 });
 
+// about
 router.get('/about', function(req, res) {
     var locals = {
         title: 'About',
@@ -61,6 +71,7 @@ router.get('/about', function(req, res) {
     res.render('about.ejs', locals);
 });
 
+// buy tickets
 router.get('/buytickets', function(req, res) {
     var locals = {
         title: 'Buy Tickets',
@@ -71,6 +82,7 @@ router.get('/buytickets', function(req, res) {
     res.render('buytickets.ejs', locals);
 });
 
+// cloud forest
 router.get('/cloudforest', function(req, res) {
     var locals = {
         title: 'Cloud Forest',
@@ -81,6 +93,7 @@ router.get('/cloudforest', function(req, res) {
     res.render('cloudforest.ejs', locals);
 });
 
+// contact
 router.get('/contact', function(req, res) {
     var locals = {
         title: 'Contact',
@@ -91,6 +104,7 @@ router.get('/contact', function(req, res) {
     res.render('contact.ejs', locals);
 });
 
+// dragonfly
 router.get('/dragonfly', function(req, res) {
     var locals = {
         title: 'Dragonfly',
@@ -101,6 +115,7 @@ router.get('/dragonfly', function(req, res) {
     res.render('dragonfly.ejs', locals);
 });
 
+// floral fantasy
 router.get('/floralfantasy', function(req, res) {
     var locals = {
         title: 'Floral Fantasy',
@@ -111,6 +126,7 @@ router.get('/floralfantasy', function(req, res) {
     res.render('floralfantasy.ejs', locals);
 });
 
+// flower dome
 router.get('/flowerdome', function(req, res) {
     var locals = {
         title: 'Flower Dome',
@@ -121,6 +137,7 @@ router.get('/flowerdome', function(req, res) {
     res.render('flowerdome.ejs', locals);
 });
 
+// our history
 router.get('/ourhistory', function(req, res) {
     var locals = {
         title: 'Our History',
@@ -131,6 +148,7 @@ router.get('/ourhistory', function(req, res) {
     res.render('ourhistory.ejs', locals);
 });
 
+// our story
 router.get('/ourstory', function(req, res) {
     var locals = {
         title: 'Our Story',
@@ -141,6 +159,7 @@ router.get('/ourstory', function(req, res) {
     res.render('ourstory.ejs', locals);
 });
 
+// serene garden
 router.get('/serenegarden', function(req, res) {
     var locals = {
         title: 'Serene Garden',
@@ -151,6 +170,7 @@ router.get('/serenegarden', function(req, res) {
     res.render('serenegarden.ejs', locals);
 });
 
+// super tree observatory
 router.get('/supertreeobservatory', function(req, res) {
     var locals = {
         title: 'Supertree Observatory',
@@ -161,6 +181,7 @@ router.get('/supertreeobservatory', function(req, res) {
     res.render('supertreeobservatory.ejs', locals);
 });
 
+// sustainability efforts
 router.get('/sustainabilityefforts', function(req, res) {
     var locals = {
         title: 'Sustainability Efforts',
@@ -171,6 +192,7 @@ router.get('/sustainabilityefforts', function(req, res) {
     res.render('sustainabilityefforts.ejs', locals);
 });
 
+// admin dashboard
 router.get('/adminDashboard', function(req, res) {
     var locals = {
         title: 'Admin Dashboard',
@@ -181,7 +203,7 @@ router.get('/adminDashboard', function(req, res) {
     res.render('admin/adminDashboard.ejs', locals);
 });
 
-
+// user account
 router.get('/useracc', async function(req, res) {
     const users = await User.find();
     var locals = {
@@ -207,7 +229,7 @@ router.get('/:id', async function(req, res) {
     res.render('admin/edituser.ejs', locals);
 });
   
-
+// newsletter
 router.get('/newsletter', function(req, res) {
     var locals = {
         title: 'Newsletter',
