@@ -2,6 +2,47 @@ const {Router} = require('express');
 const router = Router();
 const Booking = require('../../models/Booking');
 
+// Function to generate booking ID based on selected attraction and ticket
+function generateBookingID(selectedAttraction, ticket) {
+    var attractionCode = '';
+    switch (selectedAttraction) {
+        case 'A':
+            attractionCode = 'FD';
+            break;
+        case 'B':
+            attractionCode = 'CF';
+            break;
+        case 'C':
+            attractionCode = 'FF';
+            break;
+        case 'D':
+            attractionCode = 'SO';
+            break;
+    }
+    return attractionCode + Date.now().toString() + ticket;
+}
+
+// Function to get attraction name based on its code
+function getAttractionName(selectedAttraction) {
+    var attractionName = '';
+    switch (selectedAttraction) {
+        case 'A':
+            attractionName = 'Flower Dome';
+            break;
+        case 'B':
+            attractionName = 'Cloud Forest';
+            break;
+        case 'C':
+            attractionName = 'Floral Fantasy';
+            break;
+        case 'D':
+            attractionName = 'Supertree Observatory';
+            break;
+    }
+    return attractionName;
+}
+
+// get all booking data
 router.get('/', async (req, res) => {
     try
     {
@@ -14,34 +55,32 @@ router.get('/', async (req, res) => {
     }
 });
 
-
+// post new booking
 router.post('/', async (req, res) => {
-    const formData = req.body; // Access the form data sent from AngularJS
-    console.log('Form Data:', formData); // Log the form data to check if it's received correctly
-
     const booking = new Booking({
-        name: formData.name,
-        attractionName: formData.attractionName,
-        ticket: formData.ticket,
-        date: formData.date,
-        phone: formData.phone,
-        email: formData.email,
-        bookingID: formData.bookingID,
+        name: req.user.name,
+        attractionName: getAttractionName(req.body.attraction),
+        ticket: req.body.ticket,
+        date: req.body.date,
+        phone: req.body.phone,
+        email: req.user.email,
+        bookingID: generateBookingID(req.body.attraction, req.body.ticket),
     });
     try
     {
         const newBooking = await booking.save();
-        res.status(201).json(newBooking);
+        // res.status(201).json(newBooking);
+        res.redirect('/login')
     }
     catch (err)
     {
         console.error('Error saving booking:', err);
-        res.status(400).json({message: err.message});
+        // res.status(400).json({message: err.message});
     }
 
 });
 
-//put
+// update booking by id
 router.put('/:id', async (req, res) => {
     try
     {
@@ -55,7 +94,7 @@ router.put('/:id', async (req, res) => {
 });
 
 
-//delete
+// delete booking by id
 router.delete('/:id', async (req, res) => {
     try
     {
@@ -67,6 +106,7 @@ router.delete('/:id', async (req, res) => {
         res.status(400).json({message: err.message});
     }
 });
+
 
 
 module.exports = router;
