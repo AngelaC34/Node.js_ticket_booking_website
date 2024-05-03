@@ -39,6 +39,20 @@ router.get('/', function(req, res) {
     res.render('index', locals);
 });
 
+// profile
+router.get('/profile', checkAuthenticated, async function(req, res) {
+    const bookings = await Booking.find({ userID: req.user.id });
+    console.log(bookings);
+    var locals = {
+        title: 'Profile',
+        description: 'Page Description',
+        header: 'Page Header',
+        layout:'mainlayout.ejs',
+        bookings: bookings
+    };
+    res.render('profile.ejs', locals);
+});
+
 // login page
 router.get('/login', function(req, res) {
 var locals = {
@@ -73,7 +87,7 @@ router.get('/about', function(req, res) {
 });
 
 // buy tickets
-router.get('/buytickets', function(req, res) {
+router.get('/buytickets', checkAuthenticated, function(req, res) {
     var locals = {
         title: 'Buy Tickets',
         description: 'Page Description',
@@ -217,6 +231,7 @@ router.get('/useraccount', async function(req, res) {
     res.render('admin/useraccount.ejs', locals);
 });
 
+// ticket booking
 router.get('/ticketbooking', async function(req, res) {
     const bookings = await Booking.find();
     var locals = {
