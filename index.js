@@ -33,8 +33,8 @@ app.use (methodOverride('_method'));
 
 
 // Connect MongoDB
-mongoose.connect(process.env.MONGODB_URI).then(() => {
-  console.log(`MongoDB connected at ${process.env.MONGODB_URI}`);
+mongoose.connect(process.env.MONGO_URL).then(() => {
+  console.log(`MongoDB connected at ${process.env.MONGO_URL}`);
 }).catch((err) => {
   console.log(err.message);
 });

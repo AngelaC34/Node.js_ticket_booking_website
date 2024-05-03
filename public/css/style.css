@@ -83,6 +83,11 @@
     font-weight: normal;
 }
 
+.btn-group {
+    display: inline-block;
+}
+
+
 
 /*** Navbar ***/
 .fixed-top {

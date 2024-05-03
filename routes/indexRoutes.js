@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const Post = require('../models/Post');
 
 // if not admin, redirect to login
 function checkAuthenticatedAdmin(req,res,next){
@@ -27,16 +28,74 @@ function checkNotAuthenticated(req,res,next){
 }
 
 // home
-router.get('/', function(req, res) {
-    var locals = {
-        title: 'Gardens by the Bay',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout: 'mainlayout.ejs',
-        name: req.user ? req.user.name : 'Guest' // Check if req.user exists
-    };
-    res.render('index', locals);
+// router.get('', async function(req, res) {
+//     const locals = {
+//         title: 'Gardens by the Bay',
+//         description: 'Page Description',
+//         header: 'Page Header',
+//         layout: 'mainlayout.ejs',
+//         name: req.user ? req.user.name : 'Guest', // Check if req.user exists
+//     };
+//     try {
+//         const data = await Post.find();
+//         res.render('index', {locals, data});
+//     } catch (error) {
+//         console.log(error);
+//     }
+// });
+
+router.get('', async function(req, res) {
+    try {
+        let perPage = 3;
+        let page = req.query.page || 1;
+
+        const data = await Post.aggregate([ {$sort: {updatedAt: -1}}])
+            .skip(perPage * page - perPage)
+            .limit(perPage)
+            .exec();
+
+        const count = await Post.countDocuments();
+        const nextPage = parseInt(page) + 1;
+        const hasNextPage = nextPage <= Math.ceil(count / perPage);
+
+        const locals = {
+            title: 'Gardens by the Bay',
+            description: 'Page Description',
+            header: 'Page Header',
+            layout: 'mainlayout.ejs',
+            name: req.user ? req.user.name : 'Guest', // Check if req.user exists
+            data: data,  // Pass the fetched data to the template
+            current: page,
+            nextPage: hasNextPage ? nextPage : null
+        };
+
+        res.render('index', locals);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error'); // Handle error appropriately
+    }
 });
+
+//Posts
+
+// router.get('/post/:id', async function(req, res) {
+//     try {
+//         const locals = {
+//             title: 'Posts',
+//             description: 'Page Description',
+//             header: 'Page Header',
+//             layout: 'mainlayout.ejs'
+//         };
+//         let slug = req.params.id;
+
+//         const data = await Post.findById({_id: slug});
+//         res.render('post', {locals, data});
+//     } catch (error) {
+//         console.log(error);
+//     }
+// });
+
+
 
 // login page
 router.get('/login', function(req, res) {
