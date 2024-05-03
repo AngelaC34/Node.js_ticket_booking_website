@@ -1,8 +1,11 @@
-const { Int32 } = require('bson');
 const {Schema, model} = require('mongoose');
-const { long, double } = require('webidl-conversions');
 
 const BookingSchema = new Schema({
+    userID: {
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
+        required: true
+    },
     name: {
         type: String,
         required: true

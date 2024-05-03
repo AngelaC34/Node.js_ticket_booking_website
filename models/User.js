@@ -1,6 +1,4 @@
-const { Int32 } = require('bson');
 const {Schema, model} = require('mongoose');
-const { long, double } = require('webidl-conversions');
 
 const UserSchema = new Schema({
     name: {
