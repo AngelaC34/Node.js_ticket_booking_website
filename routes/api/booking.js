@@ -85,7 +85,6 @@ router.post('/', async (req, res) => {
     {
         const newBooking = await booking.save();
         // res.status(201).json(newBooking);
-        res.redirect('/login')
     }
     catch (err)
     {
