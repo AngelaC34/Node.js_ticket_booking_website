@@ -513,7 +513,7 @@ router.get('/add-post', async function(req, res) {
     try {
         const data = await Post.find();
         const locals = {
-            title: 'Edit Blog',
+            title: 'Add Blog',
             description: 'Page Description',
             header: 'Page Header',
             layout:'adminlayout.ejs',
@@ -543,6 +543,49 @@ router.post('/add-post', async function(req, res) {
             console.log(error);
         }
 
+    } catch (error) {
+        console.error("Error fetching blog posts:", error);
+        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
+    };
+});
+
+router.get('/edit-post/:id', async function(req, res) {
+    try {
+        const data = await Post.findOne({ _id: req.params.id });
+        const locals = {
+            title: 'Edit Blog',
+            description: 'Page Description',
+            header: 'Page Header',
+            layout:'adminlayout.ejs',
+            data: data
+        };
+        res.render('admin/edit-post.ejs', locals);
+    } catch (error) {
+        console.error("Error fetching blog posts:", error);
+        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
+    };
+});
+
+router.put('/edit-post/:id', async function(req, res) {
+    try {
+        await Post.findByIdAndUpdate(req.params.id, {
+            title: req.body.title,
+            body: req.body.body,
+            imageUrl: req.body.imageUrl,
+            price: req.body.price,
+            updatedAt: Date.now()
+        });
+        res.redirect(`/edit-post/${req.params.id}`);
+    } catch (error) {
+        console.error("Error fetching blog posts:", error);
+        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
+    };
+});
+
+router.delete('/delete-post/:id', async function(req, res) {
+    try {
+        await Post.deleteOne( { _id: req.params.id } );
+        res.redirect(`/blog`); 
     } catch (error) {
         console.error("Error fetching blog posts:", error);
         res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
