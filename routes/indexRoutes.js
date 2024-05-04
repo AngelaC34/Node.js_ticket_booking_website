@@ -170,6 +170,20 @@ router.get('/post/:id', async function(req, res) {
     }
 });
 
+// profile
+router.get('/profile', checkAuthenticated, async function(req, res) {
+    const bookings = await Booking.find({ userID: req.user.id });
+    console.log(bookings);
+    var locals = {
+        title: 'Profile',
+        description: 'Page Description',
+        header: 'Page Header',
+        layout:'mainlayout.ejs',
+        bookings: bookings
+    };
+    res.render('profile.ejs', locals);
+});
+
 
 
 // login page
