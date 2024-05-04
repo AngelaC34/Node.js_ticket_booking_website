@@ -1,22 +1,23 @@
 const {Schema, model} = require('mongoose');
 
-const UserSchema = new Schema({
+const TestimonySchema = new Schema({
+    userID: {
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
+        required: true
+    },
     name: {
         type: String,
         required: true
     },
-    email: {
+    review: {
         type: String,
         required: true
     },
-    password: {
-        type: String,
-        required: true
-    },
-    admin: {
+    status: {
         type: Boolean,
         required: true
     }
 });
 
-module.exports = model('User', UserSchema)
+module.exports = model('Testimony', TestimonySchema)

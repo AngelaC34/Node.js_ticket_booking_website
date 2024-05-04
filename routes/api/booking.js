@@ -42,7 +42,7 @@ function getAttractionName(selectedAttraction) {
     return attractionName;
 }
 
-// get all booking data
+// get all booking data for admin
 router.get('/', async (req, res) => {
     try
     {
@@ -55,9 +55,10 @@ router.get('/', async (req, res) => {
     }
 });
 
-// post new booking
+// post new booking for user
 router.post('/', async (req, res) => {
     const booking = new Booking({
+        userID: req.user.id,
         name: req.user.name,
         attractionName: getAttractionName(req.body.attraction),
         ticket: req.body.ticket,
@@ -70,7 +71,6 @@ router.post('/', async (req, res) => {
     {
         const newBooking = await booking.save();
         // res.status(201).json(newBooking);
-        res.redirect('/login')
     }
     catch (err)
     {

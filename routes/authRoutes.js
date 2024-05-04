@@ -25,7 +25,7 @@ router.post('/login', passport.authenticate('local', {
     if (req.user && req.user.admin === true) {
         return res.redirect('/adminDashboard');
     }
-    res.redirect('/');
+    res.redirect('/home');
 });
 
 // user signup
@@ -68,7 +68,7 @@ router.delete('/delete-user/:id', async (req, res) => {
     } catch (err) {
         return res.status(500).json({ message: err.message });
     }
-    res.redirect('/useracc');
+    res.redirect('/useraccount');
 });
 
 // user update
@@ -83,7 +83,7 @@ router.put('/:id', async (req, res) => {
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.redirect('/useracc');
+        res.redirect('/useraccount');
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

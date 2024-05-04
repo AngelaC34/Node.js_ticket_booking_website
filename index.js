@@ -59,7 +59,7 @@ app.use("/api/booking", require("./routes/api/booking"));
 app.use('/', require("./routes/indexRoutes"));
 app.use('/authRoutes', require("./routes/authRoutes"));
 app.use('/', require("./routes/emailRoutes"));
-
+app.use('/testiRoutes', require("./routes/testiRoutes"));
 
 const port = process.env.PORT || 5000;
 

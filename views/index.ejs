@@ -43,9 +43,6 @@
 
 
     <h1>Hello <%= name %></h1>
-    <form action="/authRoutes/logout?_method=DELETE" method="POST">
-        <button type="submit">Log Out</button>
-    </form>
 
 
     <!-- About Start -->
@@ -148,8 +145,8 @@
     </div>
     <!-- buy ticket End -->
 
-    <!-- Testimonies Start -->
-    <div class="container-fluid bg-light bg-icon py-6">
+    <!--Testimonies Start -->
+    <!-- <div class="container-fluid bg-light bg-icon py-6">
         <div class="container">
             <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
                 <h1 class="display-5 mb-3">Customer Review</h1>
@@ -198,9 +195,49 @@
                 </div>
             </div>
         </div>
+    </div> -->
+    <!-- Testimonies End -->
+    
+
+
+    <!-- Testimonies Start -->
+    <div class="container-fluid bg-light bg-icon py-6">
+        <div class="container">
+            <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <h1 class="display-5 mb-3">Customer Review</h1>
+                <p>Check out the testimonies left by our visitors behind!</p>
+            </div>
+            <% if (testimonies.length > 0) { %>
+                <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
+                    <% testimonies.forEach(testimony => { %>
+                        <div class="testimonial-item position-relative bg-white p-5 mt-4">
+                            <i class="fa fa-quote-left fa-3x text-primary position-absolute top-0 start-0 mt-n4 ms-5"></i>
+                            <p class="mb-4"><%= testimony.review %></p>
+                            <div class="d-flex align-items-center">
+                                <img class="flex-shrink-0 rounded-circle" src="img/testimonial-placeholder.jpg" alt="">
+                                <div class="ms-3">
+                                    <h5 class="mb-1"><%= testimony.name %></h5>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <div class="alert alert-info" role="alert">
+                    No testimonies available at the moment.
+                </div>
+            <% } %>
+        </div>
     </div>
     <!-- Testimonies End -->
 
+
+    <h1>Add Testimony</h1>
+    <form action="/testiRoutes/add-testimony" method="POST">
+        <label for="review">Review:</label><br>
+        <textarea id="review" name="review" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="Submit">
+    </form>
 
     <!-- Blog Start -->
     <div class="container-xxl py-5">
