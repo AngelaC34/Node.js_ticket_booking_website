@@ -4,17 +4,19 @@
         <img class="img-fluid w-30" src="img/login.jpg">
     </div>
     <div class="container">
-        <h1 class="display-3 mb-3 animated slideInDown"><br>Sign Up</h1>
+        <h1 class="display-3 mb-3 animated slideInDown"><br>Profile</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
-                <li class="breadcrumb-item"><a class="text-body" href="#">Sign Up</a></li>
+                <li class="breadcrumb-item"><a class="text-body" href="#">Profile</a></li>
             </ol>
         </nav>
     </div>
     <!-- Page Header End -->
 </div>
 <!-- Page Header End -->
+
+<h1>Booking History</h1>
 
 <% if (bookings.length > 0) { %>
     <ul>
@@ -27,6 +29,8 @@
                 <strong>Phone:</strong> <%= booking.phone %><br>
                 <strong>Email:</strong> <%= booking.email %><br>
                 <strong>Booking ID:</strong> <%= booking.bookingID %><br>
+                <strong>Status:</strong> <%= booking.status ? 'Booked' : 'Cancelled' %><br>
+                <a href="/editbooking/<%= booking._id %>" class="btn">Edit</a>
             </li>
         <% }); %>
     </ul>
