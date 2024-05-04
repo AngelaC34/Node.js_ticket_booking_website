@@ -1,26 +1,46 @@
-<ul class="ticket-booking">
-    <% bookings.forEach(booking => { %>
-        <li>
-            <strong>Name:</strong> <%= booking.name %><br>
-            <strong>Email:</strong> <%= booking.email %><br>
-            <strong>Attraction:</strong> <%= booking.attractionName %><br>
-            <strong>Ticket:</strong> <%= booking.ticket %><br>
-            <strong>Date:</strong> <%= booking.date %><br>
-            <strong>Phone:</strong> <%= booking.phone %><br>
-            <strong>Booking ID:</strong> <%= booking.bookingID %><br>
-            <strong>Status:</strong>
-            <form action="/api/booking/update-booking-admin/<%= booking._id %>?_method=PUT" method="POST">
-                <label>
-                    <input type="radio" name="status" value="true" <%= booking.status ? 'checked' : '' %>> Booked
-                </label>
-                <label>
-                    <input type="radio" name="status" value="false" <%= !booking.status ? 'checked' : '' %>> Cancelled
-                </label>
-                <input type="submit" value="Update">
-            </form>
-            <form action="/api/booking/delete-booking/<%= booking._id %>?_method=DELETE" method="POST">
-                <input type="submit" value="Delete">
-            </form>
-        </li>
-    <% }) %>
-</ul>
+<div class="container-fluid bg-light bg-icon py-2">
+    <div class="container">
+        <div class="ticket-booking">
+            <% bookings.forEach(booking => { %>
+                <div class="testimonial-item position-relative bg-white p-5 mt-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <strong class="me-2">Name:</strong><%= booking.name %>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <strong class="me-2">Email:</strong><%= booking.email %>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <strong class="me-2">Attraction:</strong><%= booking.attractionName %>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <strong class="me-2">Ticket:</strong><%= booking.ticket %>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <strong class="me-2">Date:</strong><%= booking.date %>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <strong class="me-2">Phone:</strong><%= booking.phone %>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <strong class="me-2">Booking ID:</strong><%= booking.bookingID %>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <strong class="me-2">Status:</strong>
+                        <form action="/api/booking/update-booking-admin/<%= booking._id %>?_method=PUT" method="POST" class="ms-2">
+                            <label>
+                                <input type="radio" name="status" value="true" <%= booking.status ? 'checked' : '' %>> Booked
+                            </label>
+                            <label class="me-2">
+                                <input type="radio" name="status" value="false" <%= !booking.status ? 'checked' : '' %>> Cancelled
+                            </label>
+                            <input type="submit" value="Update" class="btn btn-sm btn-primary">
+                        </form>
+                        <form action="/api/booking/delete-booking/<%= booking._id %>?_method=DELETE" method="POST" class="ms-2">
+                            <input type="submit" value="Delete" class="btn btn-sm btn-danger">
+                        </form>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</div>
