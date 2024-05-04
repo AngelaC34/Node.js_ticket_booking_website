@@ -1,4 +1,4 @@
-<div class="searchBar">
+<!-- <div class="searchBar">
     <div class="container">
         <form action="/search" method="POST" class="search__form" role="search">
 
@@ -10,4 +10,35 @@
 
         </form>
     </div>
+</div> -->
+
+<div class="searchBar">
+    <div class="container">
+        <form action="/search" method="POST" class="search__form" role="search">
+            <div class="first-row">
+                <label for="searchInput" class="visually-hidden">Search</label>
+                <input type="search" id="searchInput" aria-label="Search" name="searchTerm" placeholder="Search The Site...">
+                <label for="sortBy" class="visually-hidden">Order by</label>
+            </div>
+            
+            <div class="second-row">
+                <div class="price-input">
+                    <label for="minPrice" class="visually-hidden">Min Price</label>
+                    <input type="number" id="minPrice" aria-label="minPrice" name="minPrice" placeholder="Min" style="width: 70px; height: 30px;">
+                    <label for="maxPrice" class="visually-hidden">Max Price</label>
+                    <input type="number" id="maxPrice" aria-label="maxPrice" name="maxPrice" placeholder="Max" style="width: 70px; height: 30px;">
+                </div>
+            </div>
+    
+            <div class="third-row">
+                <select name="sortBy" id="sortBy"  style="width: 145px;" aria-label="createdAt">
+                    <option value="createdAt">Newest First</option>
+                    <option value="-createdAt">Oldest First</option>
+                </select>
+            </div>
+            <button type="submit" style="width: 145px; height: 30px; vertical-align: middle; margin-top: 4px; margin-bottom: 4px; padding: 2%;">Search</button>
+        </form>
+    </div>
+    
 </div>
+
