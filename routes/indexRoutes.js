@@ -170,6 +170,54 @@ router.get('/post/:id', async function(req, res) {
     }
 });
 
+//Search
+
+router.post('/search', async function(req, res) {
+    try {
+        let searchTerm = req.body.searchTerm;
+        const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9]/g, "")
+        const data = await Post.find({
+            $or: [
+                {
+                    title: { $regex: new RegExp(searchNoSpecialChar, 'i')}            
+                },
+                {
+                    body: { $regex: new RegExp(searchNoSpecialChar, 'i')},    
+                }
+            ]
+        });
+
+        const locals = {
+            title: 'Search',
+            description: 'Page Description',
+            layout: 'mainlayout.ejs',
+            data: data
+        };
+
+
+        res.render("search",locals); // Redirect to the search page
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+
+// router.post('/search', async function(req, res) {
+//     try {
+//         const locals = {
+//             title: 'Search',
+//             description: 'Page Description',
+//             header: 'Page Header',
+//             layout: 'mainlayout.ejs',
+//             post: post
+//         };
+//         res.render('search', locals);
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send('Internal Server Error');
+//     }
+// });
+
 // profile
 router.get('/profile', checkAuthenticated, async function(req, res) {
     const bookings = await Booking.find({ userID: req.user.id });
