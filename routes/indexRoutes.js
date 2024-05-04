@@ -30,7 +30,7 @@ function checkNotAuthenticated(req,res,next){
 
 // home
 router.get('/home', async function(req, res) {
-    const testimonies = await Testimony.find();
+    const testimonies = await Testimony.find({ status: true }); // Only approved testimonies are displayed
     var locals = {
         title: 'Gardens by the Bay',
         description: 'Page Description',
@@ -210,6 +210,8 @@ router.get('/sustainabilityefforts', function(req, res) {
     res.render('sustainabilityefforts.ejs', locals);
 });
 
+// ADMIN ROUTES
+
 // admin dashboard
 router.get('/adminDashboard', function(req, res) {
     var locals = {
@@ -259,6 +261,19 @@ router.get('/edituser/:id', async function(req, res) {
         user: user
     };
     res.render('admin/edituser.ejs', locals);
+});
+
+// testimony
+router.get('/testimony', async function(req, res) {
+    const testimonies = await Testimony.find();
+    var locals = {
+        title: 'Testimony',
+        description: 'Page Description',
+        header: 'Page Header',
+        layout:'adminlayout.ejs',
+        testimonies: testimonies
+    };
+    res.render('admin/testimony.ejs', locals);
 });
 
 // newsletter
