@@ -29,14 +29,15 @@ function checkNotAuthenticated(req,res,next){
 
 // home
 // router.get('', async function(req, res) {
-//     const locals = {
-//         title: 'Gardens by the Bay',
-//         description: 'Page Description',
-//         header: 'Page Header',
-//         layout: 'mainlayout.ejs',
-//         name: req.user ? req.user.name : 'Guest', // Check if req.user exists
-//     };
+    
 //     try {
+//         const locals = {
+//             title: 'Gardens by the Bay',
+//             description: 'Page Description',
+//             header: 'Page Header',
+//             layout: 'mainlayout.ejs',
+//             name: req.user ? req.user.name : 'Guest', // Check if req.user exists
+//         };
 //         const data = await Post.find();
 //         res.render('index', {locals, data});
 //     } catch (error) {
@@ -76,7 +77,43 @@ router.get('', async function(req, res) {
     }
 });
 
-//Posts
+
+// router.get('', async function(req, res) {
+//     try {
+//         let perPage = 3;
+//         let page = req.query.page || 1;
+
+//         const data = await Post.aggregate([ {$sort: {updatedAt: -1}}])
+//             .skip(perPage * page - perPage)
+//             .limit(perPage)
+//             .exec();
+
+//         console.log("Fetched Data:", data); // Log fetched data
+
+//         const count = await Post.countDocuments();
+//         const nextPage = parseInt(page) + 1;
+//         const hasNextPage = nextPage <= Math.ceil(count / perPage);
+
+//         const locals = {
+//             title: 'Gardens by the Bay',
+//             description: 'Page Description',
+//             header: 'Page Header',
+//             layout: 'mainlayout.ejs',
+//             name: req.user ? req.user.name : 'Guest',
+//             data: data,
+//             current: page,
+//             nextPage: hasNextPage ? nextPage : null
+//         };
+
+//         res.render('index', locals);
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send('Internal Server Error');
+//     }
+// });
+
+
+// Posts
 
 // router.get('/post/:id', async function(req, res) {
 //     try {
@@ -94,6 +131,40 @@ router.get('', async function(req, res) {
 //         console.log(error);
 //     }
 // });
+
+// router.get('/post/:id', async function(req, res) {
+//     try {
+//         const locals = {
+//             title: 'Posts',
+//             description: 'Page Description',
+//             header: 'Page Header',
+//             layout: 'mainlayout.ejs'
+//         };
+//         let slug = req.params.id;
+
+//         const post = await Post.findById(slug); // Assuming your post model is called 'Post'
+//         res.render('post.ejs', { locals, post }); // Pass the 'post' object to the template
+//     } catch (error) {
+//         console.log(error);
+//     }
+// });
+
+router.get('/post/:id', async function(req, res) {
+    try {
+        const post = await Post.findById(req.params.id);
+        const locals = {
+            title: 'Posts',
+            description: 'Page Description',
+            header: 'Page Header',
+            layout: 'mainlayout.ejs',
+            post: post
+        };
+        res.render('post', locals);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 
 
