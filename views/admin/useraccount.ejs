@@ -49,6 +49,7 @@
                             <tr class="bg-secondary text-light">
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -57,8 +58,9 @@
                                 <tr>
                                     <td><%= user.name %></td>
                                     <td><%= user.email %></td>
+                                    <td><%= user.admin ? 'Admin' : 'Not Admin' %></td>
                                     <td>
-                                        <a href="/<%= user._id %>" class="btn btn-edit">Edit</a>
+                                        <a href="/edituser/<%= user._id %>" class="btn btn-edit">Edit</a>
                                         <form action="/authRoutes/delete-user/<%= user._id %>?_method=DELETE" method="POST" style="display: inline;">
                                             <button type="submit" class="btn btn-danger">Delete</button>
                                         </form>
