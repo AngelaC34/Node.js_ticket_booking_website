@@ -14,24 +14,92 @@
     </div>
 <!-- Page Header End -->
 
-<!-- Blog Start -->
-<ul class="row g-4" style="list-style-type: none;">
-    <% data.forEach(post => { %>
-        <li class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="bg-white text-center h-100 p-4 p-xl-5">
-                <!-- Display post image -->
-                <img class="img-fluid mb-4" src="<%= post.imageUrl %>" alt="Image">
-                <!-- Render post title and body -->
-                <h4 class="mb-3"><%= post.title %></h4>
-                <p class="mb-4"><%= post.body %></p>
-                <p class="mb-2">Created at: <%= post.createdAt.toLocaleDateString() %></p>
-                <p class="mb-4">Last Updated: <%= post.updatedAt.toLocaleDateString() %></p>
-                <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/post/<%= post._id %>">Read More</a>
-                <!-- Add any additional content or links related to the post -->
+<!-- Sorting and Filtering Options -->
+<div class="container mb-4">
+    <form id="searchForm">
+        <div class="row g-2">
+            <!-- Search Term -->
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Search" id="searchTerm" name="searchTerm">
             </div>
-        </li>
-    <% }); %>
+            <!-- Sort By -->
+            <div class="col-md-2">
+                <select class="form-select" id="sortBy" name="sortBy">
+                    <option value="updatedAt">Recently Updated</option>
+                    <option value="createdAt">Oldest Updated</option>
+                </select>
+            </div>
+            <!-- Sort Order -->
+            <div class="col-md-2">
+                <select class="form-select" id="sortOrder" name="sortOrder">
+                    <option value="-1">Descending</option>
+                    <option value="1">Ascending</option>
+                </select>
+            </div>
+            <!-- Min Price -->
+            <div class="col-md-1">
+                <input type="text" class="form-control" placeholder="Min Price" id="minPrice" name="minPrice">
+            </div>
+            <!-- Max Price -->
+            <div class="col-md-1">
+                <input type="text" class="form-control" placeholder="Max Price" id="maxPrice" name="maxPrice">
+            </div>
+            <!-- Search Button -->
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Blog Start -->
+<ul class="row g-4" style="list-style-type: none;" id="blogList">
+    <!-- Blog Posts Will be Displayed Here -->
 </ul>
-
-
 <!-- Blog End -->
+
+<script>
+    document.getElementById('searchForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const searchTerm = document.getElementById('searchTerm').value;
+        const sortBy = document.getElementById('sortBy').value;
+        const sortOrder = document.getElementById('sortOrder').value;
+        const minPrice = document.getElementById('minPrice').value;
+        const maxPrice = document.getElementById('maxPrice').value;
+
+        const response = await fetch(`/search`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                searchTerm: searchTerm,
+                sortBy: sortBy,
+                sortOrder: sortOrder,
+                minPrice: minPrice,
+                maxPrice: maxPrice
+            })
+        });
+        const data = await response.json();
+
+        // Render the blog posts
+        const blogList = document.getElementById('blogList');
+        blogList.innerHTML = '';
+        data.forEach(post => {
+            const listItem = document.createElement('li');
+            listItem.classList.add('col-lg-4', 'col-md-6', 'wow', 'fadeInUp');
+            listItem.dataset['wowDelay'] = '0.1s';
+            listItem.innerHTML = `
+                <div class="bg-white text-center h-100 p-4 p-xl-5">
+                    <img class="img-fluid mb-4" src="${post.imageUrl}" alt="Image">
+                    <h4 class="mb-3">${post.title}</h4>
+                    <p class="mb-4">${post.body}</p>
+                    <p class="mb-2">Created at: ${new Date(post.createdAt).toLocaleDateString()}</p>
+                    <p class="mb-4">Last Updated: ${new Date(post.updatedAt).toLocaleDateString()}</p>
+                    <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/post/${post._id}">Read More</a>
+                </div>
+            `;
+            blogList.appendChild(listItem);
+        });
+    });
+</script>
