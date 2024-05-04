@@ -58,7 +58,7 @@
                                     <td><%= user.name %></td>
                                     <td><%= user.email %></td>
                                     <td>
-                                        <a href="/<%= user._id %>" class="btn btn-primary">Edit</a>
+                                        <a href="/<%= user._id %>" class="btn btn-edit">Edit</a>
                                         <form action="/authRoutes/delete-user/<%= user._id %>?_method=DELETE" method="POST" style="display: inline;">
                                             <button type="submit" class="btn btn-danger">Delete</button>
                                         </form>
@@ -123,7 +123,6 @@
                 </div>
                 <br>
                 <button type="submit" class="btn-update btn">Update</button>
-                <button type="submit" class="btn btn-primary">Update</button>
             </div>
         </div>
     </div>
