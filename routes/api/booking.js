@@ -56,7 +56,7 @@ router.get('/', async (req, res) => {
 });
 
 // post new booking for user
-router.post('/', async (req, res) => {
+router.post('/create-booking', async (req, res) => {
     const booking = new Booking({
         userID: req.user.id,
         name: req.user.name,
@@ -66,6 +66,7 @@ router.post('/', async (req, res) => {
         phone: req.body.phone,
         email: req.user.email,
         bookingID: generateBookingID(req.body.attraction, req.body.ticket),
+        status: true
     });
     try
     {
@@ -77,34 +78,52 @@ router.post('/', async (req, res) => {
         console.error('Error saving booking:', err);
         // res.status(400).json({message: err.message});
     }
-
+    res.redirect('/home');
 });
 
-// update booking by id
-router.put('/:id', async (req, res) => {
-    try
-    {
-        const updatedBooking = await Booking.findByIdAndUpdate(req.params.id, req.body, {new: true});
-        res.status(200).json(updatedBooking);
+// update booking contact details for users
+router.put('/update-booking-user/:id', async (req, res) => {
+    const bookId = req.params.id;
+    const { phone } = req.body;
+
+    try {
+        const updatedBooking = await Booking.findByIdAndUpdate(bookId, { phone }, {new: true});
+        // res.status(200).json(updatedBooking);
     }
-    catch (err)
-    {
-        res.status(400).json({message: err.message});
+    catch (err) {
+        // res.status(400).json({message: err.message});
     }
+    res.redirect('/profile');
+});
+
+// update status for admin
+router.put('/update-booking-admin/:id', async (req, res) => {
+    const bookId = req.params.id;
+    const { status } = req.body;
+    try {
+        const updatedBooking = await Booking.findByIdAndUpdate(bookId, { status }, {new: true});
+        // res.status(200).json(updatedBooking);
+    }
+    catch (err) {
+        // res.status(400).json({message: err.message});
+    }
+    res.redirect('/ticketbooking');
 });
 
 
 // delete booking by id
-router.delete('/:id', async (req, res) => {
+router.delete('/delete-booking/:id', async (req, res) => {
+    const bookId = req.params.id;
     try
     {
-        const deletedBooking = await Booking.findByIdAndDelete(req.params.id);
-        res.status(200).json("deleted successfully");
+        const deletedBooking = await Booking.findByIdAndDelete(bookId);
+        // res.status(200).json("deleted successfully");
     }
     catch (err)
     {
-        res.status(400).json({message: err.message});
+        // res.status(400).json({message: err.message});
     }
+    res.redirect('/ticketbooking');
 });
 
 
