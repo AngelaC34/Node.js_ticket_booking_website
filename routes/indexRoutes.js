@@ -22,13 +22,13 @@ function checkAuthenticated(req,res,next){
 // if authenticated, redirect to home
 function checkNotAuthenticated(req,res,next){
     if(req.isAuthenticated()){
-        return res.redirect('/');
+        return res.redirect('/home');
     }
     next();
 }
 
 // home
-router.get('/', function(req, res) {
+router.get('/home', function(req, res) {
     var locals = {
         title: 'Gardens by the Bay',
         description: 'Page Description',
@@ -244,8 +244,9 @@ router.get('/ticketbooking', async function(req, res) {
     res.render('admin/ticketbooking.ejs', locals);
 });
 
+
 // edit user
-router.get('/:id', async function(req, res) {
+router.get('/edituser/:id', async function(req, res) {
     const user = await User.findById(req.params.id);
     var locals = {
         title: 'Edit User',
@@ -256,7 +257,7 @@ router.get('/:id', async function(req, res) {
     };
     res.render('admin/edituser.ejs', locals);
 });
-  
+
 // newsletter
 router.get('/newsletter', function(req, res) {
     var locals = {

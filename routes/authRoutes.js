@@ -25,7 +25,7 @@ router.post('/login', passport.authenticate('local', {
     if (req.user && req.user.admin === true) {
         return res.redirect('/adminDashboard');
     }
-    res.redirect('/');
+    res.redirect('/home');
 });
 
 // user signup
