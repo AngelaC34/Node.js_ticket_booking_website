@@ -47,7 +47,7 @@ function checkNotAuthenticated(req,res,next){
 //     }
 // });
 
-router.get('', async function(req, res) {
+router.get('/home', async function(req, res) {
     try {
         let perPage = 3;
         let page = req.query.page || 1;
