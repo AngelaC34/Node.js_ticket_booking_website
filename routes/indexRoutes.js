@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Post = require('../models/Post');
+const Booking = require('../models/Booking');
+const Testimony = require('../models/Testimony');
 
 // if not admin, redirect to login
 function checkAuthenticatedAdmin(req,res,next){
@@ -22,7 +24,7 @@ function checkAuthenticated(req,res,next){
 // if authenticated, redirect to home
 function checkNotAuthenticated(req,res,next){
     if(req.isAuthenticated()){
-        return res.redirect('/');
+        return res.redirect('/home');
     }
     next();
 }
@@ -54,6 +56,7 @@ router.get('', async function(req, res) {
             .skip(perPage * page - perPage)
             .limit(perPage)
             .exec();
+        const testimonies = await Testimony.find();
 
         const count = await Post.countDocuments();
         const nextPage = parseInt(page) + 1;
@@ -67,7 +70,8 @@ router.get('', async function(req, res) {
             name: req.user ? req.user.name : 'Guest', // Check if req.user exists
             data: data,  // Pass the fetched data to the template
             current: page,
-            nextPage: hasNextPage ? nextPage : null
+            nextPage: hasNextPage ? nextPage : null,
+            testimonies: testimonies
         };
 
         res.render('index', locals);
@@ -202,7 +206,7 @@ router.get('/about', function(req, res) {
 });
 
 // buy tickets
-router.get('/buytickets', function(req, res) {
+router.get('/buytickets', checkAuthenticated, function(req, res) {
     var locals = {
         title: 'Buy Tickets',
         description: 'Page Description',
@@ -334,7 +338,7 @@ router.get('/adminDashboard', function(req, res) {
 });
 
 // user account
-router.get('/useracc', async function(req, res) {
+router.get('/useraccount', async function(req, res) {
     const users = await User.find();
     var locals = {
         title: 'User Account',
@@ -343,11 +347,25 @@ router.get('/useracc', async function(req, res) {
         layout:'adminlayout.ejs',
         users: users
     };
-    res.render('admin/useracc.ejs', locals);
+    res.render('admin/useraccount.ejs', locals);
 });
 
+// ticket booking
+router.get('/ticketbooking', async function(req, res) {
+    const bookings = await Booking.find();
+    var locals = {
+        title: 'Ticket Booking',
+        description: 'Page Description',
+        header: 'Page Header',
+        layout:'adminlayout.ejs',
+        bookings: bookings
+    };
+    res.render('admin/ticketbooking.ejs', locals);
+});
+
+
 // edit user
-router.get('/:id', async function(req, res) {
+router.get('/edituser/:id', async function(req, res) {
     const user = await User.findById(req.params.id);
     var locals = {
         title: 'Edit User',
@@ -358,7 +376,7 @@ router.get('/:id', async function(req, res) {
     };
     res.render('admin/edituser.ejs', locals);
 });
-  
+
 // newsletter
 router.get('/newsletter', function(req, res) {
     var locals = {
