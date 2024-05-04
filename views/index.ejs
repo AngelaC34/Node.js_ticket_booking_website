@@ -43,6 +43,9 @@
 
 
     <h1>Hello <%= name %></h1>
+    <form action="/logout?_method=DELETE" method="POST">
+        <button type="submit">Log Out</button>
+    </form>
 
 
     <!-- About Start -->
@@ -68,64 +71,42 @@
 
 
     <!-- Feature Start -->
-        <div class="container">
-            <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-                <h1 class="display-5 mb-3">Garden of Wonder</h1>
-                <p>Beauty abounds in the Gardens. Beyond the flora and fauna that you’ll find here, admire the Gardens’ iconic structures – architectural marvels that reimagine nature with artistic finesse.</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="bg-white text-center h-100 p-4 p-xl-5">
-                        <img class="img-fluid mb-4" src="img/flower-dome-main-1.jpg" alt="">
-                        <h4 class="mb-3">Flower Dome</h4>
-                        <p class="mb-4">Get up-close with unusual plants native to a range of unique habitats – from the Mediterranean region, to South African savannahs and arid deserts!</p>
-                        <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/flowerdome">Read More</a>
-                    </div>
+<div class="container">
+    <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+        <h1 class="display-5 mb-3">Garden of Wonder</h1>
+        <p>Beauty abounds in the Gardens. Beyond the flora and fauna that you’ll find here, admire the Gardens’ iconic structures – architectural marvels that reimagine nature with artistic finesse.</p>
+    </div>
+
+    <ul class="row g-4" style="list-style-type: none;">
+        <% data.forEach(post => { %>
+            <li class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="bg-white text-center h-100 p-4 p-xl-5">
+                    <!-- Display post image -->
+                    <img class="img-fluid mb-4" src="<%= post.imageUrl %>" alt="Image">
+                    <!-- Render post title and body -->
+                    <h4 class="mb-3"><%= post.title %></h4>
+                    <p class="mb-4"><%= post.body %></p>
+                    <p class="mb-2">Created at: <%= post.createdAt.toLocaleDateString() %></p>
+                    <p class="mb-4">Last Updated: <%= post.updatedAt.toLocaleDateString() %></p>
+                    <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/post/<%= post._id %>">Read More</a>
+                    <!-- Add any additional content or links related to the post -->
                 </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="bg-white text-center h-100 p-4 p-xl-5">
-                        <img class="img-fluid mb-4" src="img/floral-fantasy-main-1.jpg" alt="">
-                        <h4 class="mb-3">Floral Fantasy</h4>
-                        <p class="mb-4">Explore diverse garden landscapes that segue into each other through a meandering space.</p>
-                        <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/floralfantasy">Read More</a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="bg-white text-center h-100 p-4 p-xl-5">
-                        <img class="img-fluid mb-4" src="img/cloud-forest-night-main-carousel-1.jpg" alt="">
-                        <h4 class="mb-3">Cloud Forest</h4>
-                        <p class="mb-4">Home to one of the world’s tallest indoor waterfalls and a lush mountain clad with plants from around the world.</p>
-                        <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/cloudforest">Read More</a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="bg-white text-center h-100 p-4 p-xl-5">
-                        <img class="img-fluid mb-4" src="img/dragonfly-and-kingfisher-lakes-main-1.jpg" alt="">
-                        <h4 class="mb-3">Dragonfly & Kingfisher Lakes</h4>
-                        <p class="mb-4">Refresh your day with a sparkling river walk. Dive deeper to discover the marvellous ecosystem thriving right within.</p>
-                        <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/dragonfly">Read More</a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="bg-white text-center h-100 p-4 p-xl-5">
-                        <img class="img-fluid mb-4" src="img/serene-garden-main-1.jpg" alt="">
-                        <h4 class="mb-3">Serene Garden</h4>
-                        <p class="mb-4">A unique horticultural garden inspired by the minimalist concept of Japanese zen gardens.</p>
-                        <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/serenegarden">Read More</a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="bg-white text-center h-100 p-4 p-xl-5">
-                        <img class="img-fluid mb-4" src="img/supertree-grove-main-1.jpg" alt="">
-                        <h4 class="mb-3">Supertree Grove</h4>
-                        <p class="mb-4">Come face to face with 12 of the Gardens' 18 Supertrees at the Supertree Grove!</p>
-                        <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/supertreeobservatory">Read More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!-- </div> -->
-    <!-- Feature End -->
+            </li>
+        <% }); %>
+    </ul>
+
+    <div class="d-flex justify-content-between">
+        <% if (nextPage !== null) { %>
+            <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/?page=<%= nextPage %>">&lt; View Older Posts</a>
+        <% } %>
+    
+        <% if (current > 1) { %>
+            <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/?page=<%= current - 1 %>">View Newer Posts &gt;</a>
+        <% } %>
+    </div>
+</div>
+<!-- Feature End -->
+
 
 
     <!-- buy ticket Start -->
@@ -154,6 +135,16 @@
             </div>
             <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
                 <div class="testimonial-item position-relative bg-white p-5 mt-4">
+                    <i class="fa fa-quote-left fa-3x text-primary position-absolute top-0 start-0 mt-n4 ms-5"></i>
+                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
+                    <div class="d-flex align-items-center">
+                        <img class="flex-shrink-0 rounded-circle" src="img/testimonial-1.jpg" alt="">
+                        <div class="ms-3">
+                            <h5 class="mb-1">Client Name</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="testimonial-item position-relative bg-white p-5 mt-4">
                     <i class="fa fa-quote-left fa-3x text-primary position-absolute top-0 start-0 mt-n4 ms-5"></i>
                     <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
                     <div class="d-flex align-items-center">
@@ -192,7 +183,7 @@
                             <h5 class="mb-1">Client Name</h5>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div> -->

@@ -31,6 +31,9 @@ app.use(expressLayouts);
 app.use(express.static("public"));
 app.use (methodOverride('_method'));
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 
 // Connect MongoDB
 mongoose.connect(process.env.MONGO_URL).then(() => {

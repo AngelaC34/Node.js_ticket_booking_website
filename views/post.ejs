@@ -1,0 +1,32 @@
+<!-- Page Header Start -->
+<div class="container-fluid wow fadeIn" data-wow-delay="0.1s">
+    <% if (post && post.imageUrl) { %>
+        <img class="img-fluid w-100" src="<%= post.imageUrl %>"> 
+    <% } %>
+    <div class="container">
+        <% if (post && post.title) { %>
+            <h1 class="display-3 mb-3 animated slideInDown"><%= post.title %></h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+                    <li class="breadcrumb-item text-dark active" aria-current="page"><%= post.title %></li>
+                </ol>
+            </nav>
+        <% } %>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Blog Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <% if (post && post.body) { %>
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                    <p class="mb-4"><%= post.body %></p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+<!-- Blog End -->
