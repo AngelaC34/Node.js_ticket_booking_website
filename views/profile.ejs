@@ -7,6 +7,7 @@
         <h1 class="display-3 mb-3 animated slideInDown"><br>Profile</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb mb-0">
+            <ol class="breadcrumb mb-5">
                 <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
                 <li class="breadcrumb-item"><a class="text-body" href="#">Profile</a></li>
             </ol>
@@ -41,3 +42,47 @@
 <form action="/authRoutes/logout?_method=DELETE" method="POST">
     <button type="submit">Log Out</button>
 </form>
+<div class="container-fluid bg-light bg-icon py-6">
+    <div class="container mb-5">
+        <h1 class="display-5 p-4 mt-2">Booking History</h1>
+        <% if (bookings.length > 0) { %>
+            <ul class="ticket-booking">
+                <% bookings.forEach(booking => { %>
+                    <div class="testimonial-item position-relative bg-white p-5 mt-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <strong class="me-2">Name:</strong><%= booking.name %>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <strong class="me-2">Attraction:</strong><%= booking.attractionName %>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <strong class="me-2">Ticket:</strong><%= booking.ticket %>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <strong class="me-2">Date:</strong><%= booking.date %>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <strong class="me-2">Phone:</strong><%= booking.phone %>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <strong class="me-2">Email:</strong><%= booking.email %>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <strong class="me-2">Booking ID:</strong><%= booking.bookingID %>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <strong class="me-2">Status:</strong> <%= booking.status ? 'Booked' : 'Cancelled' %>
+                        </div>
+                    </div>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>No bookings found.</p>
+        <% } %>
+        <div class="display-5 p-4 mt-2">
+            <form action="/authRoutes/logout?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-primary mt-3">Log Out</button>
+            </form>
+        </div>
+    </div>
+</div>
