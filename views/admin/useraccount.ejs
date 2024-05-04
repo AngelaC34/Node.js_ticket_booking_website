@@ -35,7 +35,6 @@
 
     .btn-edit {
         background-color: #66cb4a;
-        background-color: #1e5b0c;
         color: white;
     }
 </style>
@@ -75,30 +74,6 @@
 </div>
 
 
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% users.forEach(user => { %>
-            <tr>
-                <td><%= user.name %></td>
-                <td><%= user.email %></td>
-                <td>
-                    <a href="/edituser/<%= user._id %>" class="btn">Edit</a>
-                    <form action="/authRoutes/delete-user/<%= user._id %>?_method=DELETE" method="POST" style="display: inline;">
-                        <input type="submit" value="Delete" class="btn-delete btn">
-                    </form>
-                </td>
-            </tr>
-        <% }) %>
-    </tbody>
-</table>
->>>>>>> main
 
 <!-- Form Start -->
 <div class="container-fluid pt-4 px-4">
@@ -150,7 +125,6 @@
                 </div>
                 <br>
                 <button type="submit" class="btn-update btn">Update</button>
-                <button type="submit" class="btn btn-primary">Update</button>
             </div>
         </div>
     </div>
