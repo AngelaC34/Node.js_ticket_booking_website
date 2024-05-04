@@ -55,20 +55,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/view', async (req, res) => {
-    try {
-      const booking = await Booking.findOne({ user: req.user.id });
-      if (!booking) {
-        return res.render('booking/empty', { title: 'Ticket Booking' });
-      }
-  
-      res.render('booking/view', { title: 'Ticket Booking', booking });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Terjadi kesalahan saat menampilkan keranjang' });
-    }
-  });
-
 // post new booking for user
 router.post('/', async (req, res) => {
     const booking = new Booking({

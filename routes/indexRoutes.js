@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Booking = require('../models/Booking');
+const Testimony = require('../models/Testimony');
 
 // if not admin, redirect to login
 function checkAuthenticatedAdmin(req,res,next){
@@ -28,13 +29,15 @@ function checkNotAuthenticated(req,res,next){
 }
 
 // home
-router.get('/home', function(req, res) {
+router.get('/home', async function(req, res) {
+    const testimonies = await Testimony.find();
     var locals = {
         title: 'Gardens by the Bay',
         description: 'Page Description',
         header: 'Page Header',
         layout: 'mainlayout.ejs',
-        name: req.user ? req.user.name : 'Guest' // Check if req.user exists
+        name: req.user ? req.user.name : 'Guest', // Check if req.user exists
+        testimonies: testimonies
     };
     res.render('index', locals);
 });
