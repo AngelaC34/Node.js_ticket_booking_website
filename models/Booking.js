@@ -33,6 +33,10 @@ const BookingSchema = new Schema({
     bookingID: {
         type: String,
         required: true
+    },
+    status: {
+        type: Boolean,
+        required: true
     }
 });
 

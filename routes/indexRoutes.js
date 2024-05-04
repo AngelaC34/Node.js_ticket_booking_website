@@ -232,7 +232,18 @@ router.get('/profile', checkAuthenticated, async function(req, res) {
     res.render('profile.ejs', locals);
 });
 
-
+// edit booking
+router.get('/editbooking/:id', async function(req, res) {
+    const booking = await Booking.findById(req.params.id);
+    var locals = {
+        title: 'Edit User',
+        description: 'Page Description',
+        header: 'Page Header',
+        layout:'mainlayout.ejs',
+        booking: booking
+    };
+    res.render('editbooking.ejs', locals);
+});
 
 // login page
 router.get('/login', function(req, res) {

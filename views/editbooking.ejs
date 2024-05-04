@@ -1,0 +1,23 @@
+<!-- Page Header Start -->
+<div class="container-fluid wow fadeIn" data-wow-delay="0.1s">
+    <div style="background: #000000;">
+        <img class="img-fluid w-30" src="/img/login.jpg">
+    </div>
+    <div class="container">
+        <h1 class="display-3 mb-3 animated slideInDown"><br>Edit Booking</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+                <li class="breadcrumb-item"><a class="text-body" href="#">Profile</a></li>
+                <li class="breadcrumb-item"><a class="text-body" href="#">Edit Booking</a></li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<form action="/api/booking/update-booking-user/<%= booking._id %>?_method=PUT" method="POST">
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone" value="<%= booking.phone %>">
+    <input type="submit" value="Update">
+</form>
