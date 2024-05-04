@@ -201,10 +201,55 @@ router.get('/post/:id', async function(req, res) {
 //     }
 // });
 
+// router.post('/search', async function(req, res) {
+//     try {
+//         let searchTerm = req.body.searchTerm;
+//         const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9]/g, "");
+//         let sortBy = req.body.sortBy || 'createdAt'; // Default sort by createdAt
+//         let sortOrder = parseInt(req.body.sortOrder) || -1; // Default sort order descending
+//         let minPrice = parseInt(req.body.minPrice);
+//         let maxPrice = parseInt(req.body.maxPrice);
+
+//         let filter = {}; 
+
+//         if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+//             filter.price = { $gte: minPrice, $lte: maxPrice };
+//         }
+
+//         const query = {
+//             $or: [
+//                 { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
+//                 { body: { $regex: new RegExp(searchNoSpecialChar, 'i') } }
+//             ],
+//             ...filter
+//         };
+
+//         const data = await Post.find(query).sort({ [sortBy]: sortOrder });
+
+//         const locals = {
+//             title: 'Search',
+//             description: 'Page Description',
+//             layout: 'mainlayout.ejs',
+//             data: data
+//         };
+
+//         res.render("search", locals);
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send('Internal Server Error');
+//     }
+// });
+
 router.post('/search', async function(req, res) {
     try {
         let searchTerm = req.body.searchTerm;
-        const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9]/g, "");
+        let searchNoSpecialChar = '';
+
+        // Check if search term is provided
+        if (searchTerm) {
+            searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9]/g, "");
+        }
+
         let sortBy = req.body.sortBy || 'createdAt'; // Default sort by createdAt
         let sortOrder = parseInt(req.body.sortOrder) || -1; // Default sort order descending
         let minPrice = parseInt(req.body.minPrice);
@@ -216,13 +261,18 @@ router.post('/search', async function(req, res) {
             filter.price = { $gte: minPrice, $lte: maxPrice };
         }
 
-        const query = {
-            $or: [
+        const query = {};
+
+        // If search term is provided, add it to the query
+        if (searchNoSpecialChar) {
+            query.$or = [
                 { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
                 { body: { $regex: new RegExp(searchNoSpecialChar, 'i') } }
-            ],
-            ...filter
-        };
+            ];
+        }
+
+        // Merge the filter with the query
+        Object.assign(query, filter);
 
         const data = await Post.find(query).sort({ [sortBy]: sortOrder });
 
@@ -239,6 +289,7 @@ router.post('/search', async function(req, res) {
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 
 
