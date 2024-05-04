@@ -205,29 +205,26 @@ router.post('/search', async function(req, res) {
     try {
         let searchTerm = req.body.searchTerm;
         const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9]/g, "");
-        let sortBy = req.body.sortBy || 'updatedAt'; // Default sort by updatedAt
-        let sortOrder = req.body.sortOrder || -1; // Default sort order descending
-        let minPrice = req.body.minPrice; // Minimum price filter
-        let maxPrice = req.body.maxPrice; // Maximum price filter
+        let sortBy = req.body.sortBy || 'createdAt'; // Default sort by createdAt
+        let sortOrder = parseInt(req.body.sortOrder) || -1; // Default sort order descending
+        let minPrice = parseInt(req.body.minPrice);
+        let maxPrice = parseInt(req.body.maxPrice);
 
-        let filter = {}; // Initialize an empty filter object
+        let filter = {}; 
 
-        // Construct the filter object based on the provided minPrice and maxPrice
-        if (minPrice !== undefined && maxPrice !== undefined) {
+        if (!isNaN(minPrice) && !isNaN(maxPrice)) {
             filter.price = { $gte: minPrice, $lte: maxPrice };
-        } else if (minPrice !== undefined) {
-            filter.price = { $gte: minPrice };
-        } else if (maxPrice !== undefined) {
-            filter.price = { $lte: maxPrice };
         }
 
-        const data = await Post.find({
+        const query = {
             $or: [
                 { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
                 { body: { $regex: new RegExp(searchNoSpecialChar, 'i') } }
             ],
-            ...filter // Merge the filter object into the query
-        }).sort({ [sortBy]: sortOrder });
+            ...filter
+        };
+
+        const data = await Post.find(query).sort({ [sortBy]: sortOrder });
 
         const locals = {
             title: 'Search',
@@ -239,22 +236,12 @@ router.post('/search', async function(req, res) {
         res.render("search", locals);
     } catch (error) {
         console.log(error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
-//Test Insert
-function insertPostData () {
-    Post.insertMany([
-        {
-            title: "SuperTree Observatory",
-            body: "The SuperTree Observatory has many good sights",
-            imageUrl: "https://www.gardensbythebay.com.sg/content/dam/gbb-2021/image/things-to-do/attractions/supertree-observatory/custom/supertree-observatory3-1670x940.jpg.renderimage.455.256.jpg",
-            price: "75$ SGD"
-        }
-    ])
-}
 
-// insertPostData();
+
 
 //Test Insert
 function insertPostData () {
