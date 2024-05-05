@@ -2,6 +2,7 @@ const {Router} = require('express');
 const router = Router();
 const Booking = require('../../models/Booking');
 const Post = require('../../models/Post');
+const { post } = require('../indexRoutes');
 
 // Function to generate booking ID based on selected attraction and ticket
 function generateBookingID(ticket) {
@@ -99,11 +100,34 @@ router.get('/', async (req, res) => {
 //     res.redirect('/home');
 // });
 
+// Function to calculate total price based on quantity
+// Function to calculate total price based on quantity
+async function calculateTotalPrice(quantity) {
+    try {
+        // Fetch the ticket price from the database
+        const post = await Post.findOne(); // Assuming you're fetching a single document with the ticket price
+        if (!post) {
+            throw new Error("Ticket price not found");
+        }
+
+        // Extract the ticket price from the fetched document
+        const pricePerTicket = post.ticketPrice;
+
+        // Calculate the total price
+        const totalPrice = quantity * pricePerTicket;
+        console.log(totalPrice);
+        return totalPrice;
+    } catch (error) {
+        console.error("Error calculating total price:", error);
+        throw new Error("Error calculating total price");
+    }
+};
 
 router.post('/create-booking', async (req, res) => {
     const attractionName = getAttractionName(req.body.attraction);
     const bookedDate = req.body.date;
     const bookedQuantity = req.body.ticket;
+    const totalPrice = await calculateTotalPrice(bookedQuantity); // Implement your logic to calculate total price
 
     try {
         const availabilityCheck = await updateAvailability(attractionName, bookedDate, bookedQuantity);
@@ -127,12 +151,22 @@ router.post('/create-booking', async (req, res) => {
         });
 
         const newBooking = await booking.save();
-        res.status(201).json(newBooking);
+
+        // Redirect back to buy tickets screen with success alert
+        req.flash('success', {
+            message: 'Booking created successfully!',
+            attractionName: attractionName,
+            bookedQuantity: bookedQuantity,
+            bookedDate: bookedDate,
+            totalPrice: totalPrice // Set totalPrice directly without calling toString()
+        });
+        return res.redirect('/buytickets?success=true');
     } catch (err) {
         console.error('Error creating booking:', err);
         res.status(500).json({ message: 'Internal server error.' });
     }
 });
+
 
 // update booking contact details for users
 router.put('/update-booking-user/:id', async (req, res) => {

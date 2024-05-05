@@ -212,12 +212,14 @@ router.get('/buytickets', checkAuthenticated, async function(req, res) {
         // Assuming Post is your Mongoose model
         const data = await Post.find();
 
+        // Pass the fetched data and success variable to the view
         const locals = {
             title: 'Buy Tickets',
             description: 'Page Description',
             header: 'Page Header',
             layout: 'mainlayout.ejs',
-            data: data  // Pass the fetched data to the view
+            data: data,  // Post data
+            success: req.flash('success')[0]  // Flash message
         };
 
         res.render('buytickets.ejs', locals);
@@ -226,6 +228,7 @@ router.get('/buytickets', checkAuthenticated, async function(req, res) {
         res.status(500).send("An error occurred while fetching post data. Please try again later.");
     }
 });
+
 
 
 // contact
