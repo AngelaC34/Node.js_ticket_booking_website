@@ -4,7 +4,6 @@ const User = require('../models/User');
 const Post = require('../models/Post');
 const Booking = require('../models/Booking');
 const Testimony = require('../models/Testimony');
-const Availability = require('../models/Availability');
 
 
 // if not admin, redirect to login
@@ -199,7 +198,7 @@ router.get('/editbooking/:id', async function(req, res) {
 });
 
 // login page
-router.get('/login', function(req, res) {
+router.get('/login', checkNotAuthenticated ,function(req, res) {
 var locals = {
     title: 'Log In',
     description: 'Page Description',
@@ -210,7 +209,7 @@ res.render('login.ejs', locals);
 });
 
 // signup page
-router.get('/signup', function(req, res) {
+router.get('/signup', checkNotAuthenticated, function(req, res) {
 var locals = {
     title: 'Sign Up',
     description: 'Page Description',
