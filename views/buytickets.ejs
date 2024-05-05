@@ -18,6 +18,18 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+
+    <!-- Page Header Start -->
+    <div class="container-fluid wow fadeIn" data-wow-delay="0.1s">
+        <img class="img-fluid w-100" src="img/floral-fantasy-01.jpg">
+        <div class="container">
+            <h1 class="display-3 mb-3 animated slideInDown"><br>Buy Ticket</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+                    <li class="breadcrumb-item text-dark active" aria-current="page">Buy Tickets</li>
+                </ol>
+            </nav>
         </div>
         <div class="modal-body">
           <!-- Your terms and conditions content goes here -->
@@ -83,6 +95,44 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <br><br>
                 </form>
+                    <h1>Gardens by the Bay</h1>
+                    <p>Discover the enchanting Gardens by the Bay, a horticultural oasis in the heart of Singapore.
+                        Immerse
+                        yourself in the beauty of nature and marvel at the stunning Supertrees and unique plant
+                        collections.
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <form action="/api/booking/create-booking" method="POST" novalidate>
+                        <div class="form-group">
+                            <label for="attraction">Attraction</label>
+                            <select class="form-control" id="attraction" name="attraction" required>
+                                <option value="A">Flower Dome</option>
+                                <option value="B">Cloud Forest</option>
+                                <option value="C">Floral Fantasy</option>
+                                <option value="D">Supertree Observatory</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ticket">Ticket</label>
+                            <input type="number" class="form-control" id="ticket" name="ticket" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone number</label>
+                            <input type="text" class="form-control" id="phone" name="phone" required>
+                        </div>
+                        <!-- <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div> -->
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <br><br>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
