@@ -32,36 +32,11 @@
                 <a href="/home" class="nav-item nav-link">Home</a>
                 <a href="/about" class="nav-item nav-link">About Us</a>
                 <a href="/buytickets" class="nav-item nav-link">Buy Ticket</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Things To Do</a>
-                    <div class="dropdown-menu m-0">
-                        <a href="/flowerdome" class="dropdown-item active">Flower Dome</a>
-                        <a href="/cloudforest" class="dropdown-item">Cloud Forest</a>
-                        <a href="/floralfantasy" class="dropdown-item">Floral Fantasy</a>
-                        <a href="/supertreeobservatory" class="dropdown-item">Supertree Observatory</a>
-                    </div>
-                </div>
                 <a href="/contact" class="nav-item nav-link">Contact Us</a>
             </div>
             <div class="d-lg-flex align-items-center ms-lg-3">
                 <!-- Search Bar -->
                 <%- include('search.ejs') %>
-                
-                <!-- Filter Toggle -->
-                <div class="filter-toggle ms-3" onclick="toggleFilter()">Filter</div>
-                
-                <!-- Filter Inputs -->
-                <div class="filter-inputs" id="filterInputs">
-                    <div class="price-input">
-                        <input type="number" id="minPrice" aria-label="Min Price" name="minPrice" placeholder="Min">
-                        <input type="number" id="maxPrice" aria-label="Max Price" name="maxPrice" placeholder="Max">
-                    </div>
-                    <select name="sortBy" id="sortBy" class="form-select" aria-label="Sort By">
-                        <option value="createdAt">Newest First</option>
-                        <option value="-createdAt">Oldest First</option>
-                    </select>
-                    <button type="submit" class="btn btn-primary py-2">Search</button>
-                </div>
             </div>
             
             <!-- User Dropdown -->
