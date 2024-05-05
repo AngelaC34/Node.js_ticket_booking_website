@@ -1,75 +1,98 @@
+<!-- Page Header Start -->
+<div class= "container-fluid img-fluid w-80" src="img/about-us-header.jpeg mb-5 wow fadeIn" data-wow-delay="0.1s">
+<img class="img-fluid w-100" src="img/GBB-wallpaper-floral-fantasy-1920x1080.jpg"> 
+<div class="container">
+    <h1 class="display-3 mb-3 animated slideInDown"><br>Buy Ticket</h1>
+    <nav aria-label="breadcrumb animated slideInDown">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+            <li class="breadcrumb-item text-dark active" aria-current="page">Buy Tickets</li>
+        </ol>
+    </nav>
+</div>
+<!-- Page Header End -->
 
-
-
-
-
-    <!-- Page Header Start -->
-    <div class="container-fluid wow fadeIn" data-wow-delay="0.1s">
-        <img class="img-fluid w-100" src="img/floral-fantasy-01.jpg">
-        <div class="container">
-            <h1 class="display-3 mb-3 animated slideInDown"><br>Buy Ticket</h1>
-            <nav aria-label="breadcrumb animated slideInDown">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
-                    <li class="breadcrumb-item text-dark active" aria-current="page">Buy Tickets</li>
-                </ol>
-            </nav>
+<!-- Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
         </div>
-    </div>
-    <!-- Page Header End -->
+        <div class="modal-body">
+          <!-- Your terms and conditions content goes here -->
+          <p>By purchasing a ticket, you agree to abide by our terms and conditions:</p>
+            <ol>
+                <li>All ticket purchases are final and non-refundable.</li>
+                <li>Tickets are valid only for the date and attraction specified at the time of purchase.</li>
+                <li>Entry to the attraction is subject to availability and capacity restrictions.</li>
+                <li>Management reserves the right to refuse entry or remove individuals from the premises for any reason, including but not limited to disruptive behavior.</li>
+                <li>Unauthorized resale or attempted resale of tickets is prohibited and may result in refusal of entry.</li>
+                <li>Children must be accompanied by an adult at all times.</li>
+                <li>Photography and videography may be restricted in certain areas for safety and security reasons.</li>
+                <li>Personal belongings are the responsibility of the ticket holder.</li>
+                <li>Management is not liable for any loss, theft, or damage to personal property.</li>
+                <li>Management reserves the right to alter opening hours, close attractions, or cancel events without prior notice.</li>
+            </ol>
+        <p>If you have any questions or concerns regarding our terms and conditions, please contact our customer support for assistance.</p>
 
-    <!-- Buy Ticket Start -->
-    <div class="bg-light">
-        <div class="container">
-            <div class="row center-content">
-                <div class="col-md-6">
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Modal End-->
+
+<!-- Buy Ticket Start -->
+<div class="bg-light">
+    <div class="container">
+        <div class="row center-content">
+            <div class="col-md-6">
+                <br><br>
+                <h1>Gardens by the Bay</h1>
+                <p>Discover the enchanting Gardens by the Bay, a horticultural oasis in the heart of Singapore.
+                    Immerse
+                    yourself in the beauty of nature and marvel at the stunning Supertrees and unique plant
+                    collections.&nbsp;
+                    <a href="#" id="termsLink" data-toggle="tooltip" title="Terms and Conditions"><i class="fas fa-info-circle"></i></a>
+                </p>
+            </div>
+            <div class="col-md-6">
+                <form action="/api/booking/create-booking" method="POST" novalidate>
+                    <div class="form-group">
+                        <label for="attraction">Attraction</label>
+                        <select class="form-control" id="attraction" name="attraction" required>
+                            <option value="A">Flower Dome</option>
+                            <option value="B">Cloud Forest</option>
+                            <option value="C">Floral Fantasy</option>
+                            <option value="D">Supertree Observatory</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ticket">Ticket</label>
+                        <input type="number" class="form-control" id="ticket" name="ticket" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone number</label>
+                        <input type="text" class="form-control" id="phone" name="phone" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                     <br><br>
-                    <h1>Gardens by the Bay</h1>
-                    <p>Discover the enchanting Gardens by the Bay, a horticultural oasis in the heart of Singapore.
-                        Immerse
-                        yourself in the beauty of nature and marvel at the stunning Supertrees and unique plant
-                        collections.
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <form action="/api/booking/create-booking" method="POST" novalidate>
-                        <!-- <div class="form-group">
-                            <label for="name">Your name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div> -->
-                        <div class="form-group">
-                            <label for="attraction">Attraction</label>
-                            <select class="form-control" id="attraction" name="attraction" required>
-                                <option value="A">Flower Dome</option>
-                                <option value="B">Cloud Forest</option>
-                                <option value="C">Floral Fantasy</option>
-                                <option value="D">Supertree Observatory</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="ticket">Ticket</label>
-                            <input type="number" class="form-control" id="ticket" name="ticket" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="date">Date</label>
-                            <input type="date" class="form-control" id="date" name="date" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone number</label>
-                            <input type="text" class="form-control" id="phone" name="phone" required>
-                        </div>
-                        <!-- <div class="form-group">
-                            <label for="email">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div> -->
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        <br><br>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-    
-    <!-- Buy Ticket End -->
+</div>
+<!-- Buy Ticket End -->
 
-    
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.getElementById("termsLink").addEventListener("click", function() {
+        $('#termsModal').modal('show');
+    });
+</script>
