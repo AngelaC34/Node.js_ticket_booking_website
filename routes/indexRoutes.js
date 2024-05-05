@@ -276,10 +276,12 @@ router.get('/sustainabilityefforts', function(req, res) {
 
 // admin dashboard
 router.get('/adminDashboard', checkAuthenticatedAdmin, function(req, res) {
+    const user = req.user;
     var locals = {
         title: 'Admin Dashboard',
         description: 'Page Description',
         header: 'Page Header',
+        user: user,
         layout:'adminlayout.ejs'
     };
     res.render('admin/adminDashboard.ejs', locals);
@@ -287,13 +289,15 @@ router.get('/adminDashboard', checkAuthenticatedAdmin, function(req, res) {
 
 // user account
 router.get('/useraccount', checkAuthenticatedAdmin, async function(req, res) {
+    const user = req.user;
     const users = await User.find();
     var locals = {
         title: 'User Account',
         description: 'Page Description',
         header: 'Page Header',
         layout:'adminlayout.ejs',
-        users: users
+        users: users,
+        user: user
     };
     res.render('admin/useraccount.ejs', locals);
 });
@@ -313,69 +317,80 @@ router.get('/edituser/:id', checkAuthenticatedAdmin, async function(req, res) {
 
 // ticket booking
 router.get('/ticketbooking', checkAuthenticatedAdmin, async function(req, res) {
+    const user = req.user;
     const bookings = await Booking.find();
     var locals = {
         title: 'Ticket Booking',
         description: 'Page Description',
         header: 'Page Header',
         layout:'adminlayout.ejs',
-        bookings: bookings
+        bookings: bookings,
+        user: user
     };
     res.render('admin/ticketbooking.ejs', locals);
 });
 
 // ticket availability
 router.get('/ticketavailability', checkAuthenticatedAdmin, async function(req, res) {
+    const user = req.user;
     const data = await Post.find();
     var locals = {
         title: 'Ticket Availability',
         description: 'Page Description',
         header: 'Page Header',
         layout:'adminlayout.ejs',
-        data: data
+        data: data,
+        user: user
     };
     res.render('admin/ticketavailability.ejs', locals);
 });
 
 // edit availability
 router.get('/editavailability/:id', checkAuthenticatedAdmin, async function(req, res) {
+    const user = req.user;
     const data = await Post.findById(req.params.id);
     var locals = {
         title: 'Edit Availability',
         description: 'Page Description',
         header: 'Page Header',
         layout:'adminlayout.ejs',
-        data: data
+        data: data,
+        user: user
     };
     res.render('admin/editavailability.ejs', locals);
 });
 
 // testimony
 router.get('/testimony', checkAuthenticatedAdmin, async function(req, res) {
+    const user = req.user;
     const testimonies = await Testimony.find();
     var locals = {
         title: 'Testimony',
         description: 'Page Description',
         header: 'Page Header',
         layout:'adminlayout.ejs',
-        testimonies: testimonies
+        testimonies: testimonies,
+        user: user
     };
     res.render('admin/testimony.ejs', locals);
 });
 
 // newsletter
 router.get('/newsletter', checkAuthenticatedAdmin, function(req, res) {
+    const user = req.user;
     var locals = {
         title: 'Newsletter',
         description: 'Page Description',
         header: 'Page Header',
-        layout:'adminlayout.ejs'
+        layout:'adminlayout.ejs',
+        user: user
     };
     res.render('admin/newsletter.ejs', locals);
 });
 
 //Admin Posts
 router.get('/blog', checkAuthenticatedAdmin, async function(req, res) {
+    const user = req.user;
     try {
         const data = await Post.find();
         var locals = {
@@ -384,8 +399,10 @@ router.get('/blog', checkAuthenticatedAdmin, async function(req, res) {
             header: 'Page Header',
             layout:'adminlayout.ejs',
             data: data,
+            user: user,
             success: req.query.success,
-            error: req.query.error
+            error: req.query.error,
+            
         };
         res.render('admin/blog.ejs', locals);
     } catch (error) {
@@ -396,6 +413,7 @@ router.get('/blog', checkAuthenticatedAdmin, async function(req, res) {
 
 //Add Get
 router.get('/add-post', checkAuthenticatedAdmin, async function(req, res) {
+    const user = req.user;
     try {
         const data = await Post.find();
         const locals = {
@@ -404,6 +422,7 @@ router.get('/add-post', checkAuthenticatedAdmin, async function(req, res) {
             header: 'Page Header',
             layout:'adminlayout.ejs',
             data: data,
+            user: user,
             success: req.query.success === 'true', // Check if success query parameter is true
             error: req.query.error // Pass error message
         };
@@ -416,6 +435,7 @@ router.get('/add-post', checkAuthenticatedAdmin, async function(req, res) {
 
 //Add Post
 router.post('/add-post', async function(req, res) {
+    const user = req.user;
     try {
         const { title, body, imageUrl, ticketPrice } = req.body;
 
@@ -428,7 +448,8 @@ router.post('/add-post', async function(req, res) {
             title,
             body,
             imageUrl,
-            ticketPrice
+            ticketPrice,
+            user:user
         });
 
         await Post.create(newPost);
@@ -442,6 +463,7 @@ router.post('/add-post', async function(req, res) {
 
 //Edit Get
 router.get('/edit-post/:id', checkAuthenticatedAdmin, async function(req, res) {
+    const user = req.user;
     try {
         const data = await Post.findOne({ _id: req.params.id });
         const locals = {
@@ -450,6 +472,7 @@ router.get('/edit-post/:id', checkAuthenticatedAdmin, async function(req, res) {
             header: 'Page Header',
             layout:'adminlayout.ejs',
             data: data,
+            user: user,
             success: req.query.success === 'true', // Check if success query parameter is true
             error: req.query.error // Pass error message
         };
@@ -461,6 +484,7 @@ router.get('/edit-post/:id', checkAuthenticatedAdmin, async function(req, res) {
 
 //Edit Put
 router.put('/edit-post/:id', async function(req, res) {
+    const user = req.user;
     try {
         // Check if any required field is empty
         if (!req.body.title || !req.body.body || !req.body.imageUrl || !req.body.ticketPrice) {
