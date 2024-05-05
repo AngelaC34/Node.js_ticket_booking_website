@@ -18,18 +18,26 @@ router.get('/', async (req, res) => {
 
 // create testimony
 router.post('/add-testimony', async (req, res) => {
+    if (!req.isAuthenticated()) {
+        req.flash('error', 'Login to submit testimony.');
+        return res.redirect('/login'); // Redirect to login page if not logged in
+    }
+
     const testimony = new Testimony({
         userID: req.user.id,
         name: req.user.name,
         review: req.body.review,
         status: false
     });
+
     try {
         const newTestimony = await testimony.save();
-    }
-    catch (err) {
+        req.flash('success', 'Submission success! Your testimony will be reviewed by the admin.');
+    } catch (err) {
         console.error('Error saving testimony:', err);
+        req.flash('error', 'An error occurred. Please try again later.');
     }
+
     res.redirect('/home');
 });
 
