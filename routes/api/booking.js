@@ -4,12 +4,10 @@ const Booking = require('../../models/Booking');
 const Post = require('../../models/Post');
 const { post } = require('../indexRoutes');
 
-// Function to generate booking ID based on selected attraction and ticket
+// Membuat booking ID
 function generateBookingID(ticket) {
-    // Generate a random string of numbers
-    const randomString = Math.random().toString().substring(2, 8); // Adjust the length as needed
-
-    // Concatenate the random string, current date, and ticket value
+    // Membuat random number untuk booking
+    const randomString = Math.random().toString().substring(2, 8);
     return randomString + Date.now().toString() + ticket;
 }
 
@@ -124,19 +122,16 @@ async function calculateTotalPrice(quantity) {
 };
 
 router.post('/create-booking', async (req, res) => {
-    const attractionName = getAttractionName(req.body.attraction);
-    const bookedDate = req.body.date;
-    const bookedQuantity = req.body.ticket;
-
-    // Check if all required fields are filled
-    if (!attractionName || !bookedDate || !bookedQuantity) {
-        // Set a flash message for the error
-        req.flash('error', 'Please fill out all required fields.');
-        // Redirect back to buy tickets screen with error alert
-        return res.redirect('/buytickets?success=false');
-    }
-
     try {
+        const attractionName =req.body.attraction;
+        const bookedDate = req.body.date;
+        const bookedQuantity = req.body.ticket;
+
+        // Check if all required fields are filled
+        if (!attractionName || !bookedDate || !bookedQuantity) {
+            throw new Error('Please fill out all required fields.');
+        }
+
         const availabilityCheck = await updateAvailability(attractionName, bookedDate, bookedQuantity);
 
         if (availabilityCheck.message === 'Tickets not available.' || availabilityCheck.message === 'Attraction not found.') {
@@ -173,11 +168,12 @@ router.post('/create-booking', async (req, res) => {
     } catch (err) {
         console.error('Error creating booking:', err);
         // Set a flash message for the error
-        req.flash('error', 'Failed to create booking. Please try again.');
+        req.flash('error', err.message || 'Failed to create booking. Please try again.');
         // Redirect back to buy tickets screen with error alert
         return res.redirect('/buytickets?success=false');
     }
 });
+
 
 
 

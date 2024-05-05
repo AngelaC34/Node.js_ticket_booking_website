@@ -43,7 +43,7 @@ router.post('/signup', async (req, res) => {
     res.redirect('/login');
     }    catch(err)    {
         console.log(err)
-        res.redirect('/signup');
+        res.redirect('/login');
     }
 });
 
