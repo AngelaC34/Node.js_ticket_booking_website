@@ -66,16 +66,19 @@ router.post('/update-attraction/:id', async (req, res) => {
         );
 
         if (!updatedAttraction) {
-            // return res.status(404).json({ message: 'Attraction not found.' });
+            req.flash('error', 'Attraction not found.');
+        } else {
+            req.flash('success', 'Attraction updated successfully.');
         }
 
-        // res.status(200).json({ message: 'Attraction updated successfully.', updatedAttraction });
     } catch (err) {
         console.error('Error updating attraction:', err);
-        // res.status(500).json({ message: 'Internal server error.' });
+        req.flash('error', 'Internal server error.');
     }
-    res.redirect('/editavailability/'+req.params.id);
+
+    res.redirect('/editavailability/' + req.params.id);
 });
+
 
 // delete post
 router.delete('/delete-post/:id', async function(req, res) {
@@ -101,14 +104,18 @@ router.delete('/delete-availability/:availId/:ticketId', async (req, res) => {
         );
 
         if (!updatedAvailability) {
-            return res.status(404).json({ message: 'Availability not found.' });
+            req.flash('error', 'Availability not found.');
+            return res.redirect('/editavailability/' + availabilityId); // Redirect to appropriate page
         }
 
-        res.status(200).json({ message: 'Ticket deleted successfully.', updatedAvailability });
+        req.flash('success', 'Ticket deleted successfully.');
+        res.redirect('/editavailability/' + availabilityId); // Redirect to appropriate page
     } catch (err) {
         console.error('Error deleting ticket from availability:', err);
-        res.status(500).json({ message: 'Internal server error.' });
+        req.flash('error', 'Internal server error.');
+        res.redirect('/editavailability/' + availabilityId); // Redirect to appropriate page
     }
 });
+
 
 module.exports = router;

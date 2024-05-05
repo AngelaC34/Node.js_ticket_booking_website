@@ -261,7 +261,6 @@ router.get('/ourstory', function(req, res) {
     res.render('ourstory.ejs', locals);
 });
 
-
 // sustainability efforts
 router.get('/sustainabilityefforts', function(req, res) {
     var locals = {

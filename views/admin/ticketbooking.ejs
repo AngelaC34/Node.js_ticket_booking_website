@@ -1,6 +1,16 @@
+
 <div class="container-fluid bg-light bg-icon py-2">
     <div class="container">
         <div class="ticket-booking">
+            <% if (messages && messages.success) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= messages.success %>
+                </div>
+            <% } else if (messages && messages.error) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= messages.error %>
+                </div>
+            <% } %>
             <% bookings.forEach(booking => { %>
                 <div class="testimonial-item position-relative bg-white p-5 mt-4">
                     <div class="d-flex align-items-center mb-3">

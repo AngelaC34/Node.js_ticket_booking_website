@@ -154,27 +154,22 @@ router.put('/update-booking-admin/:id', async (req, res) => {
     const bookId = req.params.id;
     const { status } = req.body;
     try {
-        const updatedBooking = await Booking.findByIdAndUpdate(bookId, { status }, {new: true});
-        // res.status(200).json(updatedBooking);
-    }
-    catch (err) {
-        // res.status(400).json({message: err.message});
+        const updatedBooking = await Booking.findByIdAndUpdate(bookId, { status }, { new: true });
+        req.flash('success', 'Booking status updated successfully');
+    } catch (err) {
+        req.flash('error', 'Failed to update booking status');
     }
     res.redirect('/ticketbooking');
 });
 
-
 // delete booking by id
 router.delete('/delete-booking/:id', async (req, res) => {
     const bookId = req.params.id;
-    try
-    {
+    try {
         const deletedBooking = await Booking.findByIdAndDelete(bookId);
-        // res.status(200).json("deleted successfully");
-    }
-    catch (err)
-    {
-        // res.status(400).json({message: err.message});
+        req.flash('success', 'Booking deleted successfully');
+    } catch (err) {
+        req.flash('error', 'Failed to delete booking');
     }
     res.redirect('/ticketbooking');
 });
