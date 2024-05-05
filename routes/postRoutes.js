@@ -13,7 +13,7 @@ router.post('/add-post', async function(req, res) {
         }
         try{
             const newPost = new Post({
-                title: req.body.attractionName,
+                title: req.body.title,
                 body: req.body.body,
                 imageUrl: req.body.imageUrl,
                 ticketPrice: req.body.ticketPrice,
