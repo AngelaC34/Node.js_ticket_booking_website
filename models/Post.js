@@ -14,10 +14,26 @@ const PostSchema = new Schema({
         type: String, 
         required: true,
     },
-    price: {
+    ticketPrice: {
         type: String, 
         required: true,
     },
+    ticketQuantity: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    availableTickets: [{
+        date: {
+            type: Date,
+            required: false
+        },
+        quantity: {
+            type: Number,
+            required: false,
+            default: 0
+        }
+    }],
     createdAt: {
         type: Date,
         default: Date.now,

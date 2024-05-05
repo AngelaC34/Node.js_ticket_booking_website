@@ -63,7 +63,7 @@ app.use('/', require("./routes/indexRoutes"));
 app.use('/authRoutes', require("./routes/authRoutes"));
 app.use('/', require("./routes/emailRoutes"));
 app.use('/testiRoutes', require("./routes/testiRoutes"));
-app.use('/availRoutes', require("./routes/availRoutes"));
+app.use('/postRoutes', require("./routes/postRoutes"));
 
 const port = process.env.PORT || 5000;
 

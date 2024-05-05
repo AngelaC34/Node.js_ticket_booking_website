@@ -563,7 +563,7 @@ router.get('/ticketbooking', async function(req, res) {
 
 // ticket availability
 router.get('/ticketavailability', async function(req, res) {
-    const availabilities = await Availability.find();
+    const availabilities = await Post.find();
     var locals = {
         title: 'Ticket Availability',
         description: 'Page Description',
@@ -576,7 +576,7 @@ router.get('/ticketavailability', async function(req, res) {
 
 // edit availability
 router.get('/editavailability/:id', async function(req, res) {
-    const availability = await Availability.findById(req.params.id);
+    const availability = await Post.findById(req.params.id);
     var locals = {
         title: 'Edit Availability',
         description: 'Page Description',
@@ -646,29 +646,6 @@ router.get('/add-post', async function(req, res) {
     };
 });
 
-router.post('/add-post', async function(req, res) {
-    try {
-
-        try{
-            const newPost = new Post({
-                title: req.body.title,
-                body: req.body.body,
-                imageUrl: req.body.imageUrl,
-                price: req.body.price
-            });
-            await Post.create(newPost);
-            res.redirect('/blog');
-        }
-        catch (error){
-            console.log(error);
-        }
-
-    } catch (error) {
-        console.error("Error fetching blog posts:", error);
-        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
-    };
-});
-
 router.get('/edit-post/:id', async function(req, res) {
     try {
         const data = await Post.findOne({ _id: req.params.id });
@@ -685,31 +662,4 @@ router.get('/edit-post/:id', async function(req, res) {
         res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
     };
 });
-
-router.put('/edit-post/:id', async function(req, res) {
-    try {
-        await Post.findByIdAndUpdate(req.params.id, {
-            title: req.body.title,
-            body: req.body.body,
-            imageUrl: req.body.imageUrl,
-            price: req.body.price,
-            updatedAt: Date.now()
-        });
-        res.redirect(`/edit-post/${req.params.id}`);
-    } catch (error) {
-        console.error("Error fetching blog posts:", error);
-        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
-    };
-});
-
-router.delete('/delete-post/:id', async function(req, res) {
-    try {
-        await Post.deleteOne( { _id: req.params.id } );
-        res.redirect(`/blog`); 
-    } catch (error) {
-        console.error("Error fetching blog posts:", error);
-        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
-    };
-});
-
 module.exports = router;

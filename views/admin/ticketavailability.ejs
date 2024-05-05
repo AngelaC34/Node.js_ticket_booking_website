@@ -1,36 +1,8 @@
-<h1>Add New Attraction</h1>
-<form id="availabilityForm" action="/availRoutes/create-availability" method="POST">
-    <label for="attractionName">Attraction Name:</label>
-    <input type="text" id="attractionName" name="attractionName" required><br><br>
-
-    <label for="ticketPrice">Ticket Price:</label>
-    <input type="number" id="ticketPrice" name="ticketPrice" min="0" step="0.01" required><br><br>
-
-    <label for="ticketQuantity">Quantity Available:</label>
-    <input type="number" id="ticketQuantity" name="ticketQuantity" min="0" required><br><br>
-
-    <button type="submit">Submit</button>
-</form>
-
-<h1>Update Availability</h1>
-<form id="availabilityForm" action="/availRoutes/update-availability" method="POST">
-    <label for="attractionName">Attraction Name:</label>
-    <input type="text" id="attractionName" name="attractionName" required><br>
-
-    <label for="bookedDate">Booked Date:</label>
-    <input type="date" id="bookedDate" name="bookedDate" required><br>
-
-    <label for="bookedQuantity">Booked Quantity:</label>
-    <input type="number" id="bookedQuantity" name="bookedQuantity" required><br>
-
-    <button type="submit">Update Availability</button>
-</form>
-
 <h1>Availability Data</h1>
 <ul>
     <% availabilities.forEach(availability => { %>
         <li>
-            <strong>Name:</strong> <%= availability.name %><br>
+            <strong>Name:</strong> <%= availability.title %><br>
             <strong>Ticket Price:</strong> <%= availability.ticketPrice %><br>
             <strong>Ticket Quantity:</strong> <%= availability.ticketQuantity %><br>
             <strong>Available Tickets:</strong>
