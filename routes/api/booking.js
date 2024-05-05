@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const router = Router();
 const Booking = require('../../models/Booking');
-const { updateAvailability } = require('../availRoutes');
+const Availability = require('../../models/Availability');
 
 // Function to generate booking ID based on selected attraction and ticket
 function generateBookingID(selectedAttraction, ticket) {
@@ -41,6 +41,45 @@ function getAttractionName(selectedAttraction) {
             break;
     }
     return attractionName;
+}
+
+// Function to update availability
+async function updateAvailability(attractionName, bookedDate, bookedQuantity) {
+    try {
+        // Find the availability record by attraction name
+        const availability = await Availability.findOne({ name: attractionName });
+
+        if (!availability) {
+            // If attraction is not found, return an error message
+            return { message: 'Attraction not found.' };
+        }
+
+        // Check if the date already exists in the availability record
+        const existingDate = availability.availableTickets.find(ticket => ticket.date.toString() === new Date(bookedDate).toString());
+
+        if (existingDate) {
+            // Check if tickets are available after booking
+            const availableAfterBooking = existingDate.quantity - bookedQuantity;
+            if (availableAfterBooking < 0) {
+                // If tickets are not available, return an error message
+                return { message: 'Tickets not available.' };
+            }
+
+            // Update the quantity if the date exists and tickets are available
+            existingDate.quantity -= bookedQuantity;
+        } else {
+            // Calculate the new quantity based on the ticket quantity and booked quantity
+            const newQuantity = availability.ticketQuantity - bookedQuantity;
+            // Push the new date and quantity to availableTickets
+            availability.availableTickets.push({ date: new Date(bookedDate), quantity: newQuantity });
+        }
+
+        // Save the updated availability
+        await availability.save();
+        return { message: 'Availability updated successfully.' };
+    } catch (err) {
+        throw new Error('Error updating availability: ' + err.message);
+    }
 }
 
 // get all booking data for admin
