@@ -440,10 +440,10 @@ router.get('/add-post', checkAuthenticatedAdmin, async function(req, res) {
 router.post('/add-post', async function(req, res) {
     const user = req.user;
     try {
-        const { title, body, imageUrl, ticketPrice } = req.body;
+        const { title, body, imageUrl, ticketPrice, ticketQuantity } = req.body;
 
         // Check if any required parameter is missing
-        if (!title || !body || !imageUrl || !ticketPrice) {
+        if (!title || !body || !imageUrl || !ticketPrice || !ticketQuantity) {
             throw new Error("All fields are required.");
         }
 
@@ -485,38 +485,5 @@ router.get('/edit-post/:id', checkAuthenticatedAdmin, async function(req, res) {
     }
 });
 
-//Edit Put
-router.put('/edit-post/:id', async function(req, res) {
-    const user = req.user;
-    try {
-        // Check if any required field is empty
-        if (!req.body.title || !req.body.body || !req.body.imageUrl || !req.body.ticketPrice) {
-            throw new Error("All fields are required."); // Throw an error if any field is empty
-        }
-
-        await Post.findByIdAndUpdate(req.params.id, {
-            title: req.body.title,
-            body: req.body.body,
-            imageUrl: req.body.imageUrl,
-            ticketPrice: req.body.ticketPrice,
-            updatedAt: Date.now()
-        });
-        res.redirect(`/edit-post/${req.params.id}?success=true`); // Pass success query parameter if successfully updated
-    } catch (error) {
-        console.error("Error updating blog post:", error);
-        res.redirect(`/edit-post/${req.params.id}?error=${encodeURIComponent(error.message)}`); // Pass error message in query parameter
-    }
-});
-
-//Delete Post
-router.delete('/delete-post/:id', async function(req, res) {
-    try {
-        await Post.deleteOne( { _id: req.params.id } );
-        return res.redirect('/blog?success=true');
-    } catch (error) {
-        console.error("Error fetching blog posts:", error);
-        res.redirect(`/blog?error=${encodeURIComponent(error.message)}`);
-    };
-});
 
 module.exports = router;
