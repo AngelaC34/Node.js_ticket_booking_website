@@ -165,13 +165,24 @@
     <!-- Testimonies End -->
 
 
-    <!-- Add Testimony Start -->
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-6">
                 <div class="card shadow">
                     <div class="card-body">
                         <h2 class="card-title text-center mb-4" style="color: #218838;">Add Testimony</h2>
+                        <% if (typeof messages !== 'undefined') { %>
+                            <% if (messages.error) { %>
+                                <div class="alert alert-danger" role="alert">
+                                    <%= messages.error %>
+                                </div>
+                            <% } %>
+                            <% if (messages.success) { %>
+                                <div class="alert alert-success" role="alert">
+                                    <%= messages.success %>
+                                </div>
+                            <% } %>
+                        <% } %>
                         <form action="/testiRoutes/add-testimony" method="POST">
                             <div class="mb-3">
                                 <label for="review" class="form-label">Review:</label>

@@ -3,10 +3,10 @@
         <div class="col-sm-12 col-xl-4">
             <div class="bg-light rounded p-4">
                 <h3>Edit Attraction</h3>
-                <form action="/availRoutes/update-attraction/<%= availability._id %>" method="POST">
+                <form action="/postRoutes/update-attraction/<%= availability._id %>" method="POST">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Name:</label>
-                        <input type="text" id="name" name="name" class="form-control" value="<%= availability.name %>" required>
+                        <label for="title" class="form-label">Name:</label>
+                        <%= availability.title %>
                     </div>
                     <div class="mb-3">
                         <label for="ticketPrice" class="form-label">Ticket Price:</label>
@@ -18,7 +18,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Update Attraction</button>
                 </form>
-                <form action="/availRoutes/delete-attraction/<%= availability._id %>?_method=DELETE" method="POST">
+                <form action="/postRoutes/delete-post/<%= availability._id %>?_method=DELETE" method="POST">
                     <button type="submit" class="btn btn-danger mt-3">Delete Attraction</button>
                 </form>
             </div>
@@ -29,7 +29,7 @@
                 <ul>
                     <% availability.availableTickets.forEach(ticket => { %>
                         <li>Date: <%= ticket.date %>, Quantity: <%= ticket.quantity %>
-                            <form action="/availRoutes/delete-availability/<%= availability._id %>/<%= ticket._id %>?_method=DELETE" method="POST" class="ms-2">
+                            <form action="/postRoutes/delete-availability/<%= availability._id %>/<%= ticket._id %>?_method=DELETE" method="POST" class="ms-2">
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </li>
@@ -38,29 +38,17 @@
             </div>
         </div>
     </div>
+    <br>
+    <% if (typeof messages !== 'undefined') { %>
+        <% if (messages.error) { %>
+            <div class="alert alert-danger" role="alert">
+                <%= messages.error %>
+            </div>
+        <% } %>
+        <% if (messages.success) { %>
+            <div class="alert alert-success" role="alert">
+                <%= messages.success %>
+            </div>
+        <% } %>
+    <% } %>
 </div>
-<h1>Edit Attraction</h1>
-<form action="/postRoutes/update-attraction/<%= availability._id %>" method="POST">
-    <label for="title">Name:</label>
-    <%= availability.title %><br>
-    <label for="ticketPrice">Ticket Price:</label>
-    <input type="text" id="ticketPrice" name="ticketPrice" value="<%= availability.ticketPrice %>"><br>
-    <label for="ticketQuantity">Ticket Quantity:</label>
-    <input type="text" id="ticketQuantity" name="ticketQuantity" value="<%= availability.ticketQuantity %>"><br>
-    <button type="submit">Update</button>
-</form>
-<!-- <form action="/postRoutes/delete-attraction/<%= availability._id %>?_method=DELETE" method="POST">
-    <button type="submit">Delete</button>
-</form> -->
-
-<h2>Availability</h2>
-<ul>
-    <% availability.availableTickets.forEach(ticket => { %>
-        <li>
-            Date: <%= ticket.date %>, Quantity: <%= ticket.quantity %>
-            <form action="/postRoutes/delete-availability/<%= availability._id %>/<%= ticket._id %>?_method=DELETE" method="POST">
-                <button type="submit">Delete</button>
-            </form>
-        </li>
-    <% }) %>
-</ul>

@@ -41,13 +41,7 @@
                                 </div>
                                 <button class="btn btn-primary rounded-pill py-3 px-5 mt-3" type="submit">Log In</button>
                             </form>
-                        </div><br><br>
-                        <p align="center">
-                            Doesn't have an account yet? <a href="/signup">Sign Up</a>
-                        </p>
-                        <p align="center">
-                            Forgot your password? <a href="/resetpass">Reset Password</a>
-                        </p>
+                        </div><br>
                         <!-- alert -->
                         <% if (typeof messages !== 'undefined') { %>
                             <% if (messages.error) { %>
@@ -61,6 +55,14 @@
                                 </div>
                             <% } %>
                         <% } %>
+                        <br>
+                        <p align="center">
+                            Doesn't have an account yet? <a href="/signup">Sign Up</a>
+                        </p>
+                        <p align="center">
+                            Forgot your password? <a href="/resetpass">Reset Password</a>
+                        </p>
+                        
                     </div>
                 </div>
             </div>
