@@ -5,8 +5,13 @@ const Post = require('../../models/Post');
 
 // Function to generate booking ID based on selected attraction and ticket
 function generateBookingID(ticket) {
-    return Date.now().toString() + ticket;
+    // Generate a random string of numbers
+    const randomString = Math.random().toString().substring(2, 8); // Adjust the length as needed
+
+    // Concatenate the random string, current date, and ticket value
+    return randomString + Date.now().toString() + ticket;
 }
+
 
 // Function to get attraction name based on its code
 function getAttractionName(selectedAttraction) {
