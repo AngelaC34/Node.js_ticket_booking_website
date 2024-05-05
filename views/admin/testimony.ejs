@@ -1,34 +1,53 @@
-<table class="admin-testimonies">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Review</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% testimonies.forEach(testimony => { %>
-            <tr>
-                <td><%= testimony.name %></td>
-                <td><%= testimony.review %></td>
-                <td>
-                    <form action="/testiRoutes/update-testimony/<%= testimony._id %>?_method=PUT" method="POST">
-                        <label for="status_approved_<%= testimony._id %>">
-                            <input type="radio" id="status_approved_<%= testimony._id %>" name="status" value="true" <%= testimony.status ? 'checked' : '' %>> Approved
-                        </label>
-                        <label for="status_not_approved_<%= testimony._id %>">
-                            <input type="radio" id="status_not_approved_<%= testimony._id %>" name="status" value="false" <%= !testimony.status ? 'checked' : '' %>> Not Approved
-                        </label>
-                        <input type="submit" value="Update" class="btn-update btn">
-                    </form>
-                </td>
-                <td>
-                    <form action="/testiRoutes/delete-testimony/<%= testimony._id %>?_method=DELETE" method="POST">
-                        <input type="submit" value="Delete" class="btn-delete btn">
-                    </form>
-                </td>
-            </tr>
-        <% }) %>
-    </tbody>
-</table>
+<style>
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+</style>
+
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="bg-light rounded p-4">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr class="bg-secondary text-light">
+                                <th>Name</th>
+                                <th>Review</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% testimonies.forEach(testimony => { %>
+                                <tr>
+                                    <td><%= testimony.name %></td>
+                                    <td><%= testimony.review %></td>
+                                    <td>
+                                        <form action="/testiRoutes/update-testimony/<%= testimony._id %>?_method=PUT" method="POST">
+                                            <label for="status_approved_<%= testimony._id %>">
+                                                <input type="radio" id="status_approved_<%= testimony._id %>" name="status" value="true" <%= testimony.status ? 'checked' : '' %>> Approved
+                                            </label>
+                                            <label for="status_not_approved_<%= testimony._id %>">
+                                                <input type="radio" id="status_not_approved_<%= testimony._id %>" name="status" value="false" <%= !testimony.status ? 'checked' : '' %>> Not Approved
+                                            </label>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <a href="/testiRoutes/update-testimony/<%= testimony._id %>" class="btn btn-primary">Update</a>
+                                        <form action="/testiRoutes/delete-testimony/<%= testimony._id %>?_method=DELETE" method="POST" style="display: inline;">
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
