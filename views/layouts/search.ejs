@@ -1,83 +1,31 @@
-<!-- <div class="searchBar">
-    <div class="container">
-        <form action="/search" method="POST" class="search__form" role="search">
-
-            <input type="search"
-            aria-label="Search"
-            id="searchInput"
-            name="searchTerm"
-            placeholder="Search The Site...">
-
-        </form>
-    </div>
-</div> -->
-
-<style>
-    .searchBar {
-        position: relative;
-    }
-
-    .filter-toggle {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 30px;
-        height: 30px;
-        background-color: lightgray;
-        text-align: center;
-        line-height: 30px;
-        cursor: pointer;
-    }
-
-    .filter-toggle:hover {
-        background-color: gray;
-        color: white;
-    }
-
-    .filter-inputs {
-        display: none;
-        position: absolute;
-        top: calc(100% + 10px);
-        right: 0;
-        background-color: white;
-        padding: 10px;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
-
-    .filter-inputs input[type="number"] {
-        width: 70px;
-        height: 30px;
-    }
-</style>
-
+<!-- Search Bar -->
 <div class="searchBar">
     <div class="container">
         <form action="/search" method="POST" class="search__form" role="search">
-            <div class="input-group">
-                <input type="search" id="searchInput" aria-label="Search" name="searchTerm" placeholder="Search The Site...">
-                
+            <div class="first-row">
+                <label for="searchInput" class="visually-hidden">Search</label>
+                <input type="search" id="searchInput" aria-label="Search" name="searchTerm" placeholder="Search For...">
             </div>
-            <!-- <div class="filter-toggle" onclick="toggleFilter()">Filter</div>
-            <div class="filter-inputs" id="filterInputs">
-                <div class="price-input">
-                    <input type="number" id="minPrice" aria-label="Min Price" name="minPrice" placeholder="Min">
-                    <input type="number" id="maxPrice" aria-label="Max Price" name="maxPrice" placeholder="Max">
-                </div>
-                <select name="sortBy" id="sortBy" class="form-select" aria-label="Sort By">
-                    <option value="createdAt">Newest First</option>
-                    <option value="-createdAt">Oldest First</option>
-                </select>
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div> -->
         </form>
     </div>
 </div>
 
-<script>
-    function toggleFilter() {
-        var filterInputs = document.getElementById('filterInputs');
-        filterInputs.style.display = (filterInputs.style.display === 'block') ? 'none' : 'block';
-    }
-</script>
+<!-- Filter Section -->
+<div class="container">
+    <form action="/search" method="POST" class="d-flex align-items-center justify-content-end ms-2">
+        <!-- Sort By -->
+        <select name="sortBy" id="sortBy" class="form-select me-3" aria-label="Sort By">
+            <option value="createdAt">Newest First</option>
+            <option value="-createdAt">Oldest First</option>
+        </select>
+
+        <!-- Price Input -->
+        <div class="price-input">
+            <input type="number" id="minPrice" aria-label="minPrice" name="minPrice" placeholder="Min" style="width: 70px; height: 10px;">
+            <input type="number" id="maxPrice" aria-label="maxPrice" name="maxPrice" placeholder="Max" style="width: 70px; height: 10px;">
+        </div>
+
+        <!-- Apply Filters Button -->
+        <button type="submit" class="btn btn-primary ms-5">Search</button>
+    </form>
+</div>

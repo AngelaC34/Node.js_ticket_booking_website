@@ -4,18 +4,17 @@
             <div class="bg-light rounded p-4">
                 <h3>Availability Data</h3>
                 <ul>
-                    <% availabilities.forEach(availability => { %>
+                    <% data.forEach(post => { %>
                         <li>
-                            <strong>Name:</strong> <%= availability.title %><br>
-                            <strong>Ticket Price:</strong> <%= availability.ticketPrice %><br>
-                            <strong>Ticket Quantity:</strong> <%= availability.ticketQuantity %><br>
+                            <strong>Name:</strong> <%= post.title %><br>
+                            <strong>Ticket Price:</strong> <%= post.ticketPrice %><br>
+                            <strong>Ticket Quantity:</strong> <%= post.ticketQuantity %><br>
                             <strong>Available Tickets:</strong>
                             <ul>
-                                <% availability.availableTickets.forEach(ticket => { %>
+                                <% post.availableTickets.forEach(ticket => { %>
                                     <li>Date: <%= ticket.date %>, Quantity: <%= ticket.quantity %></li>
                                 <% }) %>
                             </ul>
-                            <a href="/editavailability/<%= availability._id %>" class="btn btn-edit">Edit</a>
                         </li>
                     <% }) %>
                 </ul>

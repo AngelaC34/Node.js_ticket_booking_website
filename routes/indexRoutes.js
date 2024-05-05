@@ -102,7 +102,7 @@ router.post('/search', async function(req, res) {
         let filter = {}; 
 
         if (!isNaN(minPrice) && !isNaN(maxPrice)) {
-            filter.price = { $gte: minPrice, $lte: maxPrice };
+            filter.ticketPrice = { $gte: minPrice, $lte: maxPrice };
         }
 
         const query = {};
@@ -134,10 +134,6 @@ router.post('/search', async function(req, res) {
     }
 });
 
-
-
-
-
 //Test Insert
 function insertPostData () {
     Post.insertMany([
@@ -149,26 +145,6 @@ function insertPostData () {
         }
     ])
 }
-
-// insertPostData();
-
-// router.post('/search', async function(req, res) {
-//     try {
-//         const locals = {
-//             title: 'Search',
-//             description: 'Page Description',
-//             header: 'Page Header',
-//             layout: 'mainlayout.ejs',
-//             post: post
-//         };
-//         res.render('search', locals);
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// });
-
-
 
 // profile
 router.get('/profile', checkAuthenticated, async function(req, res) {
@@ -231,14 +207,24 @@ router.get('/about', function(req, res) {
 });
 
 // buy tickets
-router.get('/buytickets', checkAuthenticated, function(req, res) {
-    var locals = {
-        title: 'Buy Tickets',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-    };
-    res.render('buytickets.ejs', locals);
+router.get('/buytickets', checkAuthenticated, async function(req, res) {
+    try {
+        // Assuming Post is your Mongoose model
+        const data = await Post.find();
+
+        const locals = {
+            title: 'Buy Tickets',
+            description: 'Page Description',
+            header: 'Page Header',
+            layout: 'mainlayout.ejs',
+            data: data  // Pass the fetched data to the view
+        };
+
+        res.render('buytickets.ejs', locals);
+    } catch (error) {
+        console.error("Error fetching post data:", error);
+        res.status(500).send("An error occurred while fetching post data. Please try again later.");
+    }
 });
 
 
@@ -340,26 +326,26 @@ router.get('/ticketbooking', async function(req, res) {
 
 // ticket availability
 router.get('/ticketavailability', async function(req, res) {
-    const availabilities = await Post.find();
+    const data = await Post.find();
     var locals = {
         title: 'Ticket Availability',
         description: 'Page Description',
         header: 'Page Header',
         layout:'adminlayout.ejs',
-        availabilities: availabilities
+        data: data
     };
     res.render('admin/ticketavailability.ejs', locals);
 });
 
 // edit availability
 router.get('/editavailability/:id', async function(req, res) {
-    const availability = await Post.findById(req.params.id);
+    const data = await Post.findById(req.params.id);
     var locals = {
         title: 'Edit Availability',
         description: 'Page Description',
         header: 'Page Header',
         layout:'adminlayout.ejs',
-        availability: availability
+        data: data
     };
     res.render('admin/editavailability.ejs', locals);
 });
@@ -428,6 +414,33 @@ router.get('/add-post', async function(req, res) {
     };
 });
 
+//Add Post
+router.post('/add-post', async function(req, res) {
+    try {
+        const { title, body, imageUrl, ticketPrice } = req.body;
+
+        // Check if any required parameter is missing
+        if (!title || !body || !imageUrl || !ticketPrice) {
+            throw new Error("All fields are required.");
+        }
+
+        const newPost = new Post({
+            title,
+            body,
+            imageUrl,
+            ticketPrice
+        });
+
+        await Post.create(newPost);
+        return res.redirect('/blog?success=true');
+    } catch (error) {
+        console.error("Error adding blog post:", error);
+        res.redirect(`/add-post?error=${encodeURIComponent(error.message)}`);
+    }
+});
+
+
+//Edit Get
 router.get('/edit-post/:id', async function(req, res) {
     try {
         const data = await Post.findOne({ _id: req.params.id });
@@ -445,4 +458,38 @@ router.get('/edit-post/:id', async function(req, res) {
         console.error("Error fetching blog post:", error);
     }
 });
+
+//Edit Put
+router.put('/edit-post/:id', async function(req, res) {
+    try {
+        // Check if any required field is empty
+        if (!req.body.title || !req.body.body || !req.body.imageUrl || !req.body.ticketPrice) {
+            throw new Error("All fields are required."); // Throw an error if any field is empty
+        }
+
+        await Post.findByIdAndUpdate(req.params.id, {
+            title: req.body.title,
+            body: req.body.body,
+            imageUrl: req.body.imageUrl,
+            ticketPrice: req.body.ticketPrice,
+            updatedAt: Date.now()
+        });
+        res.redirect(`/edit-post/${req.params.id}?success=true`); // Pass success query parameter if successfully updated
+    } catch (error) {
+        console.error("Error updating blog post:", error);
+        res.redirect(`/edit-post/${req.params.id}?error=${encodeURIComponent(error.message)}`); // Pass error message in query parameter
+    }
+});
+
+//Delete Post
+router.delete('/delete-post/:id', async function(req, res) {
+    try {
+        await Post.deleteOne( { _id: req.params.id } );
+        return res.redirect('/blog?success=true');
+    } catch (error) {
+        console.error("Error fetching blog posts:", error);
+        res.redirect(`/blog?error=${encodeURIComponent(error.message)}`);
+    };
+});
+
 module.exports = router;
