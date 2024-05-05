@@ -209,17 +209,15 @@ router.get('/about', function(req, res) {
 // buy tickets
 router.get('/buytickets', checkAuthenticated, async function(req, res) {
     try {
-        // Assuming Post is your Mongoose model
         const data = await Post.find();
-
-        // Pass the fetched data and success variable to the view
         const locals = {
             title: 'Buy Tickets',
             description: 'Page Description',
             header: 'Page Header',
             layout: 'mainlayout.ejs',
-            data: data,  // Post data
-            success: req.flash('success')[0]  // Flash message
+            data: data, 
+            success: req.flash('success')[0],  
+            error: req.flash('error')[0]
         };
 
         res.render('buytickets.ejs', locals);
@@ -484,6 +482,7 @@ router.get('/edit-post/:id', checkAuthenticatedAdmin, async function(req, res) {
         console.error("Error fetching blog post:", error);
     }
 });
+
 
 
 module.exports = router;

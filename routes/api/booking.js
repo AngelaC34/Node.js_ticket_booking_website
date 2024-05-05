@@ -127,7 +127,14 @@ router.post('/create-booking', async (req, res) => {
     const attractionName = getAttractionName(req.body.attraction);
     const bookedDate = req.body.date;
     const bookedQuantity = req.body.ticket;
-    const totalPrice = await calculateTotalPrice(bookedQuantity); // Implement your logic to calculate total price
+
+    // Check if all required fields are filled
+    if (!attractionName || !bookedDate || !bookedQuantity) {
+        // Set a flash message for the error
+        req.flash('error', 'Please fill out all required fields.');
+        // Redirect back to buy tickets screen with error alert
+        return res.redirect('/buytickets?success=false');
+    }
 
     try {
         const availabilityCheck = await updateAvailability(attractionName, bookedDate, bookedQuantity);
@@ -136,6 +143,8 @@ router.post('/create-booking', async (req, res) => {
             // Handle case where tickets are not available or attraction is not found
             return res.status(400).json({ message: availabilityCheck.message });
         }
+
+        const totalPrice = await calculateTotalPrice(bookedQuantity); // Implement your logic to calculate total price
 
         // Create the booking if availability check passes
         const booking = new Booking({
@@ -163,9 +172,14 @@ router.post('/create-booking', async (req, res) => {
         return res.redirect('/buytickets?success=true');
     } catch (err) {
         console.error('Error creating booking:', err);
-        res.status(500).json({ message: 'Internal server error.' });
+        // Set a flash message for the error
+        req.flash('error', 'Failed to create booking. Please try again.');
+        // Redirect back to buy tickets screen with error alert
+        return res.redirect('/buytickets?success=false');
     }
 });
+
+
 
 
 // update booking contact details for users

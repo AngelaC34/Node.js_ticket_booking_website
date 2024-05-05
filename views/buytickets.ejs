@@ -55,10 +55,19 @@
             </div>
             <div class="col-md-6">
                 <% if (success) { %>
-                <div class="alert alert-success" role="alert">
-                    <strong>Success!</strong> Booking created for <%= success.attractionName %> for <%= success.bookedQuantity %> tickets on <%= success.bookedDate %> (Total Price: <%= success.totalPrice %>).
-                </div>
+                    <div class="alert alert-success" role="alert">
+                        <strong>Success!</strong> Booking created for <%= success.attractionName %> for <%= success.bookedQuantity %> tickets on <%= success.bookedDate %> (Total Price: <%= success.totalPrice %>).
+                    </div>
                 <% } %>
+                
+                <% if (error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Error!</strong> <%= error %>
+                    </div>
+                <% } %>
+                
+                             
+                
                 <form action="/api/booking/create-booking" method="POST" novalidate>
                     <div class="form-group">
                         <label for="attraction">Attraction</label>
