@@ -127,7 +127,7 @@ router.post('/create-booking', async (req, res) => {
     const attractionName = getAttractionName(req.body.attraction);
     const bookedDate = req.body.date;
     const bookedQuantity = req.body.ticket;
-    const totalPrice = calculateTotalPrice(bookedQuantity); // Implement your logic to calculate total price
+    const totalPrice = await calculateTotalPrice(bookedQuantity); // Implement your logic to calculate total price
 
     try {
         const availabilityCheck = await updateAvailability(attractionName, bookedDate, bookedQuantity);
@@ -158,7 +158,7 @@ router.post('/create-booking', async (req, res) => {
             attractionName: attractionName,
             bookedQuantity: bookedQuantity,
             bookedDate: bookedDate,
-            totalPrice: totalPrice
+            totalPrice: totalPrice // Set totalPrice directly without calling toString()
         });
         return res.redirect('/buytickets?success=true');
     } catch (err) {
@@ -166,6 +166,7 @@ router.post('/create-booking', async (req, res) => {
         res.status(500).json({ message: 'Internal server error.' });
     }
 });
+
 
 // update booking contact details for users
 router.put('/update-booking-user/:id', async (req, res) => {
