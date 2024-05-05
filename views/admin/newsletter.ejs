@@ -1,21 +1,31 @@
-<form action="/send-email" method="POST">
-    <label for="subject">Subject:</label>
-    <input type="text" id="subject" name="subject" required><br><br>
-    <label for="text">Message:</label>
-    <textarea id="text" name="text" rows="4" cols="50" required></textarea><br><br>
-    <button type="submit">Send Email</button>
-</form>
-
-<!-- alert -->
-<% if (typeof messages !== 'undefined') { %>
-    <% if (messages.error) { %>
-        <div class="alert alert-danger" role="alert">
-            <%= messages.error %>
+<div class="container">
+    <div class="row" style="margin-left: 2px;">
+        <div class="col-md-6">
+            <form action="/send-email" method="POST">
+                <div class="mb-3">
+                    <label for="subject" class="form-label" style="margin-top: 20px;">Subject:</label>
+                    <input type="text" id="subject" name="subject" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="text" class="form-label">Message:</label>
+                    <textarea id="text" name="text" class="form-control" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Email</button>
+            </form>
         </div>
-    <% } %>
-    <% if (messages.success) { %>
-        <div class="alert alert-success" role="alert">
-            <%= messages.success %>
+        <div class="col-md-6">
+            <% if (typeof messages !== 'undefined') { %>
+                <% if (messages.error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= messages.error %>
+                    </div>
+                <% } %>
+                <% if (messages.success) { %>
+                    <div class="alert alert-success" role="alert">
+                        <%= messages.success %>
+                    </div>
+                <% } %>
+            <% } %>
         </div>
-    <% } %>
-<% } %>
+    </div>
+</div>

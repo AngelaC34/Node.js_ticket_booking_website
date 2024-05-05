@@ -174,20 +174,109 @@ router.get('/post/:id', async function(req, res) {
 
 //Search
 
+// router.post('/search', async function(req, res) {
+//     try {
+//         let searchTerm = req.body.searchTerm;
+//         const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9]/g, "")
+//         const data = await Post.find({
+//             $or: [
+//                 {
+//                     title: { $regex: new RegExp(searchNoSpecialChar, 'i')}            
+//                 },
+//                 {
+//                     body: { $regex: new RegExp(searchNoSpecialChar, 'i')},    
+//                 }
+//             ]
+//         });
+
+//         const locals = {
+//             title: 'Search',
+//             description: 'Page Description',
+//             layout: 'mainlayout.ejs',
+//             data: data
+//         };
+
+
+//         res.render("search",locals); // Redirect to the search page
+//     } catch (error) {
+//         console.log(error);
+//     }
+// });
+
+// router.post('/search', async function(req, res) {
+//     try {
+//         let searchTerm = req.body.searchTerm;
+//         const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9]/g, "");
+//         let sortBy = req.body.sortBy || 'createdAt'; // Default sort by createdAt
+//         let sortOrder = parseInt(req.body.sortOrder) || -1; // Default sort order descending
+//         let minPrice = parseInt(req.body.minPrice);
+//         let maxPrice = parseInt(req.body.maxPrice);
+
+//         let filter = {}; 
+
+//         if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+//             filter.price = { $gte: minPrice, $lte: maxPrice };
+//         }
+
+//         const query = {
+//             $or: [
+//                 { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
+//                 { body: { $regex: new RegExp(searchNoSpecialChar, 'i') } }
+//             ],
+//             ...filter
+//         };
+
+//         const data = await Post.find(query).sort({ [sortBy]: sortOrder });
+
+//         const locals = {
+//             title: 'Search',
+//             description: 'Page Description',
+//             layout: 'mainlayout.ejs',
+//             data: data
+//         };
+
+//         res.render("search", locals);
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send('Internal Server Error');
+//     }
+// });
+
 router.post('/search', async function(req, res) {
     try {
         let searchTerm = req.body.searchTerm;
-        const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9]/g, "")
-        const data = await Post.find({
-            $or: [
-                {
-                    title: { $regex: new RegExp(searchNoSpecialChar, 'i')}            
-                },
-                {
-                    body: { $regex: new RegExp(searchNoSpecialChar, 'i')},    
-                }
-            ]
-        });
+        let searchNoSpecialChar = '';
+
+        // Check if search term is provided
+        if (searchTerm) {
+            searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9]/g, "");
+        }
+
+        let sortBy = req.body.sortBy || 'createdAt'; // Default sort by createdAt
+        let sortOrder = parseInt(req.body.sortOrder) || -1; // Default sort order descending
+        let minPrice = parseInt(req.body.minPrice);
+        let maxPrice = parseInt(req.body.maxPrice);
+
+        let filter = {}; 
+
+        if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+            filter.price = { $gte: minPrice, $lte: maxPrice };
+        }
+
+        const query = {};
+
+        // If search term is provided, add it to the query
+        if (searchNoSpecialChar) {
+            query.$or = [
+                { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
+                { body: { $regex: new RegExp(searchNoSpecialChar, 'i') } }
+            ];
+        }
+
+        // Merge the filter with the query
+        Object.assign(query, filter);
+
+        const data = await Post.find(query).sort({ [sortBy]: sortOrder });
 
         const locals = {
             title: 'Search',
@@ -196,13 +285,30 @@ router.post('/search', async function(req, res) {
             data: data
         };
 
-
-        res.render("search",locals); // Redirect to the search page
+        res.render("search", locals);
     } catch (error) {
         console.log(error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
+
+
+
+
+//Test Insert
+function insertPostData () {
+    Post.insertMany([
+        {
+            title: "SuperTree Observatory",
+            body: "The SuperTree Observatory has many good sights",
+            imageUrl: "https://www.gardensbythebay.com.sg/content/dam/gbb-2021/image/things-to-do/attractions/supertree-observatory/custom/supertree-observatory3-1670x940.jpg.renderimage.455.256.jpg",
+            price: "75$ SGD"
+        }
+    ])
+}
+
+// insertPostData();
 
 // router.post('/search', async function(req, res) {
 //     try {
@@ -219,6 +325,8 @@ router.post('/search', async function(req, res) {
 //         res.status(500).send('Internal Server Error');
 //     }
 // });
+
+
 
 // profile
 router.get('/profile', checkAuthenticated, async function(req, res) {
@@ -291,16 +399,16 @@ router.get('/buytickets', checkAuthenticated, function(req, res) {
     res.render('buytickets.ejs', locals);
 });
 
-// cloud forest
-router.get('/cloudforest', function(req, res) {
-    var locals = {
-        title: 'Cloud Forest',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-    };
-    res.render('cloudforest.ejs', locals);
-});
+// // cloud forest
+// router.get('/cloudforest', function(req, res) {
+//     var locals = {
+//         title: 'Cloud Forest',
+//         description: 'Page Description',
+//         header: 'Page Header',
+//         layout:'mainlayout.ejs'
+//     };
+//     res.render('cloudforest.ejs', locals);
+// });
 
 // contact
 router.get('/contact', function(req, res) {
@@ -313,38 +421,38 @@ router.get('/contact', function(req, res) {
     res.render('contact.ejs', locals);
 });
 
-// dragonfly
-router.get('/dragonfly', function(req, res) {
-    var locals = {
-        title: 'Dragonfly',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-    };
-    res.render('dragonfly.ejs', locals);
-});
+// // dragonfly
+// router.get('/dragonfly', function(req, res) {
+//     var locals = {
+//         title: 'Dragonfly',
+//         description: 'Page Description',
+//         header: 'Page Header',
+//         layout:'mainlayout.ejs'
+//     };
+//     res.render('dragonfly.ejs', locals);
+// });
 
-// floral fantasy
-router.get('/floralfantasy', function(req, res) {
-    var locals = {
-        title: 'Floral Fantasy',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-    };
-    res.render('floralfantasy.ejs', locals);
-});
+// // floral fantasy
+// router.get('/floralfantasy', function(req, res) {
+//     var locals = {
+//         title: 'Floral Fantasy',
+//         description: 'Page Description',
+//         header: 'Page Header',
+//         layout:'mainlayout.ejs'
+//     };
+//     res.render('floralfantasy.ejs', locals);
+// });
 
-// flower dome
-router.get('/flowerdome', function(req, res) {
-    var locals = {
-        title: 'Flower Dome',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-    };
-    res.render('flowerdome.ejs', locals);
-});
+// // flower dome
+// router.get('/flowerdome', function(req, res) {
+//     var locals = {
+//         title: 'Flower Dome',
+//         description: 'Page Description',
+//         header: 'Page Header',
+//         layout:'mainlayout.ejs'
+//     };
+//     res.render('flowerdome.ejs', locals);
+// });
 
 // our history
 router.get('/ourhistory', function(req, res) {
@@ -368,27 +476,27 @@ router.get('/ourstory', function(req, res) {
     res.render('ourstory.ejs', locals);
 });
 
-// serene garden
-router.get('/serenegarden', function(req, res) {
-    var locals = {
-        title: 'Serene Garden',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-    };
-    res.render('serenegarden.ejs', locals);
-});
+// // serene garden
+// router.get('/serenegarden', function(req, res) {
+//     var locals = {
+//         title: 'Serene Garden',
+//         description: 'Page Description',
+//         header: 'Page Header',
+//         layout:'mainlayout.ejs'
+//     };
+//     res.render('serenegarden.ejs', locals);
+// });
 
-// super tree observatory
-router.get('/supertreeobservatory', function(req, res) {
-    var locals = {
-        title: 'Supertree Observatory',
-        description: 'Page Description',
-        header: 'Page Header',
-        layout:'mainlayout.ejs'
-    };
-    res.render('supertreeobservatory.ejs', locals);
-});
+// // super tree observatory
+// router.get('/supertreeobservatory', function(req, res) {
+//     var locals = {
+//         title: 'Supertree Observatory',
+//         description: 'Page Description',
+//         header: 'Page Header',
+//         layout:'mainlayout.ejs'
+//     };
+//     res.render('supertreeobservatory.ejs', locals);
+// });
 
 // sustainability efforts
 router.get('/sustainabilityefforts', function(req, res) {
@@ -501,6 +609,107 @@ router.get('/newsletter', function(req, res) {
         layout:'adminlayout.ejs'
     };
     res.render('admin/newsletter.ejs', locals);
+});
+
+//Admin Posts
+router.get('/blog', async function(req, res) {
+    try {
+        const data = await Post.find();
+        var locals = {
+            title: 'Blog',
+            description: 'Page Description',
+            header: 'Page Header',
+            layout:'adminlayout.ejs',
+            data: data
+        };
+        res.render('admin/blog.ejs', locals);
+    } catch (error) {
+        console.error("Error fetching blog posts:", error);
+        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
+    };
+});
+
+router.get('/add-post', async function(req, res) {
+    try {
+        const data = await Post.find();
+        const locals = {
+            title: 'Add Blog',
+            description: 'Page Description',
+            header: 'Page Header',
+            layout:'adminlayout.ejs',
+            data: data
+        };
+        res.render('admin/add-post.ejs', locals);
+    } catch (error) {
+        console.error("Error fetching blog posts:", error);
+        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
+    };
+});
+
+router.post('/add-post', async function(req, res) {
+    try {
+
+        try{
+            const newPost = new Post({
+                title: req.body.title,
+                body: req.body.body,
+                imageUrl: req.body.imageUrl,
+                price: req.body.price
+            });
+            await Post.create(newPost);
+            res.redirect('/blog');
+        }
+        catch (error){
+            console.log(error);
+        }
+
+    } catch (error) {
+        console.error("Error fetching blog posts:", error);
+        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
+    };
+});
+
+router.get('/edit-post/:id', async function(req, res) {
+    try {
+        const data = await Post.findOne({ _id: req.params.id });
+        const locals = {
+            title: 'Edit Blog',
+            description: 'Page Description',
+            header: 'Page Header',
+            layout:'adminlayout.ejs',
+            data: data
+        };
+        res.render('admin/edit-post.ejs', locals);
+    } catch (error) {
+        console.error("Error fetching blog posts:", error);
+        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
+    };
+});
+
+router.put('/edit-post/:id', async function(req, res) {
+    try {
+        await Post.findByIdAndUpdate(req.params.id, {
+            title: req.body.title,
+            body: req.body.body,
+            imageUrl: req.body.imageUrl,
+            price: req.body.price,
+            updatedAt: Date.now()
+        });
+        res.redirect(`/edit-post/${req.params.id}`);
+    } catch (error) {
+        console.error("Error fetching blog posts:", error);
+        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
+    };
+});
+
+router.delete('/delete-post/:id', async function(req, res) {
+    try {
+        await Post.deleteOne( { _id: req.params.id } );
+        res.redirect(`/blog`); 
+    } catch (error) {
+        console.error("Error fetching blog posts:", error);
+        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
+    };
 });
 
 module.exports = router;
