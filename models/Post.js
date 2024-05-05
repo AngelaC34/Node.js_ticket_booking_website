@@ -21,18 +21,10 @@ const PostSchema = new Schema({
     ticketQuantity: {
         type: Number,
         required: true,
-        default: 0
     },
     availableTickets: [{
-        date: {
-            type: Date,
-            required: false
-        },
-        quantity: {
-            type: Number,
-            required: false,
-            default: 0
-        }
+        date: { type: Date, required: false },
+        quantity: { type: Number, required: false, default: 0 },
     }],
     createdAt: {
         type: Date,
