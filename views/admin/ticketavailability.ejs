@@ -2,51 +2,11 @@
     <div class="row g-4">
         <div class="col-sm-12 col-xl-4">
             <div class="bg-light rounded p-4">
-                <h3>Add New Attraction</h3>
-                <form id="availabilityForm" action="/availRoutes/create-availability" method="POST">
-                    <div class="mb-3">
-                        <label for="attractionName" class="form-label">Attraction Name:</label>
-                        <input type="text" id="attractionName" name="attractionName" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="ticketPrice" class="form-label">Ticket Price:</label>
-                        <input type="number" id="ticketPrice" name="ticketPrice" class="form-control" min="0" step="0.01" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="ticketQuantity" class="form-label">Quantity Available:</label>
-                        <input type="number" id="ticketQuantity" name="ticketQuantity" class="form-control" min="0" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
-        </div>
-        <div class="col-sm-12 col-xl-4">
-            <div class="bg-light rounded p-4">
-                <h3>Update Availability</h3>
-                <form id="availabilityForm" action="/availRoutes/update-availability" method="POST">
-                    <div class="mb-3">
-                        <label for="attractionName" class="form-label">Attraction Name:</label>
-                        <input type="text" id="attractionName" name="attractionName" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="bookedDate" class="form-label">Booked Date:</label>
-                        <input type="date" id="bookedDate" name="bookedDate" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="bookedQuantity" class="form-label">Booked Quantity:</label>
-                        <input type="number" id="bookedQuantity" name="bookedQuantity" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update Availability</button>
-                </form>
-            </div>
-        </div>
-        <div class="col-sm-12 col-xl-4">
-            <div class="bg-light rounded p-4">
                 <h3>Availability Data</h3>
                 <ul>
                     <% availabilities.forEach(availability => { %>
                         <li>
-                            <strong>Name:</strong> <%= availability.name %><br>
+                            <strong>Name:</strong> <%= availability.title %><br>
                             <strong>Ticket Price:</strong> <%= availability.ticketPrice %><br>
                             <strong>Ticket Quantity:</strong> <%= availability.ticketQuantity %><br>
                             <strong>Available Tickets:</strong>
