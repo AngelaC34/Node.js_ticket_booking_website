@@ -1,7 +1,13 @@
 const express = require('express');
 const router = express.Router();
+
 const nodemailer = require('nodemailer');
+const {v4: uuidv4} = require('uuid');
+
 const User = require('../models/User');
+// const UserVerification = require('../models/UserVerification');
+
+require('dotenv').config(); 
 
 // Nodemailer transporter setup
 const transporter = nodemailer.createTransport({
@@ -9,6 +15,17 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.USER,
         pass: process.env.PASS
+    }
+});
+
+//Transporter verification
+transporter.verify((error, success) => {
+    if(error) {
+        console.log(error);
+    }
+    else {
+        console.log("Ready for messages");
+        console.log(success);
     }
 });
 

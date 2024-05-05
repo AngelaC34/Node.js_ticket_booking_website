@@ -3,6 +3,20 @@ const router = express.Router();
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
+const UserVerification = require('../models/UserVerification');
+
+const nodemailer = require('nodemailer');
+const {v4: uuidv4} = require('uuid');
+
+require('dotenv').config(); 
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.USER,
+        pass: process.env.PASS
+    }
+});
 
 // get all user
 router.get('/', async (req, res) => {
@@ -37,15 +51,74 @@ router.post('/signup', async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             password: hashedPassword,
-            admin: false
+            admin: false,
+            verified: false,
     });
     await users.save()
+                .then((result) => {
+                    // account verification
+                    sendVerificationEmail(result, res)
+                })
     res.redirect('/login');
     }    catch(err)    {
         console.log(err)
         res.redirect('/signup');
     }
 });
+
+// Verification Function
+const sendVerificationEmail = ({_id, email}, res) => {
+    const currentUrl = 'https://localhost:3000/';
+    const uniqueString = uuidv4() + _id;
+    const mailOptions = {
+        from: process.dotenv.USER,
+        to: email,
+        subject: "Verify your email",
+        html: '<p>Verify your email address to complete signup and login the page</p><p>This link <b>expires in six hours<b></p><p>Press <a href=${currentUrl + "user/verify/" + _id + "/" + uniqueString}>here<a> to proceed</p>'
+    }; 
+
+    const saltRounds = 10;
+    bycrypt.hash(uniqueString, saltRounds)
+    .then((hashedUniqueString) => {
+        const newVerification = new UserVerification({
+            userId: _id,
+            uniqueString: hashedUniqueString,
+            createdAt: Date.now(),
+            expiresAt: Date.now() + 21600000
+        });
+        newVerification
+        .save()
+        .then(() => {
+            transporter.sendMail(mailOptions)
+            .then(() => {
+                res.json({
+                    status: 'PENDING',
+                    message: "Verification email sent",
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+                res.json({
+                    status: 'FAILED',
+                    message: "Verification email failed",
+                });
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+            res.json({
+                status: 'FAILED',
+                message: "Couldn't save verification email data!",
+            });
+        })
+    })
+    .catch(() => {
+        res.json({
+            status: 'FAILED',
+            message: 'An error occured while hashing email data',
+        })
+    })
+};
 
 router.delete('/logout', (req, res, next) => {
     req.logOut(function

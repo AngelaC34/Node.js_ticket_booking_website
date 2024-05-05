@@ -16,6 +16,9 @@ const UserSchema = new Schema({
     admin: {
         type: Boolean,
         required: true
+    },
+    verified: {
+        type: Boolean,
     }
 });
 

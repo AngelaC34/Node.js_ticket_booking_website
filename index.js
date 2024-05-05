@@ -34,7 +34,6 @@ app.use (methodOverride('_method'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
 // Connect MongoDB
 mongoose.connect(process.env.MONGO_URL).then(() => {
   console.log(`MongoDB connected at ${process.env.MONGO_URL}`);
@@ -59,9 +58,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use("/api/booking", require("./routes/api/booking"));
-app.use('/', require("./routes/indexRoutes"));
+app.use('/home', require("./routes/indexRoutes"));
 app.use('/authRoutes', require("./routes/authRoutes"));
-app.use('/', require("./routes/emailRoutes"));
+app.use('/home', require("./routes/emailRoutes"));
 app.use('/testiRoutes', require("./routes/testiRoutes"));
 
 const port = process.env.PORT || 5000;
