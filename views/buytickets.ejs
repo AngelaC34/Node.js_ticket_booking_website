@@ -61,10 +61,9 @@
                     <div class="form-group">
                         <label for="attraction">Attraction</label>
                         <select class="form-control" id="attraction" name="attraction" required>
-                            <option value="A">Flower Dome</option>
-                            <option value="B">Cloud Forest</option>
-                            <option value="C">Floral Fantasy</option>
-                            <option value="D">Supertree Observatory</option>
+                            <% data.forEach(post => { %>
+                                <option value="<%= post._id %>"><%= post.title %></option>
+                            <% }) %>
                         </select>
                     </div>
                     <div class="form-group">
@@ -79,6 +78,43 @@
                         <label for="phone">Phone number</label>
                         <input type="text" class="form-control" id="phone" name="phone" required>
                     </div>
+                    <!-- Add a placeholder for displaying the price -->
+                    <div id="priceContainer" style="display: none;">
+                        <label for="price">Ticket Price</label>
+                        <input type="text" id="price" class="form-control" readonly>
+                    </div>
+
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const attractionSelect = document.getElementById('attraction');
+                        const priceContainer = document.getElementById('priceContainer');
+                        const priceInput = document.getElementById('price');
+
+                        // Add event listener for the change event on the select element
+                        attractionSelect.addEventListener('change', function() {
+                            // Get the selected option
+                            const selectedOption = attractionSelect.options[attractionSelect.selectedIndex];
+
+                            // Check if an option is selected
+                            if (selectedOption) {
+                                // Retrieve the post object from the data-attraction attribute
+                                const post = JSON.parse(selectedOption.dataset.attraction);
+
+                                // Retrieve the price from the post object
+                                const price = post.ticketPrice;
+
+                                // Display the price in the price input
+                                priceInput.value = price;
+
+                                // Show the price container
+                                priceContainer.style.display = 'block';
+                            } else {
+                                // Hide the price container if no option is selected
+                                priceContainer.style.display = 'none';
+                            }
+                        });
+                    });
+                    </script>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <br><br>
                 </form>
