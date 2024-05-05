@@ -2,40 +2,42 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
 
-// create new post
+//Add Post
 router.post('/add-post', async function(req, res) {
     try {
-        // Check if the availability already exists for the attraction
-        const existingPost = await Post.findOne({ title: req.body.attractionName });
-        if (existingPost) {
-            // If availability already exists, you can handle it here, such as returning an error response
-            // return res.status(400).json({ message: 'Availability for this attraction already exists.' });
-        }
-        try{
-            const newPost = new Post({
-                title: req.body.title,
-                body: req.body.body,
-                imageUrl: req.body.imageUrl,
-                ticketPrice: req.body.ticketPrice,
-                ticketQuantity: req.body.ticketQuantity,
-                availableTickets: []
-            });
-            await Post.create(newPost);
-            res.redirect('/blog');
-        }
-        catch (error){
-            console.log(error);
+        const { title, body, imageUrl, ticketPrice, ticketQuantity} = req.body;
+
+        // Check if any required parameter is missing
+        if (!title || !body || !imageUrl || !ticketPrice || !ticketQuantity) {
+            throw new Error("All fields are required.");
         }
 
+        const newPost = new Post({
+            title: req.body.title,
+            body: req.body.body,
+            imageUrl: req.body.imageUrl,
+            ticketPrice: req.body.ticketPrice,
+            ticketQuantity: req.body.ticketQuantity,
+            availableTickets: []
+        });
+
+        await Post.create(newPost);
+        return res.redirect('/blog?success=true');
     } catch (error) {
-        console.error("Error fetching blog posts:", error);
-        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
-    };
+        console.error("Error adding blog post:", error);
+        res.redirect(`/add-post?error=${encodeURIComponent(error.message)}`);
+    }
 });
 
-// update post details
+//Edit Put
 router.put('/edit-post/:id', async function(req, res) {
     try {
+        // Check if any required field is empty
+        const { title, body, imageUrl, ticketPrice, ticketQuantity} = req.body;
+        if (!title || !body || !imageUrl || !ticketPrice || !ticketQuantity) {
+            throw new Error("All fields are required.");
+        }
+
         await Post.findByIdAndUpdate(req.params.id, {
             title: req.body.title,
             body: req.body.body,
@@ -44,11 +46,11 @@ router.put('/edit-post/:id', async function(req, res) {
             ticketQuantity: req.body.ticketQuantity,
             updatedAt: Date.now()
         });
-        res.redirect(`/edit-post/${req.params.id}`);
+        res.redirect(`/edit-post/${req.params.id}?success=true`); // Pass success query parameter if successfully updated
     } catch (error) {
-        console.error("Error fetching blog posts:", error);
-        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
-    };
+        console.error("Error updating blog post:", error);
+        res.redirect(`/edit-post/${req.params.id}?error=${encodeURIComponent(error.message)}`); // Pass error message in query parameter
+    }
 });
 
 // Route to update attraction (name, ticket price, ticket quantity)
@@ -79,15 +81,14 @@ router.post('/update-attraction/:id', async (req, res) => {
     res.redirect('/editavailability/' + req.params.id);
 });
 
-
-// delete post
+//Delete Post
 router.delete('/delete-post/:id', async function(req, res) {
     try {
         await Post.deleteOne( { _id: req.params.id } );
-        res.redirect(`/blog`); 
+        return res.redirect('/blog?success=true');
     } catch (error) {
         console.error("Error fetching blog posts:", error);
-        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
+        res.redirect(`/blog?error=${encodeURIComponent(error.message)}`);
     };
 });
 
