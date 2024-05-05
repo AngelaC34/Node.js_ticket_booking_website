@@ -4,48 +4,21 @@ const Booking = require('../../models/Booking');
 const Post = require('../../models/Post');
 
 // Function to generate booking ID based on selected attraction and ticket
-function generateBookingID(selectedAttraction, ticket) {
-    var attractionCode = '';
-    switch (selectedAttraction) {
-        case 'A':
-            attractionCode = 'FD';
-            break;
-        case 'B':
-            attractionCode = 'CF';
-            break;
-        case 'C':
-            attractionCode = 'FF';
-            break;
-        case 'D':
-            attractionCode = 'SO';
-            break;
-    }
-    return attractionCode + Date.now().toString() + ticket;
+function generateBookingID(ticket) {
+    return Date.now().toString() + ticket;
 }
 
 // Function to get attraction name based on its code
 function getAttractionName(selectedAttraction) {
-    var attractionName = '';
-    switch (selectedAttraction) {
-        case 'A':
-            attractionName = 'Flower Dome';
-            break;
-        case 'B':
-            attractionName = 'Cloud Forest';
-            break;
-        case 'C':
-            attractionName = 'Floral Fantasy';
-            break;
-        case 'D':
-            attractionName = 'Supertree Observatory';
-            break;
-    }
-    return attractionName;
+    return selectedAttraction;
 }
+
 
 // Function to update availability
 async function updateAvailability(attractionName, bookedDate, bookedQuantity) {
     try {
+        console.log('Attraction Name:', attractionName);
+
         // Find the availability record by attraction name
         const availability = await Post.findOne({ title: attractionName });
 
@@ -144,7 +117,7 @@ router.post('/create-booking', async (req, res) => {
             date: bookedDate,
             phone: req.body.phone,
             email: req.user.email,
-            bookingID: generateBookingID(attractionName, bookedQuantity),
+            bookingID: generateBookingID(bookedQuantity),
             status: true
         });
 
