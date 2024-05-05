@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const router = Router();
 const Booking = require('../../models/Booking');
+const { updateAvailability } = require('../availRoutes');
 
 // Function to generate booking ID based on selected attraction and ticket
 function generateBookingID(selectedAttraction, ticket) {
@@ -56,29 +57,64 @@ router.get('/', async (req, res) => {
 });
 
 // post new booking for user
+// router.post('/create-booking', async (req, res) => {
+//     const booking = new Booking({
+//         userID: req.user.id,
+//         name: req.user.name,
+//         attractionName: getAttractionName(req.body.attraction),
+//         ticket: req.body.ticket,
+//         date: req.body.date,
+//         phone: req.body.phone,
+//         email: req.user.email,
+//         bookingID: generateBookingID(req.body.attraction, req.body.ticket),
+//         status: true
+//     });
+//     try
+//     {
+//         const newBooking = await booking.save();
+//         // res.status(201).json(newBooking);
+//     }
+//     catch (err)
+//     {
+//         console.error('Error saving booking:', err);
+//         // res.status(400).json({message: err.message});
+//     }
+//     res.redirect('/home');
+// });
+
+
 router.post('/create-booking', async (req, res) => {
-    const booking = new Booking({
-        userID: req.user.id,
-        name: req.user.name,
-        attractionName: getAttractionName(req.body.attraction),
-        ticket: req.body.ticket,
-        date: req.body.date,
-        phone: req.body.phone,
-        email: req.user.email,
-        bookingID: generateBookingID(req.body.attraction, req.body.ticket),
-        status: true
-    });
-    try
-    {
+    const attractionName = getAttractionName(req.body.attraction);
+    const bookedDate = req.body.date;
+    const bookedQuantity = req.body.ticket;
+
+    try {
+        const availabilityCheck = await updateAvailability(attractionName, bookedDate, bookedQuantity);
+
+        if (availabilityCheck.message === 'Tickets not available.' || availabilityCheck.message === 'Attraction not found.') {
+            // Handle case where tickets are not available or attraction is not found
+            return res.status(400).json({ message: availabilityCheck.message });
+        }
+
+        // Create the booking if availability check passes
+        const booking = new Booking({
+            userID: req.user.id,
+            name: req.user.name,
+            attractionName,
+            ticket: bookedQuantity,
+            date: bookedDate,
+            phone: req.body.phone,
+            email: req.user.email,
+            bookingID: generateBookingID(attractionName, bookedQuantity),
+            status: true
+        });
+
         const newBooking = await booking.save();
-        // res.status(201).json(newBooking);
+        res.status(201).json(newBooking);
+    } catch (err) {
+        console.error('Error creating booking:', err);
+        res.status(500).json({ message: 'Internal server error.' });
     }
-    catch (err)
-    {
-        console.error('Error saving booking:', err);
-        // res.status(400).json({message: err.message});
-    }
-    res.redirect('/home');
 });
 
 // update booking contact details for users

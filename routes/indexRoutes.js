@@ -4,6 +4,8 @@ const User = require('../models/User');
 const Post = require('../models/Post');
 const Booking = require('../models/Booking');
 const Testimony = require('../models/Testimony');
+const Availability = require('../models/Availability');
+
 
 // if not admin, redirect to login
 function checkAuthenticatedAdmin(req,res,next){
@@ -425,6 +427,19 @@ router.get('/useraccount', async function(req, res) {
     res.render('admin/useraccount.ejs', locals);
 });
 
+// edit user
+router.get('/edituser/:id', async function(req, res) {
+    const user = await User.findById(req.params.id);
+    var locals = {
+        title: 'Edit User',
+        description: 'Page Description',
+        header: 'Page Header',
+        layout:'adminlayout.ejs',
+        user: user
+    };
+    res.render('admin/edituser.ejs', locals);
+});
+
 // ticket booking
 router.get('/ticketbooking', async function(req, res) {
     const bookings = await Booking.find();
@@ -438,18 +453,30 @@ router.get('/ticketbooking', async function(req, res) {
     res.render('admin/ticketbooking.ejs', locals);
 });
 
-
-// edit user
-router.get('/edituser/:id', async function(req, res) {
-    const user = await User.findById(req.params.id);
+// ticket availability
+router.get('/ticketavailability', async function(req, res) {
+    const availabilities = await Availability.find();
     var locals = {
-        title: 'Edit User',
+        title: 'Ticket Availability',
         description: 'Page Description',
         header: 'Page Header',
         layout:'adminlayout.ejs',
-        user: user
+        availabilities: availabilities
     };
-    res.render('admin/edituser.ejs', locals);
+    res.render('admin/ticketavailability.ejs', locals);
+});
+
+// edit availability
+router.get('/editavailability/:id', async function(req, res) {
+    const availability = await Availability.findById(req.params.id);
+    var locals = {
+        title: 'Edit Availability',
+        description: 'Page Description',
+        header: 'Page Header',
+        layout:'adminlayout.ejs',
+        availability: availability
+    };
+    res.render('admin/editavailability.ejs', locals);
 });
 
 // testimony
