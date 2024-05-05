@@ -1,15 +1,16 @@
 <div class="container">
     <div class="row" style="margin-left: 2px;">
         <div class="col-md-6">
-            <div class="bg-light rounded" style="padding: 30px; margin-top: 20px;">
+            <div class="bg-light rounded" style="padding: 30px; margin-top: 20px;"> <!-- Increased padding here -->
                 <h3 class="mb-4">Add New Blog</h3>
                 <% if (error) { %>
                     <div class="alert alert-danger" role="alert">
                         <%= error %>
                     </div>
                 <% } %>
+
                 <form action="/postRoutes/add-post" method="POST">
-                    <div class="mb-3"></div>
+                    <div class="mb-3">
                         <label for="title">Title</label>
                         <input type="text" placeholder="Blog Title" name="title" class="form-control">
                     </div>
@@ -22,11 +23,11 @@
                         <input type="text" placeholder="Blog ImageUrl" name="imageUrl" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <label for="ticketPrice">Ticket Price</label>
+                        <label for="price">Price</label>
                         <input type="number" placeholder="Ticket Price" name="ticketPrice" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <label for="ticketQuantity">Ticket Quantity</label>
+                        <label for="price">Price</label>
                         <input type="number" placeholder="Ticket Quantity" name="ticketQuantity" class="form-control">
                     </div>
                     <button type="submit" class="btn btn-primary" value="Add">Add</button>
