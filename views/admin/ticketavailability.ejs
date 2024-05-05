@@ -15,6 +15,9 @@
                                     <li>Date: <%= ticket.date %>, Quantity: <%= ticket.quantity %></li>
                                 <% }) %>
                             </ul>
+                            <form action="/editavailability/<%= post._id %>" method="GET">
+                                <button type="submit" class="btn btn-edit">Edit</button>
+                            </form>
                         </li>
                     <% }) %>
                 </ul>
