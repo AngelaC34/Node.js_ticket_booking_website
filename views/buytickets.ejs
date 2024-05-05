@@ -62,10 +62,11 @@
                         <label for="attraction">Attraction</label>
                         <select class="form-control" id="attraction" name="attraction" required>
                             <% data.forEach(post => { %>
-                                <option value="<%= post.title %>"><%= post.title %></option>
+                                <option value="<%= post.title%>"><%= post.title %></option>
                             <% }) %>
                         </select>
                     </div>
+                    
                     
                     <div class="form-group">
                         <label for="ticket">Ticket</label>
