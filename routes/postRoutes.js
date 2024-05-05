@@ -74,7 +74,7 @@ router.post('/update-attraction/:id', async (req, res) => {
         console.error('Error updating attraction:', err);
         // res.status(500).json({ message: 'Internal server error.' });
     }
-    res.redirect('/ticketavailability');
+    res.redirect('/editavailability/'+req.params.id);
 });
 
 // delete post
