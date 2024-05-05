@@ -47,6 +47,7 @@
                         <div class="d-flex align-items-center mb-3">
                             <strong class="me-2">Status:</strong> <%= booking.status ? 'Booked' : 'Cancelled' %>
                         </div>
+                        <a href="/editbooking/<%= booking._id %>" class="btn btn-edit">Edit</a>
                     </div>
                 <% }); %>
             </ul>
