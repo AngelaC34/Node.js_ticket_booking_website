@@ -34,10 +34,10 @@
                                             <label for="status_not_approved_<%= testimony._id %>">
                                                 <input type="radio" id="status_not_approved_<%= testimony._id %>" name="status" value="false" <%= !testimony.status ? 'checked' : '' %>> Not Approved
                                             </label>
+                                            <button type="submit" class="btn btn-primary">Update</button>
                                         </form>
                                     </td>
                                     <td>
-                                        <a href="/testiRoutes/update-testimony/<%= testimony._id %>" class="btn btn-primary">Update</a>
                                         <form action="/testiRoutes/delete-testimony/<%= testimony._id %>?_method=DELETE" method="POST" style="display: inline;">
                                             <button type="submit" class="btn btn-danger">Delete</button>
                                         </form>
