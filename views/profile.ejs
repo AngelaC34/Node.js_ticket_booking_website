@@ -20,6 +20,7 @@
     <div class="container mb-5">
         <h1 class="display-5 p-4 mt-2">Booking History</h1>
             <ul class="ticket-booking">
+                <% if (bookings.length > 0) { %>
                 <% bookings.forEach(booking => { %>
                     <div class="testimonial-item position-relative bg-white p-5 mt-4">
                         <div class="d-flex align-items-center mb-3">
@@ -46,6 +47,7 @@
                         <div class="d-flex align-items-center mb-3">
                             <strong class="me-2">Status:</strong> <%= booking.status ? 'Booked' : 'Cancelled' %>
                         </div>
+                        <a href="/editbooking/<%= booking._id %>" class="btn btn-edit">Edit</a>
                     </div>
                 <% }); %>
             </ul>

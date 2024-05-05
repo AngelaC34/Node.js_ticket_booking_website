@@ -1,0 +1,25 @@
+<h1>Edit Attraction</h1>
+<form action="/availRoutes/update-attraction/<%= availability._id %>" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="<%= availability.name %>"><br>
+    <label for="ticketPrice">Ticket Price:</label>
+    <input type="text" id="ticketPrice" name="ticketPrice" value="<%= availability.ticketPrice %>"><br>
+    <label for="ticketQuantity">Ticket Quantity:</label>
+    <input type="text" id="ticketQuantity" name="ticketQuantity" value="<%= availability.ticketQuantity %>"><br>
+    <button type="submit">Update Attraction</button>
+</form>
+<form action="/availRoutes/delete-attraction/<%= availability._id %>?_method=DELETE" method="POST">
+    <button type="submit">Delete Attraction</button>
+</form>
+
+<h2>Availability</h2>
+<ul>
+    <% availability.availableTickets.forEach(ticket => { %>
+        <li>
+            Date: <%= ticket.date %>, Quantity: <%= ticket.quantity %>
+            <form action="/availRoutes/delete-availability/<%= availability._id %>/<%= ticket._id %>?_method=DELETE" method="POST">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+    <% }) %>
+</ul>
