@@ -241,16 +241,6 @@ router.get('/buytickets', checkAuthenticated, function(req, res) {
     res.render('buytickets.ejs', locals);
 });
 
-// // cloud forest
-// router.get('/cloudforest', function(req, res) {
-//     var locals = {
-//         title: 'Cloud Forest',
-//         description: 'Page Description',
-//         header: 'Page Header',
-//         layout:'mainlayout.ejs'
-//     };
-//     res.render('cloudforest.ejs', locals);
-// });
 
 // contact
 router.get('/contact', function(req, res) {
@@ -262,39 +252,6 @@ router.get('/contact', function(req, res) {
     };
     res.render('contact.ejs', locals);
 });
-
-// // dragonfly
-// router.get('/dragonfly', function(req, res) {
-//     var locals = {
-//         title: 'Dragonfly',
-//         description: 'Page Description',
-//         header: 'Page Header',
-//         layout:'mainlayout.ejs'
-//     };
-//     res.render('dragonfly.ejs', locals);
-// });
-
-// // floral fantasy
-// router.get('/floralfantasy', function(req, res) {
-//     var locals = {
-//         title: 'Floral Fantasy',
-//         description: 'Page Description',
-//         header: 'Page Header',
-//         layout:'mainlayout.ejs'
-//     };
-//     res.render('floralfantasy.ejs', locals);
-// });
-
-// // flower dome
-// router.get('/flowerdome', function(req, res) {
-//     var locals = {
-//         title: 'Flower Dome',
-//         description: 'Page Description',
-//         header: 'Page Header',
-//         layout:'mainlayout.ejs'
-//     };
-//     res.render('flowerdome.ejs', locals);
-// });
 
 // our history
 router.get('/ourhistory', function(req, res) {
@@ -317,28 +274,6 @@ router.get('/ourstory', function(req, res) {
     };
     res.render('ourstory.ejs', locals);
 });
-
-// // serene garden
-// router.get('/serenegarden', function(req, res) {
-//     var locals = {
-//         title: 'Serene Garden',
-//         description: 'Page Description',
-//         header: 'Page Header',
-//         layout:'mainlayout.ejs'
-//     };
-//     res.render('serenegarden.ejs', locals);
-// });
-
-// // super tree observatory
-// router.get('/supertreeobservatory', function(req, res) {
-//     var locals = {
-//         title: 'Supertree Observatory',
-//         description: 'Page Description',
-//         header: 'Page Header',
-//         layout:'mainlayout.ejs'
-//     };
-//     res.render('supertreeobservatory.ejs', locals);
-// });
 
 // sustainability efforts
 router.get('/sustainabilityefforts', function(req, res) {

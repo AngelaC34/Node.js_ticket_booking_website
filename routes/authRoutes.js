@@ -57,35 +57,39 @@ router.delete('/logout', (req, res, next) => {
     });
 });
 
-// Delete user
+// Delete User Route
 router.delete('/delete-user/:id', async (req, res) => {
     const userId = req.params.id;
     try {
         const deletedUser = await User.findByIdAndDelete(userId);
         if (!deletedUser) {
-            return res.status(404).json({ message: 'User not found' });
+            req.flash('error', 'User not found');
+            return res.redirect('/useraccount');
         }
+        req.flash('success', 'User deleted successfully');
+        res.redirect('/useraccount');
     } catch (err) {
-        return res.status(500).json({ message: err.message });
+        req.flash('error', 'Failed to delete user');
+        res.redirect('/useraccount');
     }
-    res.redirect('/useraccount');
 });
 
-// user update
+// Update User Route
 router.put('/:id', async (req, res) => {
     const userId = req.params.id;
     const { name, email, admin } = req.body; // Assuming you want to update name and email
 
     try {
-        // Use your User model to find and update the user
         const updatedUser = await User.findByIdAndUpdate(userId, { name, email, admin }, { new: true });
-        console.log(updatedUser);
         if (!updatedUser) {
-            return res.status(404).json({ message: 'User not found' });
+            req.flash('error', 'User not found');
+            return res.redirect('/useraccount');
         }
+        req.flash('success', 'User updated successfully');
         res.redirect('/useraccount');
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        req.flash('error', 'Failed to update user');
+        res.redirect('/useraccount');
     }
 });
 

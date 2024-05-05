@@ -39,6 +39,7 @@
     }
 </style>
 
+
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
         <div class="col-sm-12 col-xl-12">
@@ -69,14 +70,26 @@
                             <% }) %>
                         </tbody>
                     </table>
+                    
                 </div>
             </div>
         </div>
     </div>
+    <br>
+    <% if (messages && messages.success) { %>
+        <div class="alert alert-success" role="alert">
+            <%= messages.success %>
+        </div>
+    <% } else if (messages && messages.error) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= messages.error %>
+        </div>
+    <% } %>
 </div>
 
+
 <!-- Form Start -->
-<div class="container-fluid pt-4 px-4">
+<!-- <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
         <div class="col-sm-12 col-xl-6">
             <div class="bg-light rounded h-100 p-4">
@@ -128,5 +141,5 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- Form End -->
