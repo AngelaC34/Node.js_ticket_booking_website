@@ -1,69 +1,55 @@
 <style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
     th, td {
         border: 1px solid #dddddd;
         text-align: left;
         padding: 8px;
     }
-
-    th {
-        background-color: #f2f2f2;
-    }
-
-    .btn {
-        text-decoration: none;
-        padding: 5px 10px;
-        border: 1px solid #ddd;
-        border-radius: 3px;
-        background-color: #f2f2f2;
-        color: #333;
-    }
-
-    .btn-delete {
-        background-color: #1e5b0c;
-        color: white;
-    }
 </style>
 
-<table>
-    <thead>
-        <tr>
-            <th colspan="3">
-                <a href="/add-post" class="btn">Add New Blog</a>
-            </th>
-        </tr>
-        <tr>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <div class="admincontrols">
-            <% data.forEach(post => { %>
-                <tr>
-                    <td>
-                        <a href="/post/<%= post._id %>">
-                            <%= post.title %> &nearr;
-                        </a>
-                    </td>
-                    <td><%= post.ticketPrice %></td>
-                    <td>
-                        <a href="/edit-post/<%= post._id %>" class="btn">Edit</a>
-                        <form action="/postRoutes/delete-post/<%= post._id %>?_method=DELETE" method="POST" style="display: inline;">
-                            <input type="submit" value="Delete" class="btn-delete btn">
-                        </form>
-                    </td>
-
-                </tr>
-            <% }) %>
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <% if (success) { %>
+                <div class="alert alert-success" role="alert">
+                    Query was successful!
+                </div>
+            <% } %>
+            <div class="bg-light rounded p-4">
+                <div class="table-responsive">
+                    <tr>
+                        <th colspan="3">
+                            <a href="/add-post" class="btn btn-primary">Add New Blog</a><br><br>
+                        </th>
+                    </tr>
+                    <table class="table">
+                        <thead>
+                            <tr class="bg-secondary text-light">
+                                <th>Title</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% data.forEach(post => { %>
+                                <tr>
+                                    <td>
+                                        <a href="/post/<%= post._id %>">
+                                            <%= post.title %> &nearr;
+                                        </a>
+                                    </td>
+                                    <td><%= post.price %></td>
+                                    <td>
+                                        <a href="/edit-post/<%= post._id %>" class="btn btn-primary">Edit</a>
+                                        <form action="/postRoutes/delete-post/<%= post._id %>?_method=DELETE" method="POST" style="display: inline;">
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        
-    </tbody>
-</table>
-
-
+    </div>
+</div>

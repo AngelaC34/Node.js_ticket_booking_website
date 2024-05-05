@@ -1,55 +1,31 @@
-<style>
-    .container-fluid {
-        padding-top: 20px;
-    }
-
-    .bg-light {
-        padding: 20px;
-    }
-
-    .input-group {
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-    }
-
-    .input-group label {
-        margin-right: 10px;
-        width: 100px; /* Adjust the width as needed */
-    }
-
-    .input-group input {
-        flex: 1;
-    }
-
-    .btn {
-        margin-top: 15px;
-    }
-</style>
-
-<div class="container-fluid">
-    <div class="row g-4">
-        <div class="col-sm-12 col-xl-6">
-            <div class="bg-light rounded">
-                <h6 class="mb-4">Add New Blog</h6>
+<div class="container">
+    <div class="row" style="margin-left: 2px;">
+        <div class="col-md-6">
+            <div class="bg-light rounded" style="padding: 30px; margin-top: 20px;">
+                <h3 class="mb-4">Add New Blog</h3>
+                <% if (error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                <% } %>
                 <form action="/postRoutes/add-post" method="POST">
-                    <div class="input-group">
+                    <div class="mb-3"></div>
                         <label for="title">Title</label>
                         <input type="text" placeholder="Blog Title" name="title" class="form-control">
                     </div>
-                    <div class="input-group">
+                    <div class="mb-3">
                         <label for="body">Body</label>
                         <textarea name="body" cols="50" rows="10" class="form-control"></textarea>
                     </div>
-                    <div class="input-group">
+                    <div class="mb-3">
                         <label for="imageUrl">ImageUrl</label>
                         <input type="text" placeholder="Blog ImageUrl" name="imageUrl" class="form-control">
                     </div>
-                    <div class="input-group">
+                    <div class="mb-3">
                         <label for="ticketPrice">Ticket Price</label>
                         <input type="number" placeholder="Ticket Price" name="ticketPrice" class="form-control">
                     </div>
-                    <div class="input-group">
+                    <div class="mb-3">
                         <label for="ticketQuantity">Ticket Quantity</label>
                         <input type="number" placeholder="Ticket Quantity" name="ticketQuantity" class="form-control">
                     </div>

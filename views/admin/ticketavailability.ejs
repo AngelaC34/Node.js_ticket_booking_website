@@ -1,17 +1,25 @@
-<h1>Availability Data</h1>
-<ul>
-    <% availabilities.forEach(availability => { %>
-        <li>
-            <strong>Name:</strong> <%= availability.title %><br>
-            <strong>Ticket Price:</strong> <%= availability.ticketPrice %><br>
-            <strong>Ticket Quantity:</strong> <%= availability.ticketQuantity %><br>
-            <strong>Available Tickets:</strong>
-            <ul>
-                <% availability.availableTickets.forEach(ticket => { %>
-                    <li>Date: <%= ticket.date %>, Quantity: <%= ticket.quantity %></li>
-                <% }) %>
-            </ul>
-            <a href="/editavailability/<%= availability._id %>" class="btn btn-edit">Edit</a>
-        </li>
-    <% }) %>
-</ul>
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-4">
+            <div class="bg-light rounded p-4">
+                <h3>Availability Data</h3>
+                <ul>
+                    <% availabilities.forEach(availability => { %>
+                        <li>
+                            <strong>Name:</strong> <%= availability.title %><br>
+                            <strong>Ticket Price:</strong> <%= availability.ticketPrice %><br>
+                            <strong>Ticket Quantity:</strong> <%= availability.ticketQuantity %><br>
+                            <strong>Available Tickets:</strong>
+                            <ul>
+                                <% availability.availableTickets.forEach(ticket => { %>
+                                    <li>Date: <%= ticket.date %>, Quantity: <%= ticket.quantity %></li>
+                                <% }) %>
+                            </ul>
+                            <a href="/editavailability/<%= availability._id %>" class="btn btn-edit">Edit</a>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
