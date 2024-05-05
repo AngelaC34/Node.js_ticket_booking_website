@@ -48,14 +48,17 @@ router.put('/update-testimony/:id', async (req, res) => {
 
     try {
         const updatedTesti = await Testimony.findByIdAndUpdate(testiId, { status }, { new: true });
-        console.log(updatedTesti);
         if (!updatedTesti) {
-            return res.status(404).json({ message: 'User not found' });
+            req.flash('error', 'Testimony not found.');
+        } else {
+            req.flash('success', 'Testimony updated successfully.');
         }
-        res.redirect('/testimony');
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        console.error('Error updating testimony:', err);
+        req.flash('error', 'Internal server error.');
     }
+
+    res.redirect('/testimony');
 });
 
 // delete-testimony
@@ -64,12 +67,16 @@ router.delete('/delete-testimony/:id', async (req, res) => {
     try {
         const deletedTestimony = await Testimony.findByIdAndDelete(testiId);
         if (!deletedTestimony) {
-            return console.log({ message: 'Testimony not found' });
+            req.flash('error', 'Testimony not found.');
+        } else {
+            req.flash('success', 'Testimony deleted successfully.');
         }
     } catch (err) {
-        return console.log({ message: err.message });
+        console.error('Error deleting testimony:', err);
+        req.flash('error', 'Internal server error.');
     }
     res.redirect('/testimony');
 });
+
 
 module.exports = router;
