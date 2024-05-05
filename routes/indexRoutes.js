@@ -94,7 +94,8 @@ router.post('/search', async function(req, res) {
         }
 
         let sortBy = req.body.sortBy || 'createdAt'; 
-        let sortOrder = parseInt(req.body.sortOrder) || -1; 
+        let sortOrder = -1; 
+
         let minPrice = parseInt(req.body.minPrice);
         let maxPrice = parseInt(req.body.maxPrice);
 
@@ -115,7 +116,21 @@ router.post('/search', async function(req, res) {
 
         Object.assign(query, filter);
 
-        const data = await Post.find(query).sort({ [sortBy]: sortOrder });
+        if (sortBy === "-createdAt") {
+            sortOrder = 1; 
+        }
+
+        console.log("Query:", query);
+        console.log("Sort:", sortBy, sortOrder);
+
+        let data;
+        if (sortBy === "-createdAt") {
+            data = await Post.find(query).sort({ createdAt: sortOrder, '_id': sortOrder });
+        } else {
+            data = await Post.find(query).sort({ [sortBy]: sortOrder, '_id': sortOrder });
+        }
+
+        console.log("Sorted Data:", data);
 
         const locals = {
             title: 'Search',
@@ -130,6 +145,10 @@ router.post('/search', async function(req, res) {
         res.status(500).send('Internal Server Error');
     }
 });
+
+
+
+
 
 // Profile
 router.get('/profile', checkAuthenticated, async function(req, res) {
