@@ -102,7 +102,7 @@ router.post('/search', async function(req, res) {
         let filter = {}; 
 
         if (!isNaN(minPrice) && !isNaN(maxPrice)) {
-            filter.price = { $gte: minPrice, $lte: maxPrice };
+            filter.ticketPrice = { $gte: minPrice, $lte: maxPrice };
         }
 
         const query = {};

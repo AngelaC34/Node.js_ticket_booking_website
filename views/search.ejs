@@ -33,7 +33,8 @@
                     <p class="mb-4"><%= post.body %></p>
                     <p class="mb-2">Created at: <%= post.createdAt.toLocaleDateString() %></p>
                     <p class="mb-2">Last Updated: <%= post.updatedAt.toLocaleDateString() %></p>
-                    <p class="mb-4">Ticket Price: <%= post.updatedAt.toLocaleDateString() %></p>
+                    <p class="mb-2">Ticket Price: <%= post.ticketPrice %></p>
+                    <p class="mb-4">Available Tickets: <%= post.ticketQuantity %></p>
                     <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/post/<%= post._id %>">Read More</a>
                     <!-- Add any additional content or links related to the post -->
                 </div>
