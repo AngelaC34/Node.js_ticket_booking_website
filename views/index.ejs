@@ -78,31 +78,38 @@
         <p>Beauty abounds in the Gardens. Beyond the flora and fauna that you’ll find here, admire the Gardens’ iconic structures – architectural marvels that reimagine nature with artistic finesse.</p>
     </div>
 
-    <ul class="row g-4" style="list-style-type: none;">
-        <% data.forEach(post => { %>
-            <li class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="bg-white text-center h-100 p-4 p-xl-5">
-                    <!-- Display post image -->
-                    <img class="img-fluid mb-4" src="<%= post.imageUrl %>" alt="Image">
-                    <!-- Render post title and body -->
-                    <h4 class="mb-3"><%= post.title %></h4>
-                    <p class="mb-4"><%= post.body %></p>
-                    <p class="mb-2">Created at: <%= post.createdAt.toLocaleDateString() %></p>
-                    <p class="mb-4">Last Updated: <%= post.updatedAt.toLocaleDateString() %></p>
-                    <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/post/<%= post._id %>">Read More</a>
-                    <!-- Add any additional content or links related to the post -->
-                </div>
-            </li>
-        <% }); %>
-    </ul>
+    <% if (data.length === 0) { %>
+        <div class="container py-5">
+            <div class="alert alert-info" role="alert">
+                There are no blogs currently.
+            </div>
+        </div>
+    <% } else { %>
+        <ul class="row g-4" style="list-style-type: none;">
+            <% data.forEach(post => { %>
+                <li class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="bg-white text-center h-100 p-4 p-xl-5">
+                        <!-- Display post image -->
+                        <img class="img-fluid mb-4" src="<%= post.imageUrl %>" alt="Image">
+                        <!-- Render post title and body -->
+                        <h4 class="mb-3"><%= post.title %></h4>
+                        <p class="mb-4"><%= post.body %></p>
+                        <p class="mb-2">Created at: <%= post.createdAt.toLocaleDateString() %></p>
+                        <p class="mb-4">Last Updated: <%= post.updatedAt.toLocaleDateString() %></p>
+                        <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/post/<%= post._id %>">Read More</a>
+                    </div>
+                </li>
+            <% }); %>
+        </ul>
+    <% } %>
 
     <div class="d-flex justify-content-between">
         <% if (nextPage !== null) { %>
-            <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/?page=<%= nextPage %>">&lt; View Older Posts</a>
+            <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/home?page=<%= nextPage %>">&lt; View Older Posts</a>
         <% } %>
     
         <% if (current > 1) { %>
-            <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/?page=<%= current - 1 %>">View Newer Posts &gt;</a>
+            <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/home?page=<%= current - 1 %>">View Newer Posts &gt;</a>
         <% } %>
     </div>
 </div>

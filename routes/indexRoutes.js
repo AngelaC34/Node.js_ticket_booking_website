@@ -30,23 +30,6 @@ function checkNotAuthenticated(req,res,next){
 }
 
 // home
-// router.get('', async function(req, res) {
-    
-//     try {
-//         const locals = {
-//             title: 'Gardens by the Bay',
-//             description: 'Page Description',
-//             header: 'Page Header',
-//             layout: 'mainlayout.ejs',
-//             name: req.user ? req.user.name : 'Guest', // Check if req.user exists
-//         };
-//         const data = await Post.find();
-//         res.render('index', {locals, data});
-//     } catch (error) {
-//         console.log(error);
-//     }
-// });
-
 router.get('/home', async function(req, res) {
     try {
         let perPage = 3;
@@ -56,7 +39,7 @@ router.get('/home', async function(req, res) {
             .skip(perPage * page - perPage)
             .limit(perPage)
             .exec();
-        const testimonies = await Testimony.find({ status: true }); // Only approved testimonies are displayed
+        const testimonies = await Testimony.find({ status: true }); 
 
         const count = await Post.countDocuments();
         const nextPage = parseInt(page) + 1;
@@ -67,8 +50,8 @@ router.get('/home', async function(req, res) {
             description: 'Page Description',
             header: 'Page Header',
             layout: 'mainlayout.ejs',
-            name: req.user ? req.user.name : 'Guest', // Check if req.user exists
-            data: data,  // Pass the fetched data to the template
+            name: req.user ? req.user.name : 'Guest', 
+            data: data,  
             current: page,
             nextPage: hasNextPage ? nextPage : null,
             testimonies: testimonies
@@ -77,82 +60,11 @@ router.get('/home', async function(req, res) {
         res.render('index', locals);
     } catch (error) {
         console.log(error);
-        res.status(500).send('Internal Server Error'); // Handle error appropriately
+        res.status(500).send('Internal Server Error'); 
     }
 });
 
-
-// router.get('', async function(req, res) {
-//     try {
-//         let perPage = 3;
-//         let page = req.query.page || 1;
-
-//         const data = await Post.aggregate([ {$sort: {updatedAt: -1}}])
-//             .skip(perPage * page - perPage)
-//             .limit(perPage)
-//             .exec();
-
-//         console.log("Fetched Data:", data); // Log fetched data
-
-//         const count = await Post.countDocuments();
-//         const nextPage = parseInt(page) + 1;
-//         const hasNextPage = nextPage <= Math.ceil(count / perPage);
-
-//         const locals = {
-//             title: 'Gardens by the Bay',
-//             description: 'Page Description',
-//             header: 'Page Header',
-//             layout: 'mainlayout.ejs',
-//             name: req.user ? req.user.name : 'Guest',
-//             data: data,
-//             current: page,
-//             nextPage: hasNextPage ? nextPage : null
-//         };
-
-//         res.render('index', locals);
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// });
-
-
 // Posts
-
-// router.get('/post/:id', async function(req, res) {
-//     try {
-//         const locals = {
-//             title: 'Posts',
-//             description: 'Page Description',
-//             header: 'Page Header',
-//             layout: 'mainlayout.ejs'
-//         };
-//         let slug = req.params.id;
-
-//         const data = await Post.findById({_id: slug});
-//         res.render('post', {locals, data});
-//     } catch (error) {
-//         console.log(error);
-//     }
-// });
-
-// router.get('/post/:id', async function(req, res) {
-//     try {
-//         const locals = {
-//             title: 'Posts',
-//             description: 'Page Description',
-//             header: 'Page Header',
-//             layout: 'mainlayout.ejs'
-//         };
-//         let slug = req.params.id;
-
-//         const post = await Post.findById(slug); // Assuming your post model is called 'Post'
-//         res.render('post.ejs', { locals, post }); // Pass the 'post' object to the template
-//     } catch (error) {
-//         console.log(error);
-//     }
-// });
-
 router.get('/post/:id', async function(req, res) {
     try {
         const post = await Post.findById(req.params.id);
@@ -171,75 +83,6 @@ router.get('/post/:id', async function(req, res) {
 });
 
 //Search
-
-// router.post('/search', async function(req, res) {
-//     try {
-//         let searchTerm = req.body.searchTerm;
-//         const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9]/g, "")
-//         const data = await Post.find({
-//             $or: [
-//                 {
-//                     title: { $regex: new RegExp(searchNoSpecialChar, 'i')}            
-//                 },
-//                 {
-//                     body: { $regex: new RegExp(searchNoSpecialChar, 'i')},    
-//                 }
-//             ]
-//         });
-
-//         const locals = {
-//             title: 'Search',
-//             description: 'Page Description',
-//             layout: 'mainlayout.ejs',
-//             data: data
-//         };
-
-
-//         res.render("search",locals); // Redirect to the search page
-//     } catch (error) {
-//         console.log(error);
-//     }
-// });
-
-// router.post('/search', async function(req, res) {
-//     try {
-//         let searchTerm = req.body.searchTerm;
-//         const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9]/g, "");
-//         let sortBy = req.body.sortBy || 'createdAt'; // Default sort by createdAt
-//         let sortOrder = parseInt(req.body.sortOrder) || -1; // Default sort order descending
-//         let minPrice = parseInt(req.body.minPrice);
-//         let maxPrice = parseInt(req.body.maxPrice);
-
-//         let filter = {}; 
-
-//         if (!isNaN(minPrice) && !isNaN(maxPrice)) {
-//             filter.price = { $gte: minPrice, $lte: maxPrice };
-//         }
-
-//         const query = {
-//             $or: [
-//                 { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
-//                 { body: { $regex: new RegExp(searchNoSpecialChar, 'i') } }
-//             ],
-//             ...filter
-//         };
-
-//         const data = await Post.find(query).sort({ [sortBy]: sortOrder });
-
-//         const locals = {
-//             title: 'Search',
-//             description: 'Page Description',
-//             layout: 'mainlayout.ejs',
-//             data: data
-//         };
-
-//         res.render("search", locals);
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// });
-
 router.post('/search', async function(req, res) {
     try {
         let searchTerm = req.body.searchTerm;
@@ -593,7 +436,9 @@ router.get('/blog', async function(req, res) {
             description: 'Page Description',
             header: 'Page Header',
             layout:'adminlayout.ejs',
-            data: data
+            data: data,
+            success: req.query.success,
+            error: req.query.error
         };
         res.render('admin/blog.ejs', locals);
     } catch (error) {
@@ -602,6 +447,7 @@ router.get('/blog', async function(req, res) {
     };
 });
 
+//Add Get
 router.get('/add-post', async function(req, res) {
     try {
         const data = await Post.find();
@@ -610,7 +456,9 @@ router.get('/add-post', async function(req, res) {
             description: 'Page Description',
             header: 'Page Header',
             layout:'adminlayout.ejs',
-            data: data
+            data: data,
+            success: req.query.success === 'true', // Check if success query parameter is true
+            error: req.query.error // Pass error message
         };
         res.render('admin/add-post.ejs', locals);
     } catch (error) {
@@ -619,29 +467,33 @@ router.get('/add-post', async function(req, res) {
     };
 });
 
+//Add Post
 router.post('/add-post', async function(req, res) {
     try {
+        const { title, body, imageUrl, price } = req.body;
 
-        try{
-            const newPost = new Post({
-                title: req.body.title,
-                body: req.body.body,
-                imageUrl: req.body.imageUrl,
-                price: req.body.price
-            });
-            await Post.create(newPost);
-            res.redirect('/blog');
-        }
-        catch (error){
-            console.log(error);
+        // Check if any required parameter is missing
+        if (!title || !body || !imageUrl || !price) {
+            throw new Error("All fields are required.");
         }
 
+        const newPost = new Post({
+            title,
+            body,
+            imageUrl,
+            price
+        });
+
+        await Post.create(newPost);
+        return res.redirect('/blog?success=true');
     } catch (error) {
-        console.error("Error fetching blog posts:", error);
-        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
-    };
+        console.error("Error adding blog post:", error);
+        res.redirect(`/add-post?error=${encodeURIComponent(error.message)}`);
+    }
 });
 
+
+//Edit Get
 router.get('/edit-post/:id', async function(req, res) {
     try {
         const data = await Post.findOne({ _id: req.params.id });
@@ -650,17 +502,24 @@ router.get('/edit-post/:id', async function(req, res) {
             description: 'Page Description',
             header: 'Page Header',
             layout:'adminlayout.ejs',
-            data: data
+            data: data,
+            success: req.query.success === 'true', // Check if success query parameter is true
+            error: req.query.error // Pass error message
         };
         res.render('admin/edit-post.ejs', locals);
     } catch (error) {
-        console.error("Error fetching blog posts:", error);
-        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
-    };
+        console.error("Error fetching blog post:", error);
+    }
 });
 
+//Edit Put
 router.put('/edit-post/:id', async function(req, res) {
     try {
+        // Check if any required field is empty
+        if (!req.body.title || !req.body.body || !req.body.imageUrl || !req.body.price) {
+            throw new Error("All fields are required."); // Throw an error if any field is empty
+        }
+
         await Post.findByIdAndUpdate(req.params.id, {
             title: req.body.title,
             body: req.body.body,
@@ -668,20 +527,21 @@ router.put('/edit-post/:id', async function(req, res) {
             price: req.body.price,
             updatedAt: Date.now()
         });
-        res.redirect(`/edit-post/${req.params.id}`);
+        res.redirect(`/edit-post/${req.params.id}?success=true`); // Pass success query parameter if successfully updated
     } catch (error) {
-        console.error("Error fetching blog posts:", error);
-        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
-    };
+        console.error("Error updating blog post:", error);
+        res.redirect(`/edit-post/${req.params.id}?error=${encodeURIComponent(error.message)}`); // Pass error message in query parameter
+    }
 });
 
+//Delete Post
 router.delete('/delete-post/:id', async function(req, res) {
     try {
         await Post.deleteOne( { _id: req.params.id } );
-        res.redirect(`/blog`); 
+        return res.redirect('/blog?success=true');
     } catch (error) {
         console.error("Error fetching blog posts:", error);
-        res.status(500).send("An error occurred while fetching blog posts. Please try again later.");
+        res.redirect(`/blog?error=${encodeURIComponent(error.message)}`);
     };
 });
 

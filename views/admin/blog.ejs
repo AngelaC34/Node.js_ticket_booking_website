@@ -29,6 +29,12 @@
     }
 </style>
 
+<% if (success) { %>
+    <div class="alert alert-success" role="alert">
+        Query was successful!
+    </div>
+<% } %>
+
 <table>
     <thead>
         <tr>
@@ -58,12 +64,11 @@
                             <input type="submit" value="Delete" class="btn-delete btn">
                         </form>
                     </td>
-
                 </tr>
             <% }) %>
         </div>
-        
     </tbody>
 </table>
+
 
 
