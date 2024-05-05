@@ -26,9 +26,7 @@
         <% data.forEach(post => { %>
             <li class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="bg-white text-center h-100 p-4 p-xl-5">
-                    <!-- Display post image -->
                     <img class="img-fluid mb-4" src="<%= post.imageUrl %>" alt="Image">
-                    <!-- Render post title and body -->
                     <h4 class="mb-3"><%= post.title %></h4>
                     <p class="mb-4"><%= post.body %></p>
                     <p class="mb-2">Created at: <%= post.createdAt.toLocaleDateString() %></p>
@@ -36,7 +34,6 @@
                     <p class="mb-2">Ticket Price: <%= post.ticketPrice %></p>
                     <p class="mb-4">Available Tickets: <%= post.ticketQuantity %></p>
                     <a class="btn btn-outline-primary border-2 py-2 px-4 rounded-pill" href="/post/<%= post._id %>">Read More</a>
-                    <!-- Add any additional content or links related to the post -->
                 </div>
             </li>
         <% }); %>

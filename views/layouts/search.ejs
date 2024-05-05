@@ -9,23 +9,18 @@
         </form>
     </div>
 </div>
-
-<!-- Filter Section -->
 <div class="container">
     <form action="/search" method="POST" class="d-flex align-items-center justify-content-end ms-2">
-        <!-- Sort By -->
         <select name="sortBy" id="sortBy" class="form-select me-3" aria-label="Sort By">
             <option value="createdAt">Newest First</option>
             <option value="-createdAt">Oldest First</option>
         </select>
 
-        <!-- Price Input -->
         <div class="price-input">
             <input type="number" id="minPrice" aria-label="minPrice" name="minPrice" placeholder="Min" style="width: 70px; height: 10px;">
             <input type="number" id="maxPrice" aria-label="maxPrice" name="maxPrice" placeholder="Max" style="width: 70px; height: 10px;">
         </div>
 
-        <!-- Apply Filters Button -->
         <button type="submit" class="btn btn-primary ms-5">Search</button>
     </form>
 </div>

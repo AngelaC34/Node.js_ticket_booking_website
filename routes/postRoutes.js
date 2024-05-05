@@ -2,12 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
 
-//Add Post
+// Add Post
 router.post('/add-post', async function(req, res) {
     try {
         const { title, body, imageUrl, ticketPrice, ticketQuantity} = req.body;
 
-        // Check if any required parameter is missing
         if (!title || !body || !imageUrl || !ticketPrice || !ticketQuantity) {
             throw new Error("All fields are required.");
         }
@@ -29,10 +28,9 @@ router.post('/add-post', async function(req, res) {
     }
 });
 
-//Edit Put
+// Edit Put
 router.put('/edit-post/:id', async function(req, res) {
     try {
-        // Check if any required field is empty
         const { title, body, imageUrl, ticketPrice, ticketQuantity} = req.body;
         if (!title || !body || !imageUrl || !ticketPrice || !ticketQuantity) {
             throw new Error("All fields are required.");
@@ -46,10 +44,10 @@ router.put('/edit-post/:id', async function(req, res) {
             ticketQuantity: req.body.ticketQuantity,
             updatedAt: Date.now()
         });
-        res.redirect(`/edit-post/${req.params.id}?success=true`); // Pass success query parameter if successfully updated
+        res.redirect(`/edit-post/${req.params.id}?success=true`); 
     } catch (error) {
         console.error("Error updating blog post:", error);
-        res.redirect(`/edit-post/${req.params.id}?error=${encodeURIComponent(error.message)}`); // Pass error message in query parameter
+        res.redirect(`/edit-post/${req.params.id}?error=${encodeURIComponent(error.message)}`);
     }
 });
 
@@ -81,7 +79,7 @@ router.post('/update-attraction/:id', async (req, res) => {
     res.redirect('/editavailability/' + req.params.id);
 });
 
-//Delete Post
+// Delete Post
 router.delete('/delete-post/:id', async function(req, res) {
     try {
         await Post.deleteOne( { _id: req.params.id } );
@@ -106,17 +104,16 @@ router.delete('/delete-availability/:availId/:ticketId', async (req, res) => {
 
         if (!updatedAvailability) {
             req.flash('error', 'Availability not found.');
-            return res.redirect('/editavailability/' + availabilityId); // Redirect to appropriate page
+            return res.redirect('/editavailability/' + availabilityId); 
         }
 
         req.flash('success', 'Ticket deleted successfully.');
-        res.redirect('/editavailability/' + availabilityId); // Redirect to appropriate page
+        res.redirect('/editavailability/' + availabilityId); 
     } catch (err) {
         console.error('Error deleting ticket from availability:', err);
         req.flash('error', 'Internal server error.');
-        res.redirect('/editavailability/' + availabilityId); // Redirect to appropriate page
+        res.redirect('/editavailability/' + availabilityId); 
     }
 });
-
 
 module.exports = router;

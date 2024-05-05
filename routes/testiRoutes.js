@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 router.post('/add-testimony', async (req, res) => {
     if (!req.isAuthenticated()) {
         req.flash('error', 'Login to submit testimony.');
-        return res.redirect('/login'); // Redirect to login page if not logged in
+        return res.redirect('/login'); 
     }
 
     const testimony = new Testimony({
@@ -77,6 +77,5 @@ router.delete('/delete-testimony/:id', async (req, res) => {
     }
     res.redirect('/testimony');
 });
-
 
 module.exports = router;

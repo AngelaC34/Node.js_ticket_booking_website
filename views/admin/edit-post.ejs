@@ -15,7 +15,7 @@
 
     .input-group label {
         margin-right: 10px;
-        width: 100px; /* Adjust the width as needed */
+        width: 100px; 
     }
 
     .input-group input {
@@ -32,20 +32,16 @@
         <div class="col-sm-12 col-xl-6">
             <div class="bg-light rounded">
                 <h6 class="mb-4">Edit Blog</h6>
-                <!-- Add this code snippet where you want to display the success message -->
-<% if (success) { %>
-    <div class="alert alert-success" role="alert">
-        Successfully updated!
-    </div>
-<% } %>
-<!-- Add this code snippet where you want to display the error message -->
-<% if (error) { %>
-    <div class="alert alert-danger" role="alert">
-        <%= error %>
-    </div>
-<% } %>
-
-
+                    <% if (success) { %>
+                        <div class="alert alert-success" role="alert">
+                            Successfully updated!
+                        </div>
+                    <% } %>
+                    <% if (error) { %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= error %>
+                        </div>
+                    <% } %>
                 <form action="/postRoutes/edit-post/<%= data._id %>?_method=PUT" method="POST">
                     <div class="input-group">
                         <label for="title">Title</label>
