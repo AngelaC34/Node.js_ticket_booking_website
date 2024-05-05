@@ -275,7 +275,7 @@ router.get('/sustainabilityefforts', function(req, res) {
 // ADMIN ROUTES
 
 // admin dashboard
-router.get('/adminDashboard', function(req, res) {
+router.get('/adminDashboard', checkAuthenticatedAdmin, function(req, res) {
     var locals = {
         title: 'Admin Dashboard',
         description: 'Page Description',
@@ -286,7 +286,7 @@ router.get('/adminDashboard', function(req, res) {
 });
 
 // user account
-router.get('/useraccount', async function(req, res) {
+router.get('/useraccount', checkAuthenticatedAdmin, async function(req, res) {
     const users = await User.find();
     var locals = {
         title: 'User Account',
@@ -299,7 +299,7 @@ router.get('/useraccount', async function(req, res) {
 });
 
 // edit user
-router.get('/edituser/:id', async function(req, res) {
+router.get('/edituser/:id', checkAuthenticatedAdmin, async function(req, res) {
     const user = await User.findById(req.params.id);
     var locals = {
         title: 'Edit User',
@@ -312,7 +312,7 @@ router.get('/edituser/:id', async function(req, res) {
 });
 
 // ticket booking
-router.get('/ticketbooking', async function(req, res) {
+router.get('/ticketbooking', checkAuthenticatedAdmin, async function(req, res) {
     const bookings = await Booking.find();
     var locals = {
         title: 'Ticket Booking',
@@ -325,7 +325,7 @@ router.get('/ticketbooking', async function(req, res) {
 });
 
 // ticket availability
-router.get('/ticketavailability', async function(req, res) {
+router.get('/ticketavailability', checkAuthenticatedAdmin, async function(req, res) {
     const data = await Post.find();
     var locals = {
         title: 'Ticket Availability',
@@ -338,7 +338,7 @@ router.get('/ticketavailability', async function(req, res) {
 });
 
 // edit availability
-router.get('/editavailability/:id', async function(req, res) {
+router.get('/editavailability/:id', checkAuthenticatedAdmin, async function(req, res) {
     const data = await Post.findById(req.params.id);
     var locals = {
         title: 'Edit Availability',
@@ -351,7 +351,7 @@ router.get('/editavailability/:id', async function(req, res) {
 });
 
 // testimony
-router.get('/testimony', async function(req, res) {
+router.get('/testimony', checkAuthenticatedAdmin, async function(req, res) {
     const testimonies = await Testimony.find();
     var locals = {
         title: 'Testimony',
@@ -364,7 +364,7 @@ router.get('/testimony', async function(req, res) {
 });
 
 // newsletter
-router.get('/newsletter', function(req, res) {
+router.get('/newsletter', checkAuthenticatedAdmin, function(req, res) {
     var locals = {
         title: 'Newsletter',
         description: 'Page Description',
@@ -375,7 +375,7 @@ router.get('/newsletter', function(req, res) {
 });
 
 //Admin Posts
-router.get('/blog', async function(req, res) {
+router.get('/blog', checkAuthenticatedAdmin, async function(req, res) {
     try {
         const data = await Post.find();
         var locals = {
@@ -395,7 +395,7 @@ router.get('/blog', async function(req, res) {
 });
 
 //Add Get
-router.get('/add-post', async function(req, res) {
+router.get('/add-post', checkAuthenticatedAdmin, async function(req, res) {
     try {
         const data = await Post.find();
         const locals = {
@@ -441,7 +441,7 @@ router.post('/add-post', async function(req, res) {
 
 
 //Edit Get
-router.get('/edit-post/:id', async function(req, res) {
+router.get('/edit-post/:id', checkAuthenticatedAdmin, async function(req, res) {
     try {
         const data = await Post.findOne({ _id: req.params.id });
         const locals = {
