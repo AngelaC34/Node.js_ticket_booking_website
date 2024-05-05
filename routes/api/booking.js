@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const router = Router();
 const Booking = require('../../models/Booking');
-const Availability = require('../../models/Availability');
+const Post = require('../../models/Post');
 
 // Function to generate booking ID based on selected attraction and ticket
 function generateBookingID(selectedAttraction, ticket) {
@@ -47,7 +47,7 @@ function getAttractionName(selectedAttraction) {
 async function updateAvailability(attractionName, bookedDate, bookedQuantity) {
     try {
         // Find the availability record by attraction name
-        const availability = await Availability.findOne({ name: attractionName });
+        const availability = await Post.findOne({ title: attractionName });
 
         if (!availability) {
             // If attraction is not found, return an error message

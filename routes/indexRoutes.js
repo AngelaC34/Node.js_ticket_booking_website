@@ -406,7 +406,7 @@ router.get('/ticketbooking', async function(req, res) {
 
 // ticket availability
 router.get('/ticketavailability', async function(req, res) {
-    const availabilities = await Availability.find();
+    const availabilities = await Post.find();
     var locals = {
         title: 'Ticket Availability',
         description: 'Page Description',
@@ -419,7 +419,7 @@ router.get('/ticketavailability', async function(req, res) {
 
 // edit availability
 router.get('/editavailability/:id', async function(req, res) {
-    const availability = await Availability.findById(req.params.id);
+    const availability = await Post.findById(req.params.id);
     var locals = {
         title: 'Edit Availability',
         description: 'Page Description',
@@ -494,33 +494,6 @@ router.get('/add-post', async function(req, res) {
     };
 });
 
-//Add Post
-router.post('/add-post', async function(req, res) {
-    try {
-        const { title, body, imageUrl, price } = req.body;
-
-        // Check if any required parameter is missing
-        if (!title || !body || !imageUrl || !price) {
-            throw new Error("All fields are required.");
-        }
-
-        const newPost = new Post({
-            title,
-            body,
-            imageUrl,
-            price
-        });
-
-        await Post.create(newPost);
-        return res.redirect('/blog?success=true');
-    } catch (error) {
-        console.error("Error adding blog post:", error);
-        res.redirect(`/add-post?error=${encodeURIComponent(error.message)}`);
-    }
-});
-
-
-//Edit Get
 router.get('/edit-post/:id', async function(req, res) {
     try {
         const data = await Post.findOne({ _id: req.params.id });
@@ -538,38 +511,4 @@ router.get('/edit-post/:id', async function(req, res) {
         console.error("Error fetching blog post:", error);
     }
 });
-
-//Edit Put
-router.put('/edit-post/:id', async function(req, res) {
-    try {
-        // Check if any required field is empty
-        if (!req.body.title || !req.body.body || !req.body.imageUrl || !req.body.price) {
-            throw new Error("All fields are required."); // Throw an error if any field is empty
-        }
-
-        await Post.findByIdAndUpdate(req.params.id, {
-            title: req.body.title,
-            body: req.body.body,
-            imageUrl: req.body.imageUrl,
-            price: req.body.price,
-            updatedAt: Date.now()
-        });
-        res.redirect(`/edit-post/${req.params.id}?success=true`); // Pass success query parameter if successfully updated
-    } catch (error) {
-        console.error("Error updating blog post:", error);
-        res.redirect(`/edit-post/${req.params.id}?error=${encodeURIComponent(error.message)}`); // Pass error message in query parameter
-    }
-});
-
-//Delete Post
-router.delete('/delete-post/:id', async function(req, res) {
-    try {
-        await Post.deleteOne( { _id: req.params.id } );
-        return res.redirect('/blog?success=true');
-    } catch (error) {
-        console.error("Error fetching blog posts:", error);
-        res.redirect(`/blog?error=${encodeURIComponent(error.message)}`);
-    };
-});
-
 module.exports = router;
