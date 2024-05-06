@@ -130,6 +130,8 @@ router.post('/search', async function(req, res) {
             data = await Post.find(query).sort({ [sortBy]: sortOrder, '_id': sortOrder });
         }
 
+        console.log("Sorted Data:", data);
+
         const locals = {
             title: 'Search',
             description: 'Page Description',
