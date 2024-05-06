@@ -119,7 +119,10 @@ router.post('/search', async function(req, res) {
         if (sortBy === "-createdAt") {
             sortOrder = 1; 
         }
-        
+
+        console.log("Query:", query);
+        console.log("Sort:", sortBy, sortOrder);
+
         let data;
         if (sortBy === "-createdAt") {
             data = await Post.find(query).sort({ createdAt: sortOrder, '_id': sortOrder });
