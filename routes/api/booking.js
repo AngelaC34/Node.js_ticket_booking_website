@@ -11,20 +11,31 @@ function generateBookingID(ticket) {
     return randomString + Date.now().toString() + ticket;
 }
 
-// Mengupdate ticketAvailability
+
+// Function to get attraction name based on its code
+function getAttractionName(selectedAttraction) {
+    return selectedAttraction;
+}
+
+
+// Function to update availability
 async function updateAvailability(attractionName, bookedDate, bookedQuantity) {
     try {
         console.log('Attraction Name:', attractionName);
         const availability = await Post.findOne({ title: attractionName });
+
         if (!availability) {
             return { message: 'Attraction not found.' };
         }
+
         const existingDate = availability.availableTickets.find(ticket => ticket.date.toString() === new Date(bookedDate).toString());
+
         if (existingDate) {
             const availableAfterBooking = existingDate.quantity - bookedQuantity;
             if (availableAfterBooking < 0) {
                 return { message: 'Tickets not available.' };
             }
+
             existingDate.quantity -= bookedQuantity;
         } else {
             const newQuantity = availability.ticketQuantity - bookedQuantity;
@@ -37,7 +48,6 @@ async function updateAvailability(attractionName, bookedDate, bookedQuantity) {
     }
 }
 
-// GET Booking untuk Admin
 router.get('/', async (req, res) => {
     try
     {
@@ -50,13 +60,15 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Menghitung harga total
+//buy price
 async function calculateTotalPrice(quantity) {
     try {
-        const post = await Post.findOne();
+ 
+        const post = await Post.findOne(); 
         if (!post) {
             throw new Error("Ticket price not found");
         }
+
         const pricePerTicket = post.ticketPrice;
 
         const totalPrice = quantity * pricePerTicket;
@@ -68,7 +80,6 @@ async function calculateTotalPrice(quantity) {
     }
 };
 
-//Memasukkan ke database
 router.post('/create-booking', async (req, res) => {
     try {
         const attractionName =req.body.attraction;
@@ -85,7 +96,7 @@ router.post('/create-booking', async (req, res) => {
             return res.status(400).json({ message: availabilityCheck.message });
         }
 
-        const totalPrice = await calculateTotalPrice(bookedQuantity);
+        const totalPrice = await calculateTotalPrice(bookedQuantity); 
 
         const booking = new Booking({
             userID: req.user.id,
@@ -100,13 +111,13 @@ router.post('/create-booking', async (req, res) => {
         });
 
         const newBooking = await booking.save();
-t
+
         req.flash('success', {
             message: 'Booking created successfully!',
             attractionName: attractionName,
             bookedQuantity: bookedQuantity,
             bookedDate: bookedDate,
-            totalPrice: totalPrice
+            totalPrice: totalPrice // Set totalPrice directly without calling toString()
         });
         return res.redirect('/buytickets?success=true');
     } catch (err) {
@@ -127,15 +138,12 @@ router.put('/update-booking-user/:id', async (req, res) => {
 
     try {
         const updatedBooking = await Booking.findByIdAndUpdate(bookId, { phone }, {new: true});
-        // res.status(200).json(updatedBooking);
     }
     catch (err) {
-        // res.status(400).json({message: err.message});
     }
     res.redirect('/profile');
 });
 
-// update status for admin
 router.put('/update-booking-admin/:id', async (req, res) => {
     const bookId = req.params.id;
     const { status } = req.body;
@@ -148,7 +156,6 @@ router.put('/update-booking-admin/:id', async (req, res) => {
     res.redirect('/ticketbooking');
 });
 
-// delete booking by id
 router.delete('/delete-booking/:id', async (req, res) => {
     const bookId = req.params.id;
     try {
