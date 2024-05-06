@@ -19,9 +19,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
                 <p>By purchasing a ticket, you agree to abide by our terms and conditions:</p>
@@ -102,7 +99,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-        $('#termsLink').tooltip();
+    document.getElementById('termsLink').addEventListener('click', function(){
+        $('#termsModal').modal('show');
     });
 </script>
