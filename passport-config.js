@@ -7,6 +7,8 @@ const User = require('./models/User');
 function initialize(passport,getUserByEmail,getUserById){
 
     const authenticateUser = async (email, password,done)=>{
+
+        // const user = await getUserByEmail(email);
         const user = await User.findOne({ email: email });
         console.log(user);
         if(user == null){

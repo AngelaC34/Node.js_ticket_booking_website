@@ -4,7 +4,7 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
-// GET semua User
+// get all user
 router.get('/', async (req, res) => {
     try
     {
@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Login User
+// user login
 router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login',
     failureFlash: true
@@ -28,7 +28,7 @@ router.post('/login', passport.authenticate('local', {
     res.redirect('/home');
 });
 
-// SignUp User
+// user signup
 router.post('/signup', async (req, res) => {
     try   {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -47,7 +47,6 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-// LogOut User
 router.delete('/logout', (req, res, next) => {
     req.logOut(function
     (err) {
@@ -58,7 +57,7 @@ router.delete('/logout', (req, res, next) => {
     });
 });
 
-// Delete User
+// Delete User Route
 router.delete('/delete-user/:id', async (req, res) => {
     const userId = req.params.id;
     try {
@@ -75,10 +74,10 @@ router.delete('/delete-user/:id', async (req, res) => {
     }
 });
 
-// Update User
+// Update User Route
 router.put('/:id', async (req, res) => {
     const userId = req.params.id;
-    const { name, email, admin } = req.body; 
+    const { name, email, admin } = req.body; // Assuming you want to update name and email
 
     try {
         const updatedUser = await User.findByIdAndUpdate(userId, { name, email, admin }, { new: true });
