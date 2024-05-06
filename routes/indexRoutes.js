@@ -12,7 +12,7 @@ function checkAuthenticatedAdmin(req,res,next){
         return next();
     }
     res.redirect('/login');
-};
+}
 
 // if not authenticated user, redirect to login (buy ticket page)
 function checkAuthenticated(req,res,next){
@@ -20,7 +20,7 @@ function checkAuthenticated(req,res,next){
         return next();
     }
     res.redirect('/login');
-};
+}
 
 // if authenticated, redirect to home
 function checkNotAuthenticated(req,res,next){
@@ -28,9 +28,9 @@ function checkNotAuthenticated(req,res,next){
         return res.redirect('/home');
     }
     next();
-};
+}
 
-// Home
+// home
 router.get('/home', async function(req, res) {
     try {
         let perPage = 3;
@@ -89,13 +89,13 @@ router.post('/search', async function(req, res) {
         let searchTerm = req.body.searchTerm;
         let searchNoSpecialChar = '';
 
+        // Check if search term is provided
         if (searchTerm) {
             searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9]/g, "");
         }
 
-        let sortBy = req.body.sortBy || 'createdAt'; 
-        let sortOrder = -1; 
-
+        let sortBy = req.body.sortBy || 'createdAt'; // Default sort by createdAt
+        let sortOrder = parseInt(req.body.sortOrder) || -1; // Default sort order descending
         let minPrice = parseInt(req.body.minPrice);
         let maxPrice = parseInt(req.body.maxPrice);
 
@@ -107,6 +107,7 @@ router.post('/search', async function(req, res) {
 
         const query = {};
 
+        // If search term is provided, add it to the query
         if (searchNoSpecialChar) {
             query.$or = [
                 { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
@@ -114,18 +115,10 @@ router.post('/search', async function(req, res) {
             ];
         }
 
+        // Merge the filter with the query
         Object.assign(query, filter);
 
-        if (sortBy === "-createdAt") {
-            sortOrder = 1; 
-        }
-        
-        let data;
-        if (sortBy === "-createdAt") {
-            data = await Post.find(query).sort({ createdAt: sortOrder, '_id': sortOrder });
-        } else {
-            data = await Post.find(query).sort({ [sortBy]: sortOrder, '_id': sortOrder });
-        }
+        const data = await Post.find(query).sort({ [sortBy]: sortOrder });
 
         const locals = {
             title: 'Search',
@@ -141,11 +134,19 @@ router.post('/search', async function(req, res) {
     }
 });
 
+//Test Insert
+function insertPostData () {
+    Post.insertMany([
+        {
+            title: "SuperTree Observatory",
+            body: "The SuperTree Observatory has many good sights",
+            imageUrl: "https://www.gardensbythebay.com.sg/content/dam/gbb-2021/image/things-to-do/attractions/supertree-observatory/custom/supertree-observatory3-1670x940.jpg.renderimage.455.256.jpg",
+            price: "75$ SGD"
+        }
+    ])
+}
 
-
-
-
-// Profile
+// profile
 router.get('/profile', checkAuthenticated, async function(req, res) {
     const bookings = await Booking.find({ userID: req.user.id });
     console.log(bookings);
@@ -159,7 +160,7 @@ router.get('/profile', checkAuthenticated, async function(req, res) {
     res.render('profile.ejs', locals);
 });
 
-// Edit Booking
+// edit booking
 router.get('/editbooking/:id', async function(req, res) {
     const booking = await Booking.findById(req.params.id);
     var locals = {
@@ -172,7 +173,7 @@ router.get('/editbooking/:id', async function(req, res) {
     res.render('editbooking.ejs', locals);
 });
 
-// Login Page
+// login page
 router.get('/login', checkNotAuthenticated ,function(req, res) {
 var locals = {
     title: 'Log In',
@@ -183,7 +184,7 @@ var locals = {
 res.render('login.ejs', locals);
 });
 
-// SignUp Page
+// signup page
 router.get('/signup', checkNotAuthenticated, function(req, res) {
 var locals = {
     title: 'Sign Up',
@@ -194,7 +195,7 @@ var locals = {
 res.render('signup.ejs', locals);
 });
 
-// About Page
+// about
 router.get('/about', function(req, res) {
     var locals = {
         title: 'About',
@@ -205,7 +206,7 @@ router.get('/about', function(req, res) {
     res.render('about.ejs', locals);
 });
 
-// Buy Tickets Page
+// buy tickets
 router.get('/buytickets', checkAuthenticated, async function(req, res) {
     try {
         const data = await Post.find();
@@ -226,7 +227,9 @@ router.get('/buytickets', checkAuthenticated, async function(req, res) {
     }
 });
 
-// Contact Page
+
+
+// contact
 router.get('/contact', function(req, res) {
     var locals = {
         title: 'Contact',
@@ -237,7 +240,7 @@ router.get('/contact', function(req, res) {
     res.render('contact.ejs', locals);
 });
 
-// Our History Page
+// our history
 router.get('/ourhistory', function(req, res) {
     var locals = {
         title: 'Our History',
@@ -248,7 +251,7 @@ router.get('/ourhistory', function(req, res) {
     res.render('ourhistory.ejs', locals);
 });
 
-// Our Story Page
+// our story
 router.get('/ourstory', function(req, res) {
     var locals = {
         title: 'Our Story',
@@ -259,7 +262,7 @@ router.get('/ourstory', function(req, res) {
     res.render('ourstory.ejs', locals);
 });
 
-// Sustainability Efforts Page
+// sustainability efforts
 router.get('/sustainabilityefforts', function(req, res) {
     var locals = {
         title: 'Sustainability Efforts',
@@ -272,7 +275,7 @@ router.get('/sustainabilityefforts', function(req, res) {
 
 // ADMIN ROUTES
 
-// Admin dashboard
+// admin dashboard
 router.get('/adminDashboard', checkAuthenticatedAdmin, function(req, res) {
     const user = req.user;
     var locals = {
@@ -285,7 +288,7 @@ router.get('/adminDashboard', checkAuthenticatedAdmin, function(req, res) {
     res.render('admin/adminDashboard.ejs', locals);
 });
 
-// User accounts
+// user account
 router.get('/useraccount', checkAuthenticatedAdmin, async function(req, res) {
     const user = req.user;
     const users = await User.find();
@@ -300,7 +303,7 @@ router.get('/useraccount', checkAuthenticatedAdmin, async function(req, res) {
     res.render('admin/useraccount.ejs', locals);
 });
 
-// Edit User
+// edit user
 router.get('/edituser/:id', checkAuthenticatedAdmin, async function(req, res) {
     const user = await User.findById(req.params.id);
     var locals = {
@@ -313,7 +316,7 @@ router.get('/edituser/:id', checkAuthenticatedAdmin, async function(req, res) {
     res.render('admin/edituser.ejs', locals);
 });
 
-// Ticket Booking
+// ticket booking
 router.get('/ticketbooking', checkAuthenticatedAdmin, async function(req, res) {
     const user = req.user;
     const bookings = await Booking.find();
@@ -328,7 +331,7 @@ router.get('/ticketbooking', checkAuthenticatedAdmin, async function(req, res) {
     res.render('admin/ticketbooking.ejs', locals);
 });
 
-// Ticket Availability
+// ticket availability
 router.get('/ticketavailability', checkAuthenticatedAdmin, async function(req, res) {
     const user = req.user;
     const data = await Post.find();
@@ -343,7 +346,7 @@ router.get('/ticketavailability', checkAuthenticatedAdmin, async function(req, r
     res.render('admin/ticketavailability.ejs', locals);
 });
 
-// Edit Availability
+// edit availability
 router.get('/editavailability/:id', checkAuthenticatedAdmin, async function(req, res) {
     const user = req.user;
     const data = await Post.findById(req.params.id);
@@ -358,7 +361,7 @@ router.get('/editavailability/:id', checkAuthenticatedAdmin, async function(req,
     res.render('admin/editavailability.ejs', locals);
 });
 
-// Testimony
+// testimony
 router.get('/testimony', checkAuthenticatedAdmin, async function(req, res) {
     const user = req.user;
     const testimonies = await Testimony.find();
@@ -373,7 +376,7 @@ router.get('/testimony', checkAuthenticatedAdmin, async function(req, res) {
     res.render('admin/testimony.ejs', locals);
 });
 
-// NewsLetter
+// newsletter
 router.get('/newsletter', checkAuthenticatedAdmin, function(req, res) {
     const user = req.user;
     var locals = {
@@ -386,7 +389,7 @@ router.get('/newsletter', checkAuthenticatedAdmin, function(req, res) {
     res.render('admin/newsletter.ejs', locals);
 });
 
-// Admin Posts
+//Admin Posts
 router.get('/blog', checkAuthenticatedAdmin, async function(req, res) {
     const user = req.user;
     try {
@@ -409,7 +412,7 @@ router.get('/blog', checkAuthenticatedAdmin, async function(req, res) {
     };
 });
 
-// Add Get
+//Add Get
 router.get('/add-post', checkAuthenticatedAdmin, async function(req, res) {
     const user = req.user;
     try {
@@ -421,8 +424,8 @@ router.get('/add-post', checkAuthenticatedAdmin, async function(req, res) {
             layout:'adminlayout.ejs',
             data: data,
             user: user,
-            success: req.query.success === 'true',
-            error: req.query.error 
+            success: req.query.success === 'true', // Check if success query parameter is true
+            error: req.query.error // Pass error message
         };
         res.render('admin/add-post.ejs', locals);
     } catch (error) {
@@ -431,12 +434,13 @@ router.get('/add-post', checkAuthenticatedAdmin, async function(req, res) {
     };
 });
 
-// Add Post
+//Add Post
 router.post('/add-post', async function(req, res) {
     const user = req.user;
     try {
         const { title, body, imageUrl, ticketPrice, ticketQuantity } = req.body;
 
+        // Check if any required parameter is missing
         if (!title || !body || !imageUrl || !ticketPrice || !ticketQuantity) {
             throw new Error("All fields are required.");
         }
@@ -458,7 +462,7 @@ router.post('/add-post', async function(req, res) {
 });
 
 
-// Edit Get
+//Edit Get
 router.get('/edit-post/:id', checkAuthenticatedAdmin, async function(req, res) {
     const user = req.user;
     try {
@@ -470,13 +474,15 @@ router.get('/edit-post/:id', checkAuthenticatedAdmin, async function(req, res) {
             layout:'adminlayout.ejs',
             data: data,
             user: user,
-            success: req.query.success === 'true',
-            error: req.query.error
+            success: req.query.success === 'true', // Check if success query parameter is true
+            error: req.query.error // Pass error message
         };
         res.render('admin/edit-post.ejs', locals);
     } catch (error) {
         console.error("Error fetching blog post:", error);
     }
 });
+
+
 
 module.exports = router;

@@ -120,25 +120,9 @@
     color: var(--dark);
 }
 
-#contain {
+.second-row {
     display: flex;
-    justify-content: center;
-}
-
-.search-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px; /* Adjust as needed */
-}
-
-#search {
-    flex: 1;
-    display: flex;
-    align-items: center;
-}
-
-.input-group label {
-    margin-right: 5px; /* Adjust as needed */
+    justify-content: space-between;
 }
 
 

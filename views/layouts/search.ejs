@@ -1,25 +1,31 @@
 <!-- Search Bar -->
-<div class="container" id="contain">
-    <div class="searchBar">
-            <form action="/search" method="POST" class="search-form" role="search">
-                <div class="input-group" id="search">
-                    <label for="searchInput" class="visually-hidden">Search</label>
-                    <input type="search" id="searchInput" aria-label="Search" name="searchTerm" placeholder="Search For...">
-                </div>
-                <div class="input-group" id="search">
-                    <select name="sortBy" id="sortBy" class="form-select me-3" aria-label="Sort By">
-                        <option value="createdAt">Newest First</option>
-                        <option value="-createdAt">Oldest First</option>
-                    </select>
-                </div>
-                <div class="input-group" id="search">
-                    <input type="number" id="minPrice" aria-label="minPrice" name="minPrice" placeholder="Min" style="width: 70px; height: 10px;">
-                    <input type="number" id="maxPrice" aria-label="maxPrice" name="maxPrice" placeholder="Max" style="width: 70px; height: 10px;">
-                </div>
-                <div class="input-group" id="search">
-                    <button type="submit" class="btn btn-primary ms-lg-0">Search</button>
-                </div>
-            </form>
-        </div>
+<div class="searchBar">
+    <div class="container">
+        <form action="/search" method="POST" class="search__form" role="search">
+            <div class="first-row">
+                <label for="searchInput" class="visually-hidden">Search</label>
+                <input type="search" id="searchInput" aria-label="Search" name="searchTerm" placeholder="Search For...">
+            </div>
+        </form>
     </div>
+</div>
+
+<!-- Filter Section -->
+<div class="container">
+    <form action="/search" method="POST" class="d-flex align-items-center justify-content-end ms-2">
+        <!-- Sort By -->
+        <select name="sortBy" id="sortBy" class="form-select me-3" aria-label="Sort By">
+            <option value="createdAt">Newest First</option>
+            <option value="-createdAt">Oldest First</option>
+        </select>
+
+        <!-- Price Input -->
+        <div class="price-input">
+            <input type="number" id="minPrice" aria-label="minPrice" name="minPrice" placeholder="Min" style="width: 70px; height: 10px;">
+            <input type="number" id="maxPrice" aria-label="maxPrice" name="maxPrice" placeholder="Max" style="width: 70px; height: 10px;">
+        </div>
+
+        <!-- Apply Filters Button -->
+        <button type="submit" class="btn btn-primary ms-5">Search</button>
+    </form>
 </div>

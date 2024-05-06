@@ -13,64 +13,6 @@
     z-index: 99;
 }
 
-th, td {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-
-.container-fluid {
-    padding-top: 20px;
-}
-
-.bg-light {
-    padding: 20px;
-}
-
-.input-group {
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-}
-
-.input-group label {
-    margin-right: 10px;
-    width: 100px; 
-}
-
-.input-group input {
-    flex: 1;
-}
-
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-.btn {
-    margin-top: 15px;
-    text-decoration: none;
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    background-color: #f2f2f2;
-    color: #333;
-}
-
-.btn-delete {
-    background-color: #66cb4a;
-    color: white;
-}
-
-.btn-update {
-    background-color: #66cb4a;
-    color: white;
-}
-
-.btn-edit {
-    background-color: #66cb4a;
-    color: white;
-}
 
 /*** Spinner ***/
 #spinner {
